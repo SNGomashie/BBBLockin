@@ -23,11 +23,8 @@ void main (void) {
 
   CT_INTC.SICR_bit.STS_CLR_IDX = FROM_ARM_HOST;
 
-<<<<<<< HEAD
   status = &resourceTable.rpmsg_vdev.status;
 
-=======
->>>>>>> a3046ec90ed0a55c7413548c56c111f81afed1a8
   while (!(*status & VIRTIO_CONFIG_S_DRIVER_OK));
 
   while (pru_rpmsg_init(&transport, &resourceTable.rpmsg_vring0, &resourceTable.rpmsg_vring1, TO_ARM_HOST, FROM_ARM_HOST) != PRU_RPMSG_SUCCESS);
