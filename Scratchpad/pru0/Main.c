@@ -24,7 +24,7 @@ volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
 void main(void) {
 	shared[0] = 0x00000000;
-	srand((unsigned) time(7));
+	srand(time(0)); 
 
 while(1) {
 	while(shared[0] == 0x00000000){
