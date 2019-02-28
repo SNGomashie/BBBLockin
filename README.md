@@ -32,7 +32,7 @@
 - [x] Write python module to interface with PRU
 - [x] Read first message from PRU using remoteproc and python
 - [x] Write library for easy usage of remoteproc on the PRU
-- [x] Send message from PRU0 -> PRU1 using scratch pad
+- [ ] Send message from PRU0 -> PRU1 using scratch pad
 - [ ] Read a SPI ADC with the PRU
 - [ ] Determine reading speed PRU
 - [ ] Implement lock-in amplifier on the PRU
@@ -235,3 +235,144 @@ start
 
 ```
 And we should also be able to see the USR3 led flash 5 times.
+
+### Python module
+---
+A python module is included with which you can easily interface with the PRU.
+Go to the appropriate folder and run python3
+```
+cd /home/debian/python
+python3
+import PRUlib
+```
+you can now run functions from the PRUlib module, you can also write import PRUlib at the top of a new python script and use the included functions.
+
+__PRUlib.init(pru)__
+This starts the selected pru (0 or 1)
+```
+>>> PRUlib.init(0)
+PRU0 is offline, starting now
+PRU0 started
+```
+
+__PRUlib.deinit(pru)__
+This kills the selected pru (0 or 1)
+```
+>>> PRUlib.deinit(0)
+PRU0 is running, shuting down
+PRU0 is offline
+```
+
+__PRUlib.read(pru)__
+This reads the selected pru (0 or 1) and prints the payload into data.txt
+```
+Device is running, character device will be read
+300,300,300,300
+300,300,300,300
+
+payload saved in data.txt
+
+```
+the payload here is __300,300,300,300\n300,300,300,300\n__
+
+__PRUlib.status()__
+This shows the current status of both PRUs
+```
+>>> PRUlib.status()
+PRU0 is offline
+PRU1 is offline
+```
+
+__PRUlib.kill()__
+This kill both PRUs
+```
+>>> PRUlib.kill()
+PRU0 is offline
+PRU1 is offline
+
+```
+
+__PRUlib.goodmorning()__
+This starts both PRUs at the same time
+```
+>>> PRUlib.goodmorning()
+PRU0 is running
+PRU1 is running
+```
+__PRUlib.restart(pru)__
+Restarts the selected PRU
+```
+>>> PRUlib.restart(1)
+PRU1 has been reset
+```
+### Hello world
+---
+This example has been created to familiarize the user with REMOTEPROC/RPMsg. There is next to no documentation available on REMOTEPROC/RPMsg. TI has provided examples which do not really explain anything. There wiki has a very basic explanation of the framework but no explanation for all their accronims nor for their functions. An attempt has been made to clarify the REMOTEPROC/RPMsg framework. More explaination will be available in the report
+```
+cd /hello_world
+make
+cd gen
+sudo cp HELLO_WORLD.out /lib/firmware/am335x-pru1-fw
+```
+Run the python module
+```
+cd /python
+sudo python3
+>>> import PRUlib
+>>> PRUlib.init(1)
+>>> PRUlib.read(1)
+```
+This should return (Stop reading with CTRL+C):
+```
+
+>>> PRUlib.read(1)
+Device is running, character device will be read
+b'hallo world\n'
+b'hallo world\n'
+b'hallo world\n'
+payload saved in data.txt
+```
+### Scratch pad
+---
+This example has been created to familiarize the user with the scratchpad. The scratchpad allows reads and write in one clock cycle between the PRUs. This is the fastest communication method available with the PRUs since writing to the shared memory takes 1 cycle to write and 3 to read. We do use one register in the shared memory as interrupt.
+```
+cd /Scratchpad
+cd /pru0
+make
+cd gen
+sudo cp pru0.out /lib/firmware/am335x-pru1-fw
+cd ..
+cd ..
+cd /pru1
+Make
+cd gen
+sudo cp pru1.out /lib/firmware/am335x-pru0-fw
+```
+
+Than run the python module
+```
+cd /python
+sudo python3
+>>>import PRUlib
+>>>PRUlib.goodmorning()
+>>>PRUlib.read(1)
+```
+
+This should return (Stop reading with CTRL+C):
+```
+>>> PRUlib.read(1)
+Device is running, character device will be read
+b'0001,0002,0003,0004\n'
+b'0002,0004,0006,0008\n'
+b'0003,0006,0009,000C\n'
+b'0004,0008,000C,0010\n'
+payload saved in data.txt
+>>>
+
+```
+### ADC (SPI Bit-banging, McSPI, onboard ADC)
+---
+### Brining it all together
+---
+### Digital Signal Processing
+---
