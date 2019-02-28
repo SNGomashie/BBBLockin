@@ -4,7 +4,7 @@
 #include <pru_virtqueue.h>
 #include <pru_intc.h>
 #include <rsc_types.h>
-#include "esprint.h"
+#include "eprintf.h"
 #include "resource_table.h"
 
 /* Used to make sure the Linux drivers are ready for RPMsg communication */
@@ -68,7 +68,7 @@ void main (void) {
     pru_rpmsg_send(&transport, dst, src, buffer, 20);
 
   /* Delay half a second */
-    __delay_cycles(500000000/5); 
+    __delay_cycles(500000000/5);
 
   __halt();
 }
