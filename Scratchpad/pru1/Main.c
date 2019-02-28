@@ -11,10 +11,10 @@
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
 
 typedef struct buffer{
-  uint16_t reg6;
-  uint16_t reg7;
-  uint16_t reg8;
-  uint16_t reg9;
+  uint16_t reg0;
+  uint16_t reg1;
+  uint16_t reg2;
+  uint16_t reg3;
 } bufferData;
 
 bufferData dmemBuf;
@@ -59,13 +59,13 @@ void main (void) {
     while(shared[0] != 0xFFFFFFFF);
 
   /* Read scratchpad */
-    __xin(10, 6, 0, dmemBuf);
+    __xin(10, 0, 0, dmemBuf);
 
   /* load scratchpad into Dram */
-    dmemBuf = buf;
+    buf = dmemBuf;
 
   /* Compose the string to be send */
-    esprintf(buffer,"%04X,%04X,%04X,%04X\n", dmemBuf.reg6, dmemBuf.reg7, dmemBuf.reg8, dmemBuf.reg9);
+    esprintf(buffer,"%04X,%04X,%04X,%04X\n", dmemBuf.reg0, dmemBuf.reg1, dmemBuf.reg2, dmemBuf.reg3);
 
   /* Send message to ARM using RPMSG, buffer is the payload, 20 is the length of the payload */
     pru_rpmsg_send(&transport, dst, src, buffer, 20);
