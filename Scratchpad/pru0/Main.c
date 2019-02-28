@@ -31,13 +31,16 @@ unsigned int volatile * const GPIO1_SET   = (unsigned int *) (GPIO1 + GPIO_SETDA
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
-void main(void) {
+#define SHARE_MEM  0x00010000
+volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
+#define RAND_MAX 0xFFFF;
+
+void main(void) {
+	shared[0] = 0x00000000;
   bufferData buf;
 
   /* Clear the status of all interrupts */
-  CT_INTC.SECR0 = 0xFFFFFFFF;
-  CT_INTC.SECR1 = 0xFFFFFFFF;
 
   dmemBuf.reg6 = 0xFFFFFFFF;
   dmemBuf.reg7 = 0xFFFFFFFF;
@@ -46,8 +49,8 @@ void main(void) {
 
 	*GPIO1_CLEAR = USR3; //turn off light
 
-  while ((__R31 & (1<<30)) == 0) {
-  }
+	shared[0] = 0xFFFFFFFF;
+
 	buf = dmemBuf;
   __xout(14, 6, 0, buf);
 

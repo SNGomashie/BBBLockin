@@ -22,8 +22,8 @@ bufferData dmemBuf;
 #define RPMSG_BUF_HEADER_SIZE           16
 uint8_t rec_payload[RPMSG_BUF_SIZE - RPMSG_BUF_HEADER_SIZE];
 
-/* Define INTC channel */
-#define PRU1_PRU0_INTERRUPT (20)
+#define SHARE_MEM  0x00010000
+volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
 /* Global variable definitions */
 volatile register uint32_t __R30;
@@ -52,11 +52,8 @@ void main (void) {
   /* Receive all available messages, multiple messages can be sent per kick. A message has to be received to set the destination adress before you send. */
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
 
-  /* delay for half a second */
-  __delay_cycles(500000000/5);
-
-  /* Interrupt PRU0 to send data over scratchpad */
-    __R31 = PRU1_PRU0_INTERRUPT+16;
+  /* Interrupt via shared memory */
+    while(shared[0] != 0xFFFFFFFF);
 
   /* Read scratchpad */
     __xin(14, 5, 0, buf);
