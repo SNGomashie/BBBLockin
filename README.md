@@ -32,7 +32,7 @@
 - [x] Write python module to interface with PRU
 - [x] Read first message from PRU using remoteproc and python
 - [x] Write library for easy usage of remoteproc on the PRU
-- [ ] Send message from PRU0 -> PRU1 using scratch pad
+- [x] Send message from PRU0 -> PRU1 using scratch pad
 - [ ] Read a SPI ADC with the PRU
 - [ ] Determine reading speed PRU
 - [ ] Implement lock-in amplifier on the PRU
@@ -198,5 +198,40 @@ This command shows where the TI PRU Code Generation Tool is located:
 whereis clpru
 ```
 
-## Configuring GPIO pins
+## Programming the PRU
+
+The PRU can be progammed in both assembly and C. Although assembly code could run faster than C, this requiers learning a new language and optimizing assembly code. This takes **ALOT** of
+time.
+
+### Cloning the repositories
+---
+First we clone the PRU software support package. This is a package offered by TI which includes libraries and more
 ```
+cd /usr/lib/ti/
+git clone git://git.ti.com/pru-software-support-package/pru-software-support-package.git
+```
+
+The first progam we are going to load to our PRUs is 'blinky' this program will make USR3 blink 5 times.
+
+```
+cd
+git clone git@github.com:SNGomashie/BBB-Lockin.git
+```
+
+### Running our first progam
+---
+```
+cd Blinky
+source setup.sh
+make
+```
+The terminal should return:
+```
+-    Stopping PRU 0
+stop
+-       copying firmware file /tmp/pru0-gen/hello.out to /lib/firmware/am335x-pru0-fw
+-    Starting PRU 0
+start
+
+```
+And we should also be able to see the USR3 led flash 5 times.
