@@ -53,7 +53,6 @@ void main(void) {
 
 	*GPIO1_SET = USR3; //turn on light
 
-  CT_INTC.SICR = PRU1_PRU0_INTERRUPT;
 
 __halt();
 }
