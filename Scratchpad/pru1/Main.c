@@ -12,6 +12,7 @@
 /* Used to make sure the Linux drivers are ready for RPMsg communication */
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
 
+/* Data object to be send through the scratchpad */
 typedef struct buffer{
   uint16_t reg0;
   uint16_t reg1;
@@ -25,9 +26,11 @@ bufferData dmemBuf;
 #define RPMSG_BUF_HEADER_SIZE           16
 uint8_t rec_payload[RPMSG_BUF_SIZE - RPMSG_BUF_HEADER_SIZE];
 
+/* Interrupt definitions */
 #define INT_OFF 0x00000000
 #define INT_ON 0xFFFFFFFF
 
+/* Shared memory location & defintions */
 #define SHARE_MEM  0x00010000
 volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
@@ -58,6 +61,7 @@ void main (void) {
   /* Receive all available messages, multiple messages can be sent per kick. A message has to be received to set the destination adress before you send. */
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
 
+  /* Inifinite loop */
   while(1){
     while(shared[0] == INT_ON){
       /* Read scratchpad */
