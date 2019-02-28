@@ -7,6 +7,7 @@ TI includes the PRU Code Generation Tools (CGT) as part of Code Composer Studio 
 <img src="https://i.imgur.com/8idytpS.png" alt="drawing" width="400"/>
 <br><br>
 
+## Running blinky
 Assuming the setup has been followed until *running our first program* paragraph. We can now compile and run our program. Simply navigate to the correct folder **/Blinky**. And type the following command in the command line. The makefile automatically copies the .out file into /lib/firmware under the correct name.
 ```
 source setup.sh
