@@ -4,7 +4,7 @@
 #include <pru_cfg.h>
 #include "resource_table.h"
 
-#define RAND_MAX 0xFFFF;
+#define PRU0
 
 typedef struct {
 	uint32_t reg6;
@@ -31,11 +31,6 @@ unsigned int volatile * const GPIO1_SET   = (unsigned int *) (GPIO1 + GPIO_SETDA
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
-#define SHARE_MEM  0x00010000
-volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
-
-#define RAND_MAX 0xFFFF;
-
 void main(void) {
 
   bufferData buf;
@@ -51,7 +46,7 @@ void main(void) {
 
 	*GPIO1_CLEAR = USR3; //turn off light
 
-  while ((__R31 & (1<<30)) != 0) {
+  while ((__R31 & (1<<30)) == 0) {
   }
 	buf = dmemBuf;
   __xout(14, 6, 0, buf);

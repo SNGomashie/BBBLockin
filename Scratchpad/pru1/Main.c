@@ -52,6 +52,9 @@ void main (void) {
   /* Receive all available messages, multiple messages can be sent per kick. A message has to be received to set the destination adress before you send. */
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
 
+  /* delay for half a second */
+  __delay_cycles(500000000/5);
+
   /* Interrupt PRU0 to send data over scratchpad */
     __R31 = PRU1_PRU0_INTERRUPT+16;
 
