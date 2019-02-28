@@ -34,7 +34,7 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [x] Read first message from PRU using remoteproc and python
 - [x] Write library for easy usage of remoteproc on the PRU
 - [x] Send message from PRU0 -> PRU1 using scratch pad
-- [ ] Read a SPI ADC with the PRU
+- [ ] Read a ADC with the PRU (mcSPI, SPI by means of bit-banging, onboard ADC)
 - [ ] Determine reading speed PRU
 - [ ] Implement lock-in amplifier on the PRU
 
