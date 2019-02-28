@@ -25,7 +25,7 @@ volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 void main(void) {
 	shared[0] = 0x00000000;
 	srand((unsigned) time(7));
-	
+
 while(1) {
 	while(shared[0] == 0x00000000){
 		/* Fill the struct with 16 bit random values */
@@ -37,7 +37,7 @@ while(1) {
 		/* Send interrupt over shared memory */
 		shared[0] = 0xFFFFFFFF;
 
-	  __xout(14, 0, 0, dmemBuf);
+	  __xout(10, 0, 0, dmemBuf);
 		__delay_cycles(200000000);
 	}
 }
