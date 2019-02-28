@@ -49,7 +49,7 @@ void main(void) {
 
 	shared[0] = 0xFFFFFFFF;
 
-  __xout(10, 0, 0, dmemBuf);
+  __xout(14, 0, 0, dmemBuf);
 
 	*GPIO1_SET = USR3; //turn on light
 
