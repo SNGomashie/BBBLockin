@@ -12,7 +12,7 @@
    - [Download the latest image from the Beaglebone site](#latest)
    - [Flash image onto SD card (windows 10 and linux) ](#flash)
    - [Enabling the Beaglebone PRU](#en_pru)
-   - [Installing the TI PRU Code Generation Tools](#ti-cgt)
+   - [Installing the TI PRU Code Generation Tools](#installing-the-ti-pru-code-generation-toolspru-cgt)
 3. [Programming the PRU](#programming-the-pru)
    - [Cloning the Repo](#cloning-the-repositories)
    - [Examples](#running-our-first-program)
