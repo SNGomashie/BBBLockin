@@ -27,7 +27,7 @@
 - [x] Write python module to interface with PRU
 - [x] Read first message from PRU using remoteproc and python
 - [x] Write library for easy usage of remoteproc on the PRU
-- [ ] Send message from PRU0 -> PRU1 using scratch pad
+- [x] Send message from PRU0 -> PRU1 using scratch pad
 - [ ] Read a SPI ADC with the PRU
 - [ ] Determine reading speed PRU
 - [ ] Implement lock-in amplifier on the PRU
