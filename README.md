@@ -214,7 +214,7 @@ git clone git@github.com:SNGomashie/BBB-Lockin.git
 ```
 
 ### Running our first program
-There are several examples available from both this github and the TI PRU software support package. For a quick start go thourgh the examples on this Github.
+There are several examples available from both this github and the TI PRU software support package. For a quick start go thourgh the examples on this Github. It is recommended to go through the Python library first so you can easily read messages from the PRU.
 1. [PRUlib](https://github.com/SNGomashie/BBBLockin/tree/master/Python)
 2. [Blinky](https://github.com/SNGomashie/BBBLockin/tree/master/Blinky)
 3. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
