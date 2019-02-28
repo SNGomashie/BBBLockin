@@ -11,10 +11,10 @@
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
 
 typedef struct buffer{
-  uint32_t reg6;
-  uint32_t reg7;
-  uint32_t reg8;
-  uint32_t reg9;
+  uint16_t reg6;
+  uint16_t reg7;
+  uint16_t reg8;
+  uint16_t reg9;
 } bufferData;
 
 bufferData dmemBuf;

@@ -7,10 +7,10 @@
 #define PRU0
 
 typedef struct {
-	uint32_t reg6;
-	uint32_t reg7;
-	uint32_t reg8;
-	uint32_t reg9;
+	uint16_t reg6;
+	uint16_t reg7;
+	uint16_t reg8;
+	uint16_t reg9;
 } bufferData;
 
 bufferData dmemBuf;
@@ -39,9 +39,9 @@ void main(void) {
 
   /* Clear the status of all interrupts */
   dmemBuf.reg6 = 0xFFFF;
-  dmemBuf.reg7 = 0xFF00;
-  dmemBuf.reg8 = 0x00FF;
-  dmemBuf.reg9 = 0xF0F0;
+  dmemBuf.reg7 = 0xEEEE;
+  dmemBuf.reg8 = 0xDDDD;
+  dmemBuf.reg9 = 0xCCCC;
 
 	*GPIO1_CLEAR = USR3; //turn off light
 
