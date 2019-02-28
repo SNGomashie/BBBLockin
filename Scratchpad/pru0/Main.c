@@ -51,7 +51,7 @@ void main(void) {
 
 	*GPIO1_CLEAR = USR3; //turn off light
 
-  while ((__R31 & (1<<30)) == 0) {
+  while ((__R31 & (1<<30)) != 0) {
   }
 	buf = dmemBuf;
   __xout(14, 6, 0, buf);
