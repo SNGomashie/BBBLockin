@@ -44,10 +44,10 @@ void main(void) {
   CT_INTC.SECR0 = 0xFFFFFFFF;
   CT_INTC.SECR1 = 0xFFFFFFFF;
 
-  dmemBuf.reg0 = 0xFFFFFFFF;
-  dmemBuf.reg1 = 0xFFFFFFFF;
-  dmemBuf.reg2 = 0xFFFFFFFF;
-  dmemBuf.reg3 = 0xFFFFFFFF;
+  dmemBuf.reg6 = 0xFFFFFFFF;
+  dmemBuf.reg7 = 0xFFFFFFFF;
+  dmemBuf.reg8 = 0xFFFFFFFF;
+  dmemBuf.reg9 = 0xFFFFFFFF;
 
 	*GPIO1_CLEAR = USR3; //turn off light
 
