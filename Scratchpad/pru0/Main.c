@@ -15,9 +15,6 @@ typedef struct {
 
 bufferData dmemBuf;
 
-#define PRU1_PRU0_INTERRUPT (20)
-
-
 #define GPIO1 0x4804C000
 #define GPIO_CLEARDATAOUT 0x190
 #define GPIO_SETDATAOUT 0x194
@@ -41,11 +38,10 @@ void main(void) {
   bufferData buf;
 
   /* Clear the status of all interrupts */
-
-  dmemBuf.reg6 = 0xFFFFFFFF;
-  dmemBuf.reg7 = 0xFFFFFFFF;
-  dmemBuf.reg8 = 0xFFFFFFFF;
-  dmemBuf.reg9 = 0xFFFFFFFF;
+  dmemBuf.reg6 = 0xFFFF;
+  dmemBuf.reg7 = 0xFF00;
+  dmemBuf.reg8 = 0x00FF;
+  dmemBuf.reg9 = 0xF0F0;
 
 	*GPIO1_CLEAR = USR3; //turn off light
 
@@ -53,8 +49,7 @@ void main(void) {
 
 	shared[0] = 0xFFFFFFFF;
 
-	buf = dmemBuf;
-  __xout(14, 6, 0, buf);
+  __xout(10, 6, 0, dmemBuf);
 
 	*GPIO1_SET = USR3; //turn on light
 

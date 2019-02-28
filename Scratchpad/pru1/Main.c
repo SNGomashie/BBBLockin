@@ -10,12 +10,13 @@
 /* Used to make sure the Linux drivers are ready for RPMsg communication */
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
 
-typedef struct {
+typedef struct buffer{
   uint32_t reg6;
   uint32_t reg7;
   uint32_t reg8;
   uint32_t reg9;
 } bufferData;
+
 bufferData dmemBuf;
 
 /* Define the size of message to be recieved. */
@@ -52,13 +53,13 @@ void main (void) {
   /* Receive all available messages, multiple messages can be sent per kick. A message has to be received to set the destination adress before you send. */
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
 
-  
+
 
   /* Interrupt via shared memory */
     while(shared[0] != 0xFFFFFFFF);
 
   /* Read scratchpad */
-    __xin(14, 6, 0, buf);
+    __xin(10, 6, 0, dmemBuf);
 
   /* load scratchpad into Dram */
     dmemBuf = buf;
