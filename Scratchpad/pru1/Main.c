@@ -52,6 +52,8 @@ void main (void) {
   /* Receive all available messages, multiple messages can be sent per kick. A message has to be received to set the destination adress before you send. */
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
 
+  
+
   /* Interrupt via shared memory */
     while(shared[0] != 0xFFFFFFFF);
 

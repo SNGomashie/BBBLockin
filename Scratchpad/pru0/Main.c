@@ -37,7 +37,7 @@ volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 #define RAND_MAX 0xFFFF;
 
 void main(void) {
-	shared[0] = 0x00000000;
+	shared[0] = 0xFFFFFFFF;
   bufferData buf;
 
   /* Clear the status of all interrupts */
@@ -48,6 +48,8 @@ void main(void) {
   dmemBuf.reg9 = 0xFFFFFFFF;
 
 	*GPIO1_CLEAR = USR3; //turn off light
+
+	__delay_cycles(500000000/5);
 
 	shared[0] = 0xFFFFFFFF;
 
