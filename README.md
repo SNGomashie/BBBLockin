@@ -15,13 +15,8 @@
    - [Installing the TI PRU Code Generation Tools](#ti-cgt)
    - [Configure pins](#conf_pins)
 3. [Programming the PRU](#programming-the-pru)
-   - [Blinky](#running-our-first-program)
-   - [Python Module](#python-module)
-   - [Hallo world (Remoteproc & RPMsg)](#hallo-world)
-   - [Scratch pad](#scratch-pad)
-   - [Bit-banging](#bit-banging)
-   - [Bringing it all together](#bringing-it-all-together)
-   - [Digital Signal Processing](#digital-signal-processing)
+   - [Cloning the Repo](#cloning-the-repositories)
+   - [Examples](#running-our-first-program)
 
 
 
@@ -220,6 +215,7 @@ git clone git@github.com:SNGomashie/BBB-Lockin.git
 
 ### Running our first program
 There are several examples available from both this github and the TI PRU software support package. For a quick start go thourgh the examples on this Github.
-1. [Blinky](https://github.com/SNGomashie/BBBLockin/tree/master/Blinky)
-2. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
-3. Scratchpad
+1. [PRUlib](https://github.com/SNGomashie/BBBLockin/tree/master/Python)
+2. [Blinky](https://github.com/SNGomashie/BBBLockin/tree/master/Blinky)
+3. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
+4. [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad)
