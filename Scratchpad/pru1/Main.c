@@ -53,25 +53,26 @@ void main (void) {
   /* Receive all available messages, multiple messages can be sent per kick. A message has to be received to set the destination adress before you send. */
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
 
+  while(1){
+    while(shared[0] != 0x00000000){
+      /* Read scratchpad */
+      __xin(14, 0, 0, dmemBuf);
 
+      /* load scratchpad into Dram */
+      buf = dmemBuf;
 
-  /* Interrupt via shared memory */
-    while(shared[0] != 0xFFFFFFFF);
+      /* Compose the string to be send */
+      esprintf(buffer,"%04X,%04X,%04X,%04X\n", dmemBuf.reg0, dmemBuf.reg1, dmemBuf.reg2, dmemBuf.reg3);
 
-  /* Read scratchpad */
-    __xin(14, 0, 0, dmemBuf);
+      /* Send message to ARM using RPMSG, buffer is the payload, 20 is the length of the payload */
+      pru_rpmsg_send(&transport, dst, src, buffer, 20);
 
-  /* load scratchpad into Dram */
-    buf = dmemBuf;
+      /* reset shared memory interrupt*/
+      shared[0] = 0xFFFFFFFF;
 
-  /* Compose the string to be send */
-    esprintf(buffer,"%04X,%04X,%04X,%04X\n", dmemBuf.reg0, dmemBuf.reg1, dmemBuf.reg2, dmemBuf.reg3);
+      /* Delay half a second */
+      __delay_cycles(200000000);
+    }
+  }
 
-  /* Send message to ARM using RPMSG, buffer is the payload, 20 is the length of the payload */
-    pru_rpmsg_send(&transport, dst, src, buffer, 20);
-
-  /* Delay half a second */
-    __delay_cycles(500000000/5);
-
-  __halt();
 }
