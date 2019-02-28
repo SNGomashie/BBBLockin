@@ -7,6 +7,8 @@
 #include "eprintf.h"
 #include "resource_table.h"
 
+#define PRU1
+
 /* Used to make sure the Linux drivers are ready for RPMsg communication */
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
 
@@ -22,6 +24,9 @@ bufferData dmemBuf;
 /* Define the size of message to be recieved. */
 #define RPMSG_BUF_HEADER_SIZE           16
 uint8_t rec_payload[RPMSG_BUF_SIZE - RPMSG_BUF_HEADER_SIZE];
+
+#define INT_OFF 0x00000000
+#define INT_ON 0xFFFFFFFF
 
 #define SHARE_MEM  0x00010000
 volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
@@ -54,7 +59,7 @@ void main (void) {
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
 
   while(1){
-    while(shared[0] != 0x00000000){
+    while(shared[0] == INT_ON){
       /* Read scratchpad */
       __xin(10, 0, 0, dmemBuf);
 
@@ -68,7 +73,7 @@ void main (void) {
       pru_rpmsg_send(&transport, dst, src, buffer, 20);
 
       /* reset shared memory interrupt*/
-      shared[0] = 0xFFFFFFFF;
+      shared[0] = INT_OFF;
 
       /* Delay half a second */
       __delay_cycles(200000000);
