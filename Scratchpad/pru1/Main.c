@@ -56,7 +56,7 @@ void main (void) {
     while(shared[0] != 0xFFFFFFFF);
 
   /* Read scratchpad */
-    __xin(14, 5, 0, buf);
+    __xin(14, 6, 0, buf);
 
   /* load scratchpad into Dram */
     dmemBuf = buf;
