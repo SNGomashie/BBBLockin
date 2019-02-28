@@ -62,7 +62,7 @@ void main (void) {
     dmemBuf = buf;
 
   /* Compose the string to be send */
-    esprintf(buffer,"%04X,%04X,%04X,%04X\n", dmemBuf.reg0, dmemBuf.reg1, dmemBuf.reg2, dmemBuf.reg3);
+    esprintf(buffer,"%04X,%04X,%04X,%04X\n", dmemBuf.reg6, dmemBuf.reg7, dmemBuf.reg8, dmemBuf.reg9);
 
   /* Send message to ARM using RPMSG, buffer is the payload, 20 is the length of the payload */
     pru_rpmsg_send(&transport, dst, src, buffer, 20);
