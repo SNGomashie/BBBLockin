@@ -1,7 +1,14 @@
 # Beaglebone Black - Lock-in amplifier
 
 ## Introduction
+During my intership at SRON Netherlands Institute for Space Research I had to design a lock-in amplifier on the BeagleBone Black using the Programmable Real-time Units. These are barebone processors, on which we can load firmware from the linux userspace. After loading the firmware they can function completely independently of the main ARM processor.
 
+- [Exploring Beaglebone 2nd edition](https://smtebooks.eu/book/getfile1/16254/MTYyNTQ=)
+- [TI PRU-ICSS wiki](http://processors.wiki.ti.com/index.php/PRU-ICSS)
+- [TI AM335x Sitara processor datasheet](http://www.ti.com/lit/ds/symlink/am3358.pdf)
+- [TI AM335x Technical Reference Manual](https://www.ti.com/lit/ug/spruh73p/spruh73p.pdf)
+- [TI PRU Optimizing C/C++ Compiler](http://www.ti.com/lit/ug/spruhv7c/spruhv7c.pdf)
+- [TI PRU Read Latencies](http://www.ti.com/lit/an/sprace8a/sprace8a.pdf)
 
 
 ## Table of contents
