@@ -136,7 +136,7 @@ def status() :
 	pru_state1 = os.read(state1, 7)
 	os.close(state0)
 	os.close(state1)
-	print("PRU0 is " + pru_state0 + "PRU1 is " + pru_state1)
+	print("PRU0 is " + pru_state0.decode("utf-8")  + "PRU1 is " + pru_state1.decode("utf-8") )
 
 #kills both PRUs
 def kill() :
