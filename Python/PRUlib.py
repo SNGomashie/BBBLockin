@@ -23,110 +23,117 @@ DATA = "data.txt"
 RPMSG_BUF_SIZE = 512
 readBuf = "\0" * 512
 
-def rpmsginit (PRU) :
-	dev = os.open(CHAR_DEV1, os.O_RDWR)
-	os.write(dev, b"ready")
-	os.close(dev)
-
 #turn on the selected PRU (0 = PRU0, 1 = PRU1)
 def init (PRU) :
 	if PRU == 0:
-		state0 = open(REMOTEPROC_STATE0, 'r') #Open /sys/class/remoteproc/remoteprocx/state, in read mode
-		pru_state = state0.read() #Read the current state of selected PRU
-		if 'running' in pru_state: #Do nothing if already running
+		state = os.open(REMOTEPROC_STATE0, os.O_RDWR)	#Open /sys/class/remoteproc/remoteproc0/state, in read/write mode
+		pru_state = os.read(state, 7)	#Read the current state of selected PRU
+		if b'running' in pru_state:		#Do nothing if already running
 			print("PRU0 is already running")
-		else:	#Start selected PRU when offline
-			print("PRU0 is offline, starting now")
-			state0 = open(REMOTEPROC_STATE0, 'w')
-			state0.write("start")
-			print("PRU0 started")
-		state0.close() #close /sys/class/remoteproc/remoteprocx/state
+		elif b'offline' in pru_state:	#Start selected PRU when offline
+			prtin("PRU0 is offline, starting now")
+			try:
+				os.write(state, b"start")
+				print("PRU0 has started")
+			except:
+				print("PRU0 has failed to start")
+		os.close(state)		#close /sys/class/remoteproc/remoteproc0/state
 	if PRU == 1:
-		state1 = open(REMOTEPROC_STATE1, 'r') #Open /sys/class/remoteproc/remoteprocx/state, in read mode
-		pru_state = state1.read() #Read the current state of selected PRU
-		if 'running' in pru_state: #Do nothing if already running
+		state = os.open(REMOTEPROC_STATE1, os.O_RDWR)	#Open /sys/class/remoteproc/remoteproc1/state, in read/write mode
+		pru_state = os.read(state, 7)	#Read the current state of selected PRU
+		if b'running' in pru_state:		#Do nothing if already running
 			print("PRU1 is already running")
-		else:	#Start selected PRU when offline
+		elif b'offline' in pru_state:	#Start selected PRU when offline
 			print("PRU1 is offline, starting now")
-			state1 = open(REMOTEPROC_STATE1, 'w')
-			state1.write("start")
-			print("PRU1 started")
-		state1.close() #close /sys/class/remoteproc/remoteprocx/state
+			try:
+				os.write(state, b"start")
+				print("PRU1 has started")
+			except:
+				print("PRU1 has failed to start")
+		os.close(state)		#close /sys/class/remoteproc/remoteproc0/state
 
 #turn off the selected PRU (0 = PRU0, 1 = PRU1)
 def deinit (PRU) :
 	if PRU == 0:
-		state = open(REMOTEPROC_STATE0, 'r') #Open /sys/class/remoteproc/remoteprocx/state, in read mode
-		pru_state = state.read() #Read the current state of selected PRU
-		state = open(REMOTEPROC_STATE0, 'w') #Open /sys/class/remoteproc/remoteprocx/state, in write mode
-		if 'running' in pru_state: #Do nothing if already running
-			print("PRU0 is running, shuting down")
-			state.write("stop")
-			print("PRU0 is offline")
-		else:
-			print("PRU0 is already offline")
-		state.close()
+		state = os.open(REMOTEPROC_STATE0, os.O_RDWR)
+		pru_state = state.read()
+		if b'running' in pru_state:
+			print("PRU0 is running, shutting down")
+			try:
+				os.write(state, b"stop")
+				print("PRU0 is offline")
+			except:
+				print("Something went wrong while turning off PRU0")
+			os.close(state)
 	if PRU == 1:
-		state = open(REMOTEPROC_STATE1, 'r') #Open /sys/class/remoteproc/remoteprocx/state, in read mode
-		pru_state = state.read() #Read the current state of selected PRU
-		state = open(REMOTEPROC_STATE1, 'w') #Open /sys/class/remoteproc/remoteprocx/state, in write mode
-		if 'running' in pru_state: #Do nothing if already running
-			print("PRU1 is running, shuting down")
-			state.write("stop")
-			print("PRU1 is offline")
-		else:
-			print("PRU1 is already offline")
-		state.close()
+		state = os.open(REMOTEPROC_STATE1, os.O_RDWR)
+		pru_state = state.read()
+		if b'running' in pru_state:
+			print("PRU1 is running, shutting down")
+			try:
+				os.write(state, b"stop")
+				print("PRU1 is offline")
+			except:
+				print("Something went wrong while turning off PRU1")
+			os.close(state)
 
 #read one payload from the selected PRU
 def read (PRU):
 	data = os.open(DATA, os.O_CREAT|os.O_APPEND|os.O_RDWR)
-	if PRU == 0:
+	if PRU ==0:
 		state = os.open(REMOTEPROC_STATE0, os.O_RDWR)
 		dev = os.open(CHAR_DEV0, os.O_RDWR)
 		cur_state = os.read(state, 7)
 		os.close(state)
 		if b'running' in cur_state:
-			print("Device is running, character device will be read")
-			readBuf = os.read(dev, RPMSG_BUF_SIZE) #Read the characer device and save the value in char_dev
-			print(str(readBuf, 'utf-8')) #print the just recorded value
-			print("payload saved in " + DATA)
-			os.write(data, readBuf) #write char_dev in data.txt
-			os.close(dev)
-			os.close(data)
+			os.write(dev, b"ready")
+			print("PRU0 is running, character device will be read")
+			for x in range(100):
+				try:
+					readBuf = os.read(dev, RPMSG_BUF_SIZE) #Read the characer device and save the value in char_dev
+					print(readBuf) #print the just recorded value
+					os.write(data, readBuf) #write char_dev in data.txt
+				except KeyboardInterrupt:
+					print("payload saved in " + DATA)
+					break;
+				except:
+					print("Could not read the character device")
+					break;
 		else:
 			print("Device is not running")
-			os.close(dev)
-			os.close(data)
-	elif PRU == 1:
+		os.close(dev)
+		os.close(data)
+
+	if PRU ==1:
 		state = os.open(REMOTEPROC_STATE1, os.O_RDWR)
 		dev = os.open(CHAR_DEV1, os.O_RDWR)
 		cur_state = os.read(state, 7)
 		os.close(state)
 		if b'running' in cur_state:
 			os.write(dev, b"ready")
-			print("Device is running, character device will be read")
-			while 1:
+			print("PRU1 is running, character device will be read")
+			for x in range(100):
 				try:
 					readBuf = os.read(dev, RPMSG_BUF_SIZE) #Read the characer device and save the value in char_dev
 					print(readBuf) #print the just recorded value
 					os.write(data, readBuf) #write char_dev in data.txt
-				except:
+				except KeyboardInterrupt:
 					print("payload saved in " + DATA)
-					os.close(dev)
-					os.close(data)
+					break;
+				except:
+					print("Could not read the character device")
 					break;
 		else:
 			print("Device is not running")
-			os.close(dev)
-			os.close(data)
+		os.close(dev)
+		os.close(data)
 
 #returns the status of both PRUs
 def status() :
-	state0 = open(REMOTEPROC_STATE0, 'r')
-	state1 = open(REMOTEPROC_STATE1, 'r')
-	pru_state0 = state0.read()
-	pru_state1 = state1.read()
+	state0 = os.open(REMOTEPROC_STATE0, os.O_RDONLY)
+	state1 = os.open(REMOTEPROC_STATE1, os.O_RDONLY)
+	pru_state0 = os.read(state0, 7)
+	pru_state1 = os.read(state1, 7)
 	state0.close()
 	state1.close()
 	print("PRU0 is " + pru_state0 + "PRU1 is " + pru_state1)
