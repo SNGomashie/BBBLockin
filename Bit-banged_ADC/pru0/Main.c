@@ -31,12 +31,12 @@ typedef struct {
 bufferData dmemBuf;
 
 //Define pin locations
-#define NRD 7
-#define CS 5
-#define MISO 3
-#define MOSI 1
-#define CLK 2
-#define CONVST 0
+#define NRD 0b10000000
+#define CS 0b100000
+#define MISO 0b1000
+#define MOSI 0b10
+#define CLK 0b100
+#define CONVST 0b1
 
 /* GPIO registers */
 volatile register uint32_t __R30;
