@@ -2,11 +2,11 @@
 //  SPI ADC read program in C.
 //
 //	Pin configuration:
-//  nRD (  Read Input ) :			P9.25 pr1_pru0_pru_r30_7
-//  CS( chip select ):  			P9.27 pr1_pru0_pru_r30_5
+//  nRD (  Read Input ) :						P9.25 pr1_pru0_pru_r30_7
+//  CS	( chip select ):  					P9.27 pr1_pru0_pru_r30_5
 //  SDO ( Serial Data Out (MISO)):  P9.28 pr1_pru0_pru_r31_3
 //  SDI ( Serial Data In (MOSI)):   P9.29 pr1_pru0_pru_r30_1
-//  SCK ( Serial clock ) :      	P9.30 pr1_pru0_pru_r30_2
+//  SCK ( Serial clock ) :      		P9.30 pr1_pru0_pru_r30_2
 //  Convst (  Start conversion ) : 	P9.31 pr1_pru0_pru_r30_0
 
 
@@ -31,12 +31,12 @@ typedef struct {
 bufferData dmemBuf;
 
 //Define pin locations
-#define NRD 0x00000080
-#define CS 0x000000020
-#define MISO 0x00000008
-#define MOSI 0x00000001
-#define CLK 0x00000002
-#define CONVST 0x00000000
+#define NRD 7
+#define CS 5
+#define MISO 3
+#define MOSI 1
+#define CLK 2
+#define CONVST 0
 
 /* GPIO registers */
 volatile register uint32_t __R30;
