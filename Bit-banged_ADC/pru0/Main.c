@@ -61,6 +61,8 @@ uint8_t i;
 uint16_t spiCommand = 0x00000000;
 uint16_t spiReceive = 0x00000000;
 
+uint16_t fnRead_WriteSPI(uint8_t chan);
+
 void main(void) {
 	shared[0] = INT_OFF;
 	/* 1.	Initialization */
