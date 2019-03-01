@@ -23,7 +23,7 @@
 #define CLK 2
 #define CONVST 0
 
-CT_CFG.GPCFG0 = 0;
+
 
 /* GPIO registers */
 volatile register uint32_t __R30;
@@ -31,6 +31,7 @@ volatile register uint32_t __R31;
 
 
 void main(void) {
+  CT_CFG.GPCFG0 = 0;
   volatile uint32_t clk;
   clk = 0x00000004;
   while(1) {
