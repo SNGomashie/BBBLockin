@@ -134,8 +134,8 @@ def status() :
 	state1 = os.open(REMOTEPROC_STATE1, os.O_RDONLY)
 	pru_state0 = os.read(state0, 7)
 	pru_state1 = os.read(state1, 7)
-	state0.close()
-	state1.close()
+	os.close(state0)
+	os.close(state1)
 	print("PRU0 is " + pru_state0 + "PRU1 is " + pru_state1)
 
 #kills both PRUs
