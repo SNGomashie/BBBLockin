@@ -23,6 +23,11 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 3. [Programming the PRU](#programming-the-pru)
    - [Cloning the Repo](#cloning-the-repositories)
    - [Examples](#running-our-first-program)
+     1. [PRUlib](https://github.com/SNGomashie/BBBLockin/tree/master/Python)
+     2. [Blinky](https://github.com/SNGomashie/BBBLockin/tree/master/Blinky)
+     3. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
+     4. [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad)
+     5. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC)
 
 
 
@@ -225,3 +230,4 @@ There are several examples available from both this github and the TI PRU softwa
 2. [Blinky](https://github.com/SNGomashie/BBBLockin/tree/master/Blinky)
 3. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
 4. [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad)
+5. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC)
