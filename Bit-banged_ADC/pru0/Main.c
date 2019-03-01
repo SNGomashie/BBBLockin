@@ -31,12 +31,12 @@ typedef struct {
 bufferData dmemBuf;
 
 //Define pin locations
-#define nRD 0x00000080
+#define NRD 0x00000080
 #define CS 0x000000020
-#define miso 0x00000008
-#define mosi 0x00000001
+#define MISO 0x00000008
+#define MOSI 0x00000001
 #define CLK 0x00000002
-#define convST 0x00000000
+#define CONVST 0x00000000
 
 /* GPIO registers */
 volatile register uint32_t __R30;
@@ -46,7 +46,7 @@ volatile register uint32_t __R31;
 #define SHARE_MEM  0x00010000
 #define PRU0_MEM 0x00000000
 volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
-volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM
+volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
 /* Interrupt definitions */
 #define INT_OFF 0x00000000
@@ -55,6 +55,7 @@ volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM
 /* Number of sample channels */
 const uint8_t Nchl = 4;
 uint8_t idx;
+uint8_t i;
 
 /* SPI data */
 uint16_t spiCommand = 0x00000000;
@@ -94,11 +95,11 @@ void main(void) {
 uint32_t fnRead_WriteSPI(uint8_t chan){
 const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
 
-spiCommand = ( ADCch[chan] << 4 ) | B10000000;	// single-ended, input +/-5V
+spiCommand = ( ADCch[chan] << 4 ) | 0b10000000;	// single-ended, input +/-5V
 
 __R30 = __R30 | ( 1 << CS ); //Set CS high
-__R30 = __R30 | ( 0 << nRD ); //Set nRD low
-__R30 = __R30 | ( 0 << convST ); //Set ConvST low
+__R30 = __R30 | ( 0 << NRD ); //Set nRD low
+__R30 = __R30 | ( 0 << CONVST ); //Set ConvST low
 
 __R30 &= ~(1 << CLK); //Clock polarity 0
 
@@ -122,8 +123,8 @@ for (i = 0; i < 15; i++) { //Create a clock pulse for every received and send bi
 	__R30 ^= ( 1 << CLK ); //Falling edge Լ
 }
 
-__R30 = __R30 | ( 1 << nRD );
-__R30 = __R30 | ( 1 << convST );
+__R30 = __R30 | ( 1 << NRD );
+__R30 = __R30 | ( 1 << CONVST );
 __R30 = __R30 | ( 0 << CS );
 
 return spiReceive;
