@@ -31,7 +31,7 @@ def init (PRU) :
 		if b'running' in pru_state:		#Do nothing if already running
 			print("PRU0 is already running")
 		elif b'offline' in pru_state:	#Start selected PRU when offline
-			prtin("PRU0 is offline, starting now")
+			print("PRU0 is offline, starting now")
 			try:
 				os.write(state, b"start")
 				print("PRU0 has started")
