@@ -10,32 +10,26 @@
 //  Convst (  Start conversion ) : 	P9.31 pr1_pru0_pru_r30_0
 
 
-/* includes */
 #include <stdint.h>
 #include <pru_cfg.h>
 #include "resource_table.h"
 
-//Define pin locations
-#define NRD
-#define CS 5
-#define MISO 3
-#define MOSI 1
-#define CLK 2
-#define CONVST 0
-
-
-
-/* GPIO registers */
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
+void main(void)
+{
+	volatile uint32_t gpio;
 
-void main(void) {
-  CT_CFG.GPCFG0 = 0;
-  volatile uint32_t clk;
-  clk = 0x00000004;
-  while(1) {
-    __R30 ^= clk;
-    __delay_cycles(20000000);
-  }
+	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
+	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
+
+	/* Toggle GPO pins TODO: Figure out which to use */
+	gpio = 0x0004;
+
+	/* TODO: Create stop condition, else it will toggle indefinitely */
+	while (1) {
+		__R30 ^= gpio;
+		__delay_cycles(100000000);
+	}
 }
