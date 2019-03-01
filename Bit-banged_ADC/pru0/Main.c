@@ -103,7 +103,7 @@ __R30 |= (1 << CS); //Set CS high
 __R30 |= (0 << NRD); //Set nRD low
 __R30 |= (0 << CONVST); //Set ConvST low
 
-__R30 |= (0 << CLK)
+__R30 |= (0 << CLK);
 
 for (i = 0; i < 16; i++) { //Create a clock pulse for every received and send bit
 	spiReceive = spiReceive << 1; //shift
