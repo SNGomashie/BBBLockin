@@ -56,7 +56,7 @@ def init (PRU) :
 def deinit (PRU) :
 	if PRU == 0:
 		state = os.open(REMOTEPROC_STATE0, os.O_RDWR)
-		pru_state = state.read()
+		pru_state = os.read(state, 7)
 		if b'running' in pru_state:
 			print("PRU0 is running, shutting down")
 			try:
@@ -67,7 +67,7 @@ def deinit (PRU) :
 			os.close(state)
 	if PRU == 1:
 		state = os.open(REMOTEPROC_STATE1, os.O_RDWR)
-		pru_state = state.read()
+		pru_state = os.read(state, 7)
 		if b'running' in pru_state:
 			print("PRU1 is running, shutting down")
 			try:
