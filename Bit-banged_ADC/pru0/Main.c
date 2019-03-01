@@ -29,7 +29,9 @@
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
+
 void main(void) {
+  uint8_t i;
     //  The data out line is connected to R30 bit 1.
   __R30 = 0x00000000;         //  Clear the output pin.
   __R31 = 0x00000000;		  //  Clear the input pin.
