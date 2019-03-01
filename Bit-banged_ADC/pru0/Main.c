@@ -68,8 +68,8 @@ void main(void) {
 	__R30 = 0x00000000;         //  Clear the output pin.
 	__R31 = 0x00000000;		  //  Clear the input pin.
 	__R30 = __R30 | ( 0 << CS );  // Initialize chip select LOW.
-	__R30 = __R30 | ( 1 << nRD ); // Initialize Read input LOW.
-	__R30 = __R30 | ( 1 << convST ); //Initialize conversion start HIGH.
+	__R30 = __R30 | ( 1 << NRD ); // Initialize Read input LOW.
+	__R30 = __R30 | ( 1 << CONVST ); //Initialize conversion start HIGH.
 
 /* Infinite loop */
 	while(1) {
@@ -92,7 +92,7 @@ void main(void) {
 	}
 }
 
-uint32_t fnRead_WriteSPI(uint8_t chan){
+uint16_t fnRead_WriteSPI(uint8_t chan){
 const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
 
 spiCommand = ( ADCch[chan] << 4 ) | 0b10000000;	// single-ended, input +/-5V
