@@ -27,7 +27,7 @@ volatile register uint32_t __R31;
 uint8_t spiCommand = 0x00000000;
 uint16_t spiReceive = 0x00000000;
 
-#define PRU0_MEM 0x00000000
+#define PRU0_MEM 0x00007000
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
 int8_t i;
@@ -44,10 +44,10 @@ void main(void)
 	__R30 |= (0 << CS);  // Initialize chip select LOW.
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
-		pru0_mem[4] = 0xFFFFFFFF;
-		pru0_mem[5] = fnRead_WriteSPI(0);
-		pru0_mem[6] = fnRead_WriteSPI(1);
-		pru0_mem[7] = 0x00000000;
+		pru0_mem[0] = 0xFFFFFFFF;
+		pru0_mem[1] = fnRead_WriteSPI(0);
+		pru0_mem[2] = fnRead_WriteSPI(1);
+		pru0_mem[3] = 0x00000000;
 		__halt();
 
 }
