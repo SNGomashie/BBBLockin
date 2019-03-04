@@ -65,7 +65,7 @@ void main(void)
 			__R30 |= ( 0 << MOSI );
 		}
 
-		__R30 |= ( 1 << CLK ); //Rising edge Γ
+		__R30 = ( 1 << CLK ); //Rising edge Γ
 
 
 			if (__R31 & ( 1 << MISO )) {
@@ -74,7 +74,7 @@ void main(void)
 				spiReceive |= 0x00;
 			}
 
-		__R30 |= ( 0 << CLK ); //Falling edge Լ
+		__R30 = ( 0 << CLK ); //Falling edge Լ
 	}
 
 	__delay_cycles(200000000);
