@@ -38,7 +38,7 @@ void main(void)
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
 	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
-	spiCommand = ( 0 << 4 ) | 0b10000000;
+	spiCommand = 0b0101010101010101;
 
 	__R30 = 0x00000000;         //  Clear the output pin.
 	__R31 = 0x00000000;		  //  Clear the input pin.
@@ -72,7 +72,7 @@ void main(void)
 				spiReceive = 0x01;
 			}
 		__R30 = ( 0 << CLK ); //Falling edge Լ
-		__delay_cycles(200000000);
+		__delay_cycles(20000000);
 	}
 
 	__delay_cycles(200000000);
