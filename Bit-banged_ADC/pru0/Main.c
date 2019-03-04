@@ -50,7 +50,7 @@ volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 /* Number of sample channels */
 const uint8_t Nchl = 4;
 uint8_t idx;
-uint8_t i;
+uint8_t i = 0;
 
 uint16_t fnRead_WriteSPI(uint8_t chan);
 
