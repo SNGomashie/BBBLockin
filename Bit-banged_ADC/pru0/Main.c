@@ -38,52 +38,48 @@ void main(void)
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
 	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
+	spiCommand = ( 0 << 4 ) | 0b10000000;
+
 	__R30 = 0x00000000;         //  Clear the output pin.
 	__R31 = 0x00000000;		  //  Clear the input pin.
 	__R30 |= (0 << CS);  // Initialize chip select LOW.
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
-while(1){
-	uint16_t value = fnRead_WriteSPI(0);
-	__delay_cycles(20000000);
-}
 
-}
+	__delay_cycles(200000000);
 
-uint16_t fnRead_WriteSPI(uint8_t chan){
-const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
+	__R30 |= (1 << CS); //Set CS high
+	__R30 |= (0 << NRD); //Set nRD low
+	__R30 |= (0 << CONVST); //Set ConvST low
 
-spiCommand = ( ADCch[chan] << 4 ) | 0b10000000;	// single-ended, input +/-5V
+	__R30 |= (0 << CLK);
 
-__R30 |= (1 << CS); //Set CS high
-__R30 |= (0 << NRD); //Set nRD low
-__R30 |= (0 << CONVST); //Set ConvST low
+	__delay_cycles(200000000);
 
-__R30 |= (0 << CLK);
+	for (i = 0; i < 16; i++){
+		spiReceive = spiReceive << 1; //shift
 
-for (i = 0; i < 16; i++) { //Create a clock pulse for every received and send bit
-	spiReceive = spiReceive << 1; //shift
+		if(spiCommand & (1 << i)){
+			__R30 |= ( 1 << MOSI );
+		} else{
+			__R30 |= ( 0 << MOSI );
+		}
 
-	if (( spiCommand << i ) & 0x80){ //
-		__R30 |= ( 1 << MOSI );
-	} else {
-		__R30 &= ~( 1 << MOSI );
+		__R30 |= ( 1 << CLK ); //Rising edge Γ
+
+
+			if (__R31 & ( 1 << MISO )) {
+				spiReceive |= 0x01;
+			} else {
+				spiReceive |= 0x00;
+			}
+
+		__R30 |= ( 0 << CLK ); //Falling edge Լ
 	}
 
-	__R30 |= ( 1 << CLK ); //Rising edge Γ
+	__delay_cycles(200000000);
 
-	if (__R31 & ( 1 << MISO )) {
-		spiReceive |= 0x01;
-	} else {
-		spiReceive &= ~(0x01);
-	}
-
-	__R30 |= ~( 1 << CLK ); //Falling edge Լ
-}
-
-__R30 |= ( 1 << NRD );
-__R30 |= ( 1 << CONVST );
-__R30 |= ( 0 << CS );
-
-return spiReceive;
+		__R30 |= ( 1 << NRD );
+		__R30 |= ( 1 << CONVST );
+		__R30 |= ( 0 << CS );
 }
