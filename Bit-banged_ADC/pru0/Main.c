@@ -29,7 +29,6 @@ uint16_t spiReceive = 0x00000000;
 
 uint8_t i;
 
-uint16_t fnRead_WriteSPI(uint8_t chan);
 
 void main(void)
 {
@@ -38,15 +37,13 @@ void main(void)
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
 	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
-	spiCommand = 0b0101010101010101;
+	spiCommand = ( 0 << 4 ) | 0b10000000;
 
 	__R30 = 0x00000000;         //  Clear the output pin.
 	__R31 = 0x00000000;		  //  Clear the input pin.
 	__R30 |= (0 << CS);  // Initialize chip select LOW.
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
-
-	__R30 |= (0 << CLK);
 
 	while(1){
 		__R30 |= (1 << CS); //Set CS high
@@ -58,20 +55,24 @@ void main(void)
 		for (i = 0; i < 16; i++){
 			spiReceive = spiReceive << 1; //shift
 
-			if(spiCommand & (1 << i))
-			__R30 = ( 1 << MOSI );
+			if(spiCommand & (1 << i)) //write the command
+				__R30 = ( 1 << MOSI );
 			else
-			__R30 = ( 0 << MOSI );
+				__R30 = ( 0 << MOSI );
 
 			__R30 = ( 1 << CLK ); //Rising edge Γ
 
+			if (__R31 & ( 1 << MISO )) { //Save MISO
+				spiReceive = 0x01;
+			} else {
+				spiReceive = 0x00;
+			}
 			__R30 = ( 0 << CLK ); //Falling edge Լ
 		}
-
 		__R30 |= ( 1 << NRD );
 		__R30 |= ( 1 << CONVST );
 		__R30 |= ( 0 << CS );
-
-		__delay_cycles(200000000);
 	}
+
+
 }
