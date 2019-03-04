@@ -108,15 +108,15 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 			__R30 &= ~(1 << MOSI);
 		}
 
-		__R30 ^= (1 << CLK);
+		__R30 |= (1 << CLK);
 
 		if (__R31 & (1 << MISO)){
 			spiReceive |= 0x01;
 		}else{
 			spiReceive &= ~(0x01);
 		}
-		
-		__R30 ^= (1 << CLK);
+
+		__R30 |= (0 << CLK);
 
 
 		// if(spiCommand & (1 << i)) //write the command
