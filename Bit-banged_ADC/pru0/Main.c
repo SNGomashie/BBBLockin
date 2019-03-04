@@ -74,9 +74,9 @@ void main(void)
 		while(shared[0] == INT_OFF){
 			/* Fill the struct with 16 bit random values */
 			dmemBuf.reg0 = fnRead_WriteSPI(0);
-			dmemBuf.reg1 = fnRead_WriteSPI(1);
-			dmemBuf.reg2 = fnRead_WriteSPI(2);
-			dmemBuf.reg3 = fnRead_WriteSPI(3);
+			dmemBuf.reg1 = fnRead_WriteSPI(0);
+			dmemBuf.reg2 = fnRead_WriteSPI(0);
+			dmemBuf.reg3 = fnRead_WriteSPI(0);
 
 			/* Send interrupt over shared memory */
 			shared[0] = INT_ON;
