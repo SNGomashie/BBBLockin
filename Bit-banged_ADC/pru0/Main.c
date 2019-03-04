@@ -9,6 +9,13 @@
 //  SCK ( Serial clock ) :      		P9.30 pr1_pru0_pru_r30_2
 //  Convst (  Start conversion ) : 	P9.31 pr1_pru0_pru_r30_0
 
+//Define pin locations
+#define NRD 7
+#define CS 5
+#define MISO 3
+#define MOSI 1
+#define CLK 2
+#define CONVST 0
 
 #include <stdint.h>
 #include <pru_cfg.h>
@@ -24,11 +31,8 @@ void main(void)
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
 	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
-	/* Toggle GPO pins TODO: Figure out which to use */
-	gpio = 0x0004;
-
 	/* TODO: Create stop condition, else it will toggle indefinitely */
 	while (1) {
-		__R30 ^= gpio;
+		__R30 ^= CLK;
 	}
 }
