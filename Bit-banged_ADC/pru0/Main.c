@@ -36,5 +36,6 @@ void main(void)
 	/* TODO: Create stop condition, else it will toggle indefinitely */
 	while (1) {
 		__R30 ^= CLK;
+		__delay_cycles(5000000);
 	}
 }
