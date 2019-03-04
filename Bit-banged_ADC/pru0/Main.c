@@ -40,31 +40,43 @@ void main(void)
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 
-	spiCommand = ( ADCch[chan] << 4 ) | 0b10000000;	// single-ended, input +/-5V
+	uint16_t = fnRead_WriteSPI(0);
+}
 
-	for (i = 0; i < 16; i++) { //Create a clock pulse for every received and send bit
-		spiReceive = spiReceive << 1; //shift
+uint16_t fnRead_WriteSPI(uint8_t chan){
+const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
 
-		if (( spiCommand << i ) & 0x80){ //
-			__R30 |= ( 1 << MOSI );
-		} else {
-			__R30 &= ~( 1 << MOSI );
-		}
+spiCommand = ( ADCch[chan] << 4 ) | 0b10000000;	// single-ended, input +/-5V
 
-		__R30 |= ( 1 << CLK ); //Rising edge Γ
+__R30 |= (1 << CS); //Set CS high
+__R30 |= (0 << NRD); //Set nRD low
+__R30 |= (0 << CONVST); //Set ConvST low
 
-		if (__R31 & ( 1 << MISO )) {
-			spiReceive |= 0x01;
-		} else {
-			spiReceive &= ~(0x01);
-		}
+__R30 |= (0 << CLK);
 
-		__R30 |= ~( 1 << CLK ); //Falling edge Լ
+for (i = 0; i < 16; i++) { //Create a clock pulse for every received and send bit
+	spiReceive = spiReceive << 1; //shift
+
+	if (( spiCommand << i ) & 0x80){ //
+		__R30 |= ( 1 << MOSI );
+	} else {
+		__R30 &= ~( 1 << MOSI );
 	}
 
-	__R30 |= ( 1 << NRD );
-	__R30 |= ( 1 << CONVST );
-	__R30 |= ( 0 << CS );
+	__R30 |= ( 1 << CLK ); //Rising edge Γ
 
+	if (__R31 & ( 1 << MISO )) {
+		spiReceive |= 0x01;
+	} else {
+		spiReceive &= ~(0x01);
 	}
+
+	__R30 |= ~( 1 << CLK ); //Falling edge Լ
+}
+
+__R30 |= ( 1 << NRD );
+__R30 |= ( 1 << CONVST );
+__R30 |= ( 0 << CS );
+
+return spiReceive;
 }
