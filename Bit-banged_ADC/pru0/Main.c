@@ -9,6 +9,19 @@
 //  SCK ( Serial clock ) :      		P9.30 pr1_pru0_pru_r30_2
 //  Convst (  Start conversion ) : 	P9.31 pr1_pru0_pru_r30_0
 
+/* PRU definiton */
+#define PRU0
+
+/* Data object to be send through the scratchpad */
+typedef struct {
+	uint16_t reg0;
+	uint16_t reg1;
+	uint16_t reg2;
+	uint16_t reg3;
+} bufferData;
+
+bufferData dmemBuf;
+
 //Define pin locations
 #define NRD 7
 #define CS 5
@@ -21,22 +34,32 @@
 #include <pru_cfg.h>
 #include "resource_table.h"
 
-volatile register  uint32_t __R15;
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
 uint8_t spiCommand = 0x00000000;
 uint16_t spiReceive = 0x00000000;
 
-#define PRU0_MEM 0x00007000
+/* Shared memory location & definiton*/
+#define SHARE_MEM  0x00010000
+#define PRU0_MEM 0x00000000
+volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
-int8_t i;
+/* Interrupt definitions */
+#define INT_OFF 0x00000000
+#define INT_ON 0xFFFFFFFF
+
+/* Number of sample channels */
+const uint8_t Nchl = 4;
+uint8_t idx;
+uint8_t i;
 
 uint16_t fnRead_WriteSPI(uint8_t chan);
 
 void main(void)
 {
+	shared[0] = INT_OFF;
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
 	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
@@ -46,12 +69,25 @@ void main(void)
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 
-		__R15 = 0xFFFFFFFF;
-		pru0_mem[15] = fnRead_WriteSPI(0);
-		pru0_mem[16] = fnRead_WriteSPI(1);
-		pru0_mem[17] = 0x00000000;
-		__halt();
+	/* Infinite loop */
+	while(1) {
+		while(shared[0] == INT_OFF){
+			/* Fill the struct with 16 bit random values */
+			dmemBuf.reg0 = fnRead_WriteSPI(0);
+			dmemBuf.reg1 = fnRead_WriteSPI(1);
+			dmemBuf.reg2 = fnRead_WriteSPI(2);
+			dmemBuf.reg3 = fnRead_WriteSPI(3);
 
+			/* Send interrupt over shared memory */
+			shared[0] = INT_ON;
+
+			/* Send data object through the scratchpad */
+			__xout(10, 0, 0, dmemBuf);
+
+			/* Delay for a second */
+			__delay_cycles(200000000);
+		}
+	}
 }
 uint16_t fnRead_WriteSPI(uint8_t chan){
 	const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
