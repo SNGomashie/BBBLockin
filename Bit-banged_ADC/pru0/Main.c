@@ -70,11 +70,9 @@ void main(void)
 
 			if (__R31 & ( 1 << MISO )) {
 				spiReceive = 0x01;
-			} else {
-				spiReceive = 0x00;
 			}
-
 		__R30 = ( 0 << CLK ); //Falling edge Լ
+		__delay_cycles(2000000);
 	}
 
 	__delay_cycles(200000000);
