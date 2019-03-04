@@ -31,8 +31,10 @@ void main(void)
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
 	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
+
 	/* TODO: Create stop condition, else it will toggle indefinitely */
 	while (1) {
-		__R30 ^= CLK;
+		__R30 = (1 << CLK);
+		__R30 = (0 << CLK);
 	}
 }
