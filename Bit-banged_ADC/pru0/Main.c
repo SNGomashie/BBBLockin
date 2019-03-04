@@ -43,8 +43,11 @@ void main(void)
 	__R30 |= (0 << CS);  // Initialize chip select LOW.
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
-
+while(1){
 	uint16_t value = fnRead_WriteSPI(0);
+	__delay_cycles(20000000);
+}
+
 }
 
 uint16_t fnRead_WriteSPI(uint8_t chan){
