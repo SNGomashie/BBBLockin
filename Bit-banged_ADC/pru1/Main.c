@@ -71,7 +71,7 @@ void main (void) {
       esprintf(buffer,"%04X\n", dmemBuf.reg0);
 
       /* Send message to ARM using RPMSG, buffer is the payload, 20 is the length of the payload */
-      pru_rpmsg_send(&transport, dst, src, buffer, 20);
+      pru_rpmsg_send(&transport, dst, src, buffer, 5);
 
       /* reset shared memory interrupt*/
       shared[0] = INT_OFF;
