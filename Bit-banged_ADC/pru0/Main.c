@@ -73,6 +73,6 @@ void main(void)
 		__R30 |= ( 1 << CONVST );
 		__R30 |= ( 0 << CS );
 	}
-
+__delay_cycles(200000000);
 
 }
