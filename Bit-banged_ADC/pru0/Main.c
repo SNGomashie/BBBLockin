@@ -24,6 +24,9 @@
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
+uint16_t spiCommand = 0x00000000;
+uint16_t spiReceive = 0x00000000;
+
 void main(void)
 {
 	volatile uint32_t gpio;
@@ -36,5 +39,32 @@ void main(void)
 	__R30 |= (0 << CS);  // Initialize chip select LOW.
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
-	__R30 |= (0 << CLK);
+
+	spiCommand = ( ADCch[chan] << 4 ) | 0b10000000;	// single-ended, input +/-5V
+
+	for (i = 0; i < 16; i++) { //Create a clock pulse for every received and send bit
+		spiReceive = spiReceive << 1; //shift
+
+		if (( spiCommand << i ) & 0x80){ //
+			__R30 |= ( 1 << MOSI );
+		} else {
+			__R30 &= ~( 1 << MOSI );
+		}
+
+		__R30 |= ( 1 << CLK ); //Rising edge Γ
+
+		if (__R31 & ( 1 << MISO )) {
+			spiReceive |= 0x01;
+		} else {
+			spiReceive &= ~(0x01);
+		}
+
+		__R30 |= ~( 1 << CLK ); //Falling edge Լ
+	}
+
+	__R30 |= ( 1 << NRD );
+	__R30 |= ( 1 << CONVST );
+	__R30 |= ( 0 << CS );
+
+	}
 }
