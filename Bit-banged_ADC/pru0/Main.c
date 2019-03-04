@@ -44,9 +44,10 @@ void main(void)
 	__R30 |= (0 << CS);  // Initialize chip select LOW.
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
-
+		pru0_mem[4] = 0xFFFFFFFF;
 		pru0_mem[5] = fnRead_WriteSPI(0);
 		pru0_mem[6] = fnRead_WriteSPI(1);
+		pru0_mem[7] = 0x00000000;
 		__halt();
 
 }
