@@ -107,14 +107,14 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 		else
 		__R30 |= ( 0 << MOSI );
 
-		__R30 |= ( 1 << CLK ); //Rising edge Γ
+		__R30 ^= ( 1 << CLK ); //Rising edge Γ
 
 		if (__R31 & ( 1 << MISO )) { //Save MISO
 			spiReceive |= 0x1;
 		} else {
 			spiReceive |= 0x0;
 		}
-		__R30 |= ( 0 << CLK ); //Falling edge Լ
+		__R30 ^= ( 1 << CLK ); //Falling edge Լ
 	}
 
 	__R30 |= ( 1 << NRD ); //Set nRD high
