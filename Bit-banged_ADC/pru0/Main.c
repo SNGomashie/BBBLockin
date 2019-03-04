@@ -27,9 +27,11 @@ volatile register uint32_t __R31;
 uint16_t spiCommand = 0x00000000;
 uint16_t spiReceive = 0x00000000;
 
+uint16_t fnRead_WriteSPI(uint8_t chan);
+
 void main(void)
 {
-	volatile uint32_t gpio;
+	volatile uint8_t i;
 
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
 	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
