@@ -60,18 +60,18 @@ void main(void)
 		spiReceive = spiReceive << 1; //shift
 
 		if(spiCommand & (1 << i)){
-			__R30 |= ( 1 << MOSI );
+			__R30 = ( 1 << MOSI );
 		} else{
-			__R30 |= ( 0 << MOSI );
+			__R30 = ( 0 << MOSI );
 		}
 
 		__R30 = ( 1 << CLK ); //Rising edge Γ
 
 
 			if (__R31 & ( 1 << MISO )) {
-				spiReceive |= 0x01;
+				spiReceive = 0x01;
 			} else {
-				spiReceive |= 0x00;
+				spiReceive = 0x00;
 			}
 
 		__R30 = ( 0 << CLK ); //Falling edge Լ
