@@ -62,13 +62,14 @@ void main(void)
 
 	__R30 = 0x00000000;         //  Clear the output pin.
 	__R31 = 0x00000000;		  //  Clear the input pin.
-	__R30 &= ~(1 << CS);  // Initialize chip select LOW.
-	__R30 &= ~(1 << NRD); // Initialize Read input LOW.
-	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
+
 
 	/* Infinite loop */
 	while(1) {
 		while(shared[0] == INT_OFF){
+			__R30 &= ~(1 << CS);  // Initialize chip select LOW.
+			__R30 &= ~(1 << NRD); // Initialize Read input LOW.
+			__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 			/* Fill the struct with 16 bit adc values */
 			dmemBuf.reg0 = fnRead_WriteSPI(0);
 
