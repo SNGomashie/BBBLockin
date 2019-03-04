@@ -105,7 +105,7 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 		if(spiCommand & (1 << i)) //write the command
 		__R30 |= ( 1 << MOSI );
 		else
-		__R30 |= ( 0 << MOSI );
+		__R30 &= ~(1 << MOSI);
 
 		__R30 ^= ( 1 << CLK ); //Rising edge Γ
 
