@@ -24,7 +24,7 @@
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
-uint16_t spiCommand = 0x00000000;
+uint8_t spiCommand = 0x00000000;
 uint16_t spiReceive = 0x00000000;
 
 uint8_t i;
@@ -37,7 +37,7 @@ void main(void)
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
 	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
-	spiCommand = ( 0 << 4 ) | 0b10000000;
+	spiCommand = 0b10000000;
 
 	__R30 = 0x00000000;         //  Clear the output pin.
 	__R31 = 0x00000000;		  //  Clear the input pin.
