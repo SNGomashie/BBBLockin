@@ -96,13 +96,14 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 	for (i = 0; i < 16; i++){ //Loop for every clock pulse
 		spiReceive = spiReceive << 1; //shift
 
+		__R30 ^= (1 << CLK);//Rising edge Γ
+
 		if (spiCommand & (1 << i)){//write the command
 			__R30 |= (1 << MOSI);
 		}else{
 			__R30 &= ~(1 << MOSI);
 		}
 
-		__R30 ^= (1 << CLK);//Rising edge Γ
 
 		if (__R31 & (1 << MISO)){//Save MISO
 			spiReceive |= 0x01;
