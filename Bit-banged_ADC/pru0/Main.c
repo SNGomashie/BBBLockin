@@ -72,7 +72,7 @@ void main(void)
 				spiReceive = 0x01;
 			}
 		__R30 = ( 0 << CLK ); //Falling edge Լ
-		__delay_cycles(2000000);
+		__delay_cycles(20000000);
 	}
 
 	__delay_cycles(200000000);
