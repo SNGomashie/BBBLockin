@@ -103,7 +103,7 @@ do{
 		__R30 &= ~(1 << MOSI);
 	}
 
-	__R30 &= ~(1 << CLK);//Rising edge Γ
+	__R30 ^= (1 << CLK);//Rising edge Γ
 
 	if (__R31 & (1 << MISO)){//Save MISO
 		spiReceive |= 0x01;
@@ -111,8 +111,8 @@ do{
 		spiReceive &= ~(0x01);
 	}
 
-	__R30 |= (1 << CLK);//Falling edge Լ
-	i ++
+	__R30 ^= (1 << CLK);//Falling edge Լ
+	i++;
 }while(i < 16);
 
 	// for (i = 0; i < 16; i++){ //Loop for every clock pulse
