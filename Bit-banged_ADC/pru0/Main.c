@@ -27,11 +27,13 @@ volatile register uint32_t __R31;
 uint16_t spiCommand = 0x00000000;
 uint16_t spiReceive = 0x00000000;
 
+uint8_t i;
+
 uint16_t fnRead_WriteSPI(uint8_t chan);
 
 void main(void)
 {
-	volatile uint8_t i;
+
 
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
 	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
@@ -42,7 +44,7 @@ void main(void)
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 
-	uint16_t = fnRead_WriteSPI(0);
+	uint16_t value = fnRead_WriteSPI(0);
 }
 
 uint16_t fnRead_WriteSPI(uint8_t chan){
