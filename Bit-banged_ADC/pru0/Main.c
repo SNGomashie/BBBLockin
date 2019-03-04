@@ -32,6 +32,8 @@ volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
 int8_t i;
 
+uint16_t fnRead_WriteSPI(uint8_t chan);
+
 void main(void)
 {
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
@@ -44,7 +46,7 @@ void main(void)
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 
 		pru0_mem[5] = fnRead_WriteSPI(0);
-		pru1_mem[6] = fnRead_WriteSPI(1);
+		pru0_mem[6] = fnRead_WriteSPI(1);
 		__halt();
 
 }
