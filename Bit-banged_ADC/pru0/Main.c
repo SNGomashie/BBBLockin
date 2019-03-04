@@ -46,38 +46,32 @@ void main(void)
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 
-	__delay_cycles(200000000);
-
-	__R30 |= (1 << CS); //Set CS high
-	__R30 |= (0 << NRD); //Set nRD low
-	__R30 |= (0 << CONVST); //Set ConvST low
-
 	__R30 |= (0 << CLK);
 
-	__delay_cycles(200000000);
+	while(1){
+		__R30 |= (1 << CS); //Set CS high
+		__R30 |= (0 << NRD); //Set nRD low
+		__R30 |= (0 << CONVST); //Set ConvST low
 
-	for (i = 0; i < 16; i++){
-		spiReceive = spiReceive << 1; //shift
+		__R30 |= (0 << CLK);
 
-		if(spiCommand & (1 << i)){
+		for (i = 0; i < 16; i++){
+			spiReceive = spiReceive << 1; //shift
+
+			if(spiCommand & (1 << i))
 			__R30 = ( 1 << MOSI );
-		} else{
+			else
 			__R30 = ( 0 << MOSI );
+
+			__R30 = ( 1 << CLK ); //Rising edge Γ
+
+			__R30 = ( 0 << CLK ); //Falling edge Լ
 		}
-
-		__R30 = ( 1 << CLK ); //Rising edge Γ
-
-
-			if (__R31 & ( 1 << MISO )) {
-				spiReceive = 0x01;
-			}
-		__R30 = ( 0 << CLK ); //Falling edge Լ
-		__delay_cycles(20000000);
-	}
-
-	__delay_cycles(200000000);
 
 		__R30 |= ( 1 << NRD );
 		__R30 |= ( 1 << CONVST );
 		__R30 |= ( 0 << CS );
+
+		__delay_cycles(200000000);
+	}
 }
