@@ -102,19 +102,34 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 	for (i = 0; i < 16; i++){ //Loop for every clock pulse
 		spiReceive = spiReceive << 1; //shift
 
-		if(spiCommand & (1 << i)) //write the command
-		__R30 |= ( 1 << MOSI );
-		else
-		__R30 &= ~(1 << MOSI);
+		if ((spiCommand << i) & 0x80)
+						__R30 |= (1 << MOSI);
+					else
+						__R30 &= ~(1 << MOSI);
 
-		__R30 ^= ( 1 << CLK ); //Rising edge Γ
+					__R30 ^= (1 << CLK);
 
-		if (__R31 & ( 1 << MISO )) { //Save MISO
-			spiReceive |= 0x1;
-		} else {
-			spiReceive &= ~(0x0);
-		}
-		__R30 ^= ( 1 << CLK ); //Falling edge Լ
+					if (__R31 & (1 << MISO))
+						spiReceive |= 0x01;
+					else
+						spiReceive &= ~(0x01);
+
+					__R30 ^= (1 << CLK);
+
+
+		// if(spiCommand & (1 << i)) //write the command
+		// 	__R30 |= ( 1 << MOSI );
+		// else
+		// 	__R30 &= ~(1 << MOSI);
+		//
+		// __R30 ^= ( 1 << CLK ); //Rising edge Γ
+		//
+		// if (__R31 & ( 1 << MISO )) //Save MISO
+		// 	spiReceive |= 0x1;
+		// else
+		// 	spiReceive &= ~(0x1);
+		//
+		// __R30 ^= ( 1 << CLK ); //Falling edge Լ
 	}
 
 	__R30 |= ( 1 << NRD ); //Set nRD high
