@@ -92,7 +92,6 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 	__R30 |= (1 << CS); //Set CS high
 	__R30 &= ~(1 << CONVST); //Set ConvST low
 	__R30 &= ~(1 << NRD); //Set nRD low
-	__R30 &= ~(1 << CLK); //Set CLK low
 
 	for (i = 0; i < 16; i++){ //Loop for every clock pulse
 		spiReceive = spiReceive << 1; //shift
@@ -103,7 +102,7 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 			__R30 &= ~(1 << MOSI);
 		}
 
-		__R30 &= ~(1 << CLK);//Rising edge Γ
+		__R30 ^= (1 << CLK);//Rising edge Γ
 
 		if (__R31 & (1 << MISO)){//Save MISO
 			spiReceive |= 0x01;
@@ -111,7 +110,7 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 			spiReceive &= ~(0x01);
 		}
 
-		__R30 |= (1 << CLK);//Falling edge Լ
+		__R30 ^= (1 << CLK);//Falling edge Լ
 
 	}
 
