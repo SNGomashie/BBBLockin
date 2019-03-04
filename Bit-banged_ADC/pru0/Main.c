@@ -68,7 +68,7 @@ void main(void)
 	while(1) {
 		while(shared[0] == INT_OFF){
 			__R30 &= ~(1 << CS);  // Initialize chip select LOW.
-			__R30 &= ~(1 << NRD); // Initialize Read input LOW.
+			__R30 |= (1 << NRD); // Initialize Read input HIGH.
 			__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 			/* Fill the struct with 16 bit adc values */
 			dmemBuf.reg0 = fnRead_WriteSPI(0);
@@ -90,9 +90,9 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 	spiCommand = ( ADCch[chan] << 4 ) | 0b10001000;	// single-ended, input +/-5V
 
 	__R30 |= (1 << CS); //Set CS high
-	__R30 &= ~(1 << NRD); //Set nRD low
 	__R30 &= ~(1 << CONVST); //Set ConvST low
-	__R30 |= (1 << CLK); //Set CLK low
+	__R30 &= ~(1 << NRD); //Set nRD low
+	__R30 &= ~(1 << CLK); //Set CLK low
 
 	for (i = 0; i < 16; i++){ //Loop for every clock pulse
 		spiReceive = spiReceive << 1; //shift
