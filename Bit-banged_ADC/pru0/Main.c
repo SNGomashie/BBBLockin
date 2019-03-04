@@ -27,17 +27,15 @@ volatile register uint32_t __R31;
 uint8_t spiCommand = 0x00000000;
 uint16_t spiReceive = 0x00000000;
 
-uint8_t i;
+#define PRU0_MEM 0x00000000
+volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
+int8_t i;
 
 void main(void)
 {
-
-
 	/* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
 	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
-
-	spiCommand = 0b10000000;
 
 	__R30 = 0x00000000;         //  Clear the output pin.
 	__R31 = 0x00000000;		  //  Clear the input pin.
@@ -45,35 +43,42 @@ void main(void)
 	__R30 |= (0 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 
-	while(1){
-		__R30 |= (1 << CS); //Set CS high
-		__R30 |= (0 << NRD); //Set nRD low
-		__R30 |= (0 << CONVST); //Set ConvST low
+		pru0_mem[5] = fnRead_WriteSPI(0);
+		pru1_mem[6] = fnRead_WriteSPI(1);
+		__halt();
 
-		__R30 |= (0 << CLK);
+}
+uint16_t fnRead_WriteSPI(uint8_t chan){
+	const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
 
-		for (i = 0; i < 16; i++){
-			spiReceive = spiReceive << 1; //shift
+	spiCommand = ( ADCch[chan] << 4 ) | 0b10000000;	// single-ended, input +/-5V
 
-			if(spiCommand & (1 << i)) //write the command
-				__R30 = ( 1 << MOSI );
-			else
-				__R30 = ( 0 << MOSI );
+	__R30 |= (1 << CS); //Set CS high
+	__R30 |= (0 << NRD); //Set nRD low
+	__R30 |= (0 << CONVST); //Set ConvST low
+	__R30 |= (0 << CLK); //Set CLK low
 
-			__R30 = ( 1 << CLK ); //Rising edge Γ
+	for (i = 0; i < 16; i++){ //Loop for every clock pulse
+		spiReceive = spiReceive << 1; //shift
 
-			if (__R31 & ( 1 << MISO )) { //Save MISO
-				spiReceive = 0x01;
-			} else {
-				spiReceive = 0x00;
-			}
-			__R30 = ( 0 << CLK ); //Falling edge Լ
+		if(spiCommand & (1 << i)) //write the command
+		__R30 = ( 1 << MOSI );
+		else
+		__R30 = ( 0 << MOSI );
+
+		__R30 = ( 1 << CLK ); //Rising edge Γ
+
+		if (__R31 & ( 1 << MISO )) { //Save MISO
+			spiReceive |= 0x1;
+		} else {
+			spiReceive |= 0x0;
 		}
-		__R30 |= ( 1 << NRD );
-		__R30 |= ( 1 << CONVST );
-		__R30 |= ( 0 << CS );
-		__delay_cycles(200000000);
+		__R30 = ( 0 << CLK ); //Falling edge Լ
 	}
 
+	__R30 |= ( 1 << NRD ); //Set nRD high
+	__R30 |= ( 1 << CONVST ); //Set convST high
+	__R30 |= ( 0 << CS ); //Set CS low
 
+	return spiReceive;
 }
