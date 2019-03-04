@@ -15,9 +15,6 @@
 /* Data object to be send through the scratchpad */
 typedef struct buffer{
   uint16_t reg0;
-  uint16_t reg1;
-  uint16_t reg2;
-  uint16_t reg3;
 } bufferData;
 
 bufferData dmemBuf;
@@ -71,7 +68,7 @@ void main (void) {
       buf = dmemBuf;
 
       /* Compose the string to be send */
-      esprintf(buffer,"%04X,%04X,%04X,%04X\n", dmemBuf.reg0, dmemBuf.reg1, dmemBuf.reg2, dmemBuf.reg3);
+      esprintf(buffer,"%04X\n", dmemBuf.reg0);
 
       /* Send message to ARM using RPMSG, buffer is the payload, 20 is the length of the payload */
       pru_rpmsg_send(&transport, dst, src, buffer, 20);

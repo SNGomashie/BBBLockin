@@ -19,9 +19,6 @@
 /* Data object to be send through the scratchpad */
 typedef struct {
 	uint16_t reg0;
-	uint16_t reg1;
-	uint16_t reg2;
-	uint16_t reg3;
 } bufferData;
 
 bufferData dmemBuf;
@@ -37,7 +34,7 @@ bufferData dmemBuf;
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
-uint8_t spiCommand = 0x00000000;
+uint16_t spiCommand = 0x00000000;
 uint16_t spiReceive = 0x00000000;
 
 /* Shared memory location & definiton*/
@@ -65,18 +62,15 @@ void main(void)
 
 	__R30 = 0x00000000;         //  Clear the output pin.
 	__R31 = 0x00000000;		  //  Clear the input pin.
-	__R30 |= (0 << CS);  // Initialize chip select LOW.
-	__R30 |= (0 << NRD); // Initialize Read input LOW.
+	__R30 &= ~(1 << CS);  // Initialize chip select LOW.
+	__R30 &= ~(1 << NRD); // Initialize Read input LOW.
 	__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 
 	/* Infinite loop */
 	while(1) {
 		while(shared[0] == INT_OFF){
-			/* Fill the struct with 16 bit random values */
+			/* Fill the struct with 16 bit adc values */
 			dmemBuf.reg0 = fnRead_WriteSPI(0);
-			dmemBuf.reg1 = fnRead_WriteSPI(0);
-			dmemBuf.reg2 = fnRead_WriteSPI(0);
-			dmemBuf.reg3 = fnRead_WriteSPI(0);
 
 			/* Send interrupt over shared memory */
 			shared[0] = INT_ON;
@@ -95,48 +89,34 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 	spiCommand = ( ADCch[chan] << 4 ) | 0b10000000;	// single-ended, input +/-5V
 
 	__R30 |= (1 << CS); //Set CS high
-	__R30 |= (0 << NRD); //Set nRD low
-	__R30 |= (0 << CONVST); //Set ConvST low
-	__R30 |= (0 << CLK); //Set CLK low
+	__R30 &= ~(1 << NRD); //Set nRD low
+	__R30 &= ~(1 << CONVST); //Set ConvST low
+	__R30 &= ~(1 << CLK); //Set CLK low
 
 	for (i = 0; i < 16; i++){ //Loop for every clock pulse
 		spiReceive = spiReceive << 1; //shift
 
-		if (spiCommand & (1 << i)){
+		if (spiCommand & (1 << i)){//write the command
 			__R30 |= (1 << MOSI);
 		}else{
-			__R30 ^= (1 << MOSI);
+			__R30 &= ~(1 << MOSI);
 		}
 
-		__R30 ^= (1 << CLK);
+		__R30 ^= (1 << CLK);//Rising edge Γ
 
-		if (__R31 & (1 << MISO)){
+		if (__R31 & (1 << MISO)){//Save MISO
 			spiReceive |= 0x01;
 		}else{
-			spiReceive ^= (0x01);
+			spiReceive &= ~(0x01);
 		}
 
-		__R30 ^= (1 << CLK);
+		__R30 ^= (1 << CLK);//Falling edge Լ
 
-
-		// if(spiCommand & (1 << i)) //write the command
-		// 	__R30 |= ( 1 << MOSI );
-		// else
-		// 	__R30 &= ~(1 << MOSI);
-		//
-		// __R30 ^= ( 1 << CLK ); //Rising edge Γ
-		//
-		// if (__R31 & ( 1 << MISO )) //Save MISO
-		// 	spiReceive |= 0x1;
-		// else
-		// 	spiReceive &= ~(0x1);
-		//
-		// __R30 ^= ( 1 << CLK ); //Falling edge Լ
 	}
 
 	__R30 |= ( 1 << NRD ); //Set nRD high
 	__R30 |= ( 1 << CONVST ); //Set convST high
-	__R30 |= ( 0 << CS ); //Set CS low
+	__R30 &= ~( 1 << CS ); //Set CS low
 
 	return spiReceive;
 }
