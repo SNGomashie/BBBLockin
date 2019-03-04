@@ -9,6 +9,10 @@
 //  SCK ( Serial clock ) :      		P9.30 pr1_pru0_pru_r30_2
 //  Convst (  Start conversion ) : 	P9.31 pr1_pru0_pru_r30_0
 
+#include <stdint.h>
+#include <pru_cfg.h>
+#include "resource_table.h"
+
 /* PRU definiton */
 #define PRU0
 
@@ -29,10 +33,6 @@ bufferData dmemBuf;
 #define MOSI 1
 #define CLK 2
 #define CONVST 0
-
-#include <stdint.h>
-#include <pru_cfg.h>
-#include "resource_table.h"
 
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
