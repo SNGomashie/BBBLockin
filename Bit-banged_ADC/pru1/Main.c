@@ -37,8 +37,9 @@ struct pru_rpmsg_transport transport;
 uint16_t src, dst, len;
 char buffer[20];
 uint32_t Vch1;
-uint32_t Scale = 762939; 
+uint32_t Scale = 762939;
 uint_least64_t result;
+uint16_t endVal;
 
 void main (void) {
   volatile uint8_t *status;
@@ -65,10 +66,10 @@ void main (void) {
       __xin(10, 0, 0, dmemBuf);
       Vch1 += dmemBuf.reg0 << 16;
       result = Vch1 * Scale;
-      result = result >> 16;
+      endVal = result >> 16;
 
       /* Compose the string to be send */
-      esprintf(buffer,"%04X,%04X\n", result);
+      esprintf(buffer,"%04X,%04X\n", endVal);
 
       /* Send message to ARM using RPMSG, buffer is the payload, 20 is the length of the payload */
       pru_rpmsg_send(&transport, dst, src, buffer, 10);
