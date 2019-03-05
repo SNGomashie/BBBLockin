@@ -4,9 +4,22 @@ import argparse
 parser = argparse.ArgumentParser(description='Select ADC channel(5/6): ')
 parser.add_argument("channel")
 
-print("Reading voltage at ADC channel: "+ args.channel)
-Voltage = convertVoltage(readADCchannel(args.channel))
+remoteproc_state = "/sys/class/remoteproc/remoteproc1/state"
+state = os.open(remoteproc_state, os.O_RDWR)
+cur_state = os.read(state, 7)
+if b'offline' in cur_state:
+    try:
+        os.write(state, b"start")
+        print("pru is online")
+    except:
+        print("failed to start device")
+else:
+    print("pru is online")
+
+print("Reading voltage at ADC channel: "+ parser.channel)
+Voltage = convertVoltage(readADCchannel(parser.channel))
 print("Voltage on ADC channel 5 is: " + Voltage)
+
 
 def readADCchannel(adcChannel):
     outputFile = "/dev/rpmsgpru30"
