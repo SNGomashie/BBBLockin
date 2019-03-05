@@ -78,7 +78,7 @@ void main (void) {
       shared[0] = INT_OFF;
 
       /* Delay half a second */
-      __delay_cycles(2000);
+      __delay_cycles(20000000);
     }
   }
 
