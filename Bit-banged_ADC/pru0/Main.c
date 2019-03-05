@@ -98,7 +98,7 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 
 	for (i = 0; i < 16; i++){ //Loop for every clock pulse
 
-		if (spiCommand & (1 << i)){//write the command
+		if ((spiCommand << i) & 0x80){//write the command
 			__R30 |= (1 << MOSI);
 		}else{
 			__R30 &= ~(1 << MOSI);
