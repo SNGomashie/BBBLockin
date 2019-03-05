@@ -3,6 +3,7 @@
 #include <pru_rpmsg.h>
 #include <pru_virtqueue.h>
 #include <pru_intc.h>
+#include <sys_tscAdcSs.h>
 #include <rsc_types.h>
 #include "eprintf.h"
 #include "resource_table_0.h"
