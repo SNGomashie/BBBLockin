@@ -1,104 +1,65 @@
 #include <stdint.h>
-#include <stdio.h>
 #include <pru_cfg.h>
-#include <pru_intc.h>
-#include <sys_tscAdcSs.h>
-#include <rsc_types.h>
 #include <pru_rpmsg.h>
+#include <pru_virtqueue.h>
+#include <pru_intc.h>
+#include <rsc_types.h>
+#include "eprintf.h"
 #include "resource_table_0.h"
 
-volatile register uint32_t __R31;
-
-/* Host-0 Interrupt sets bit 30 in register R31 */
-#define HOST_INT			((uint32_t) 1 << 30)
-
-/*
- * The PRU-ICSS system events used for RPMsg are defined in the Linux devicetree
- * PRU0 uses system event 16 (To ARM) and 17 (From ARM)
- * PRU1 uses system event 18 (To ARM) and 19 (From ARM)
- */
-#define TO_ARM_HOST			16
-#define FROM_ARM_HOST			17
-
-/*
- * Using the name 'rpmsg-pru' will probe the rpmsg_pru driver found
- * at linux-x.y.z/drivers/rpmsg/rpmsg_pru.c
- */
-#define CHAN_NAME			"rpmsg-pru"
-#define CHAN_DESC			"Channel 30"
-#define CHAN_PORT			30
-
-/*
- * Used to make sure the Linux drivers are ready for RPMsg communication
- * Found at linux-x.y.z/include/uapi/linux/virtio_config.h
- */
+/* Used to make sure the Linux drivers are ready for RPMsg communication */
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
 
+/* Define the size of message to be recieved. */
+#define RPMSG_BUF_HEADER_SIZE           16
+uint8_t rec_payload[RPMSG_BUF_SIZE - RPMSG_BUF_HEADER_SIZE];
+
 /* Control Module registers to enable the ADC peripheral */
+
 #define CM_WKUP_CLKSTCTRL  (*((volatile unsigned int *)0x44E00400))
 #define CM_WKUP_ADC_TSC_CLKCTRL  (*((volatile unsigned int *)0x44E004BC))
-
-/* payload receives RPMsg message */
-char payload[512];
-
-/* shared_struct is used to pass data between ARM and PRU */
-typedef struct shared_struct{
-	uint16_t voltage;
-	uint16_t channel;
-} shared_struct;
 
 void init_adc();
 uint16_t read_adc(uint16_t adc_chan);
 
-void main(void)
-{
-	struct pru_rpmsg_transport transport;
-	uint16_t src, dst, len;
-	volatile uint8_t *status;
-	struct shared_struct message;
+volatile register uint32_t __R31;
+struct pru_rpmsg_transport transport;
+uint16_t src, dst, len, voltage;
+char buffer[20];
 
-	/*
-	 * Allow OCP master port access by the PRU so the PRU can read
-	 * external memories
-	 */
-	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
+void main(void) {
+  volatile uint8_t *status;
 
-	init_adc();
+  /*Allow OCP master port access by the PRU so the PRU can read external memories. */
+  CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
-	/*
+  init_adc();
+
+  /*
 	 * Clear the status of the PRU-ICSS system event that the ARM will
 	 * use to 'kick' us
 	 */
 	CT_INTC.SICR_bit.STS_CLR_IDX = FROM_ARM_HOST;
 
-	/* Make sure the Linux drivers are ready for RPMsg communication */
-	status = &resourceTable.rpmsg_vdev.status;
-	while (!(*status & VIRTIO_CONFIG_S_DRIVER_OK)) {
-		/* Optional: implement timeout logic */
-	};
+  /* Make sure the Linux drivers are ready for RPMsg communication. */
+  status = &resourceTable.rpmsg_vdev.status;
+  while (!(*status & VIRTIO_CONFIG_S_DRIVER_OK));
 
-	/* Initialize the RPMsg transport structure */
-	pru_rpmsg_init(&transport, &resourceTable.rpmsg_vring0,
-		&resourceTable.rpmsg_vring1, TO_ARM_HOST, FROM_ARM_HOST);
+  /* Initialize the RPMsg transport structure */
+  while (pru_rpmsg_init(&transport, &resourceTable.rpmsg_vring0, &resourceTable.rpmsg_vring1, TO_ARM_HOST, FROM_ARM_HOST) != PRU_RPMSG_SUCCESS);
 
-	/*
-	 * Create the RPMsg channel between the PRU and ARM user space using
-	 * the transport structure.
-	 */
-	while (pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME,
-			CHAN_DESC, CHAN_PORT) != PRU_RPMSG_SUCCESS) {
-		/* Optional: implement timeout logic */
-	};
+  /* Create the RPMsg channel between the PRU and ARM user space using the transport structure. */
+  while (pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) != PRU_RPMSG_SUCCESS);
 
-	while (1) {
-		/* Check register R31 bit 30 to see if the ARM has kicked us */
-		if (!(__R31 & HOST_INT))
-			continue;
+  while(1){
+    /* Check register R31 bit 30 to see if the ARM has kicked us */
+    if (!(__R31 & HOST_INT))
+      continue;
 
-		/* Clear the event status */
-		CT_INTC.SICR_bit.STS_CLR_IDX = FROM_ARM_HOST;
+    /* Clear the event status */
+    CT_INTC.SICR_bit.STS_CLR_IDX = FROM_ARM_HOST;
 
-		/*
+    /*
 		 * Receive available messages.
 		 * Multiple messages can be sent per kick.
 		 */
@@ -106,21 +67,20 @@ void main(void)
 				payload, &len) == PRU_RPMSG_SUCCESS) {
 
 			/* ARM sends a message using shared_struct */
-			message.channel = ((shared_struct *)payload)->channel;
-			message.voltage = read_adc(message.channel);
 
+			voltage = read_adc(message.channel);
+      esprintf(buffer,"%03X\n", voltage);
 			/*
 			 * Send reply message to the address that sent
 			 * the initial message
 			 */
-			pru_rpmsg_send(&transport, dst, src, &message,
-				sizeof(message));
+			pru_rpmsg_send(&transport, dst, src, buffer,
+				sizeof(buffer));
 		}
-	}
+  }
 }
 
-void init_adc()
-{
+void init_adc(){
 
 	/* set the always on clock domain to NO_SLEEP. Enable ADC_TSC clock */
 	while (!(CM_WKUP_ADC_TSC_CLKCTRL == 0x02)) {
@@ -152,48 +112,6 @@ void init_adc()
 	ADC_TSC.STEPCONFIG1_bit.FIFO_SELECT = 0;
 
 	/*
-	 * set the ADC_TSC STEPCONFIG2 register for channel 6
-	 * Mode = 0; SW enabled, one-shot
-	 * Averaging = 0x3; 8 sample average
-	 * SEL_INP_SWC_3_0 = 0x5 = Channel 6
-         * SEL_INM_SWC_3_0 = 1xxx = VREFN (reduces noise in single ended mode)
-	 * use FIFO0
-	 */
-	ADC_TSC.STEPCONFIG2_bit.MODE = 0;
-	ADC_TSC.STEPCONFIG2_bit.AVERAGING = 3;
-	ADC_TSC.STEPCONFIG2_bit.SEL_INP_SWC_3_0 = 5;
-	ADC_TSC.STEPCONFIG2_bit.SEL_INM_SWC_3_0 = 8;
-	ADC_TSC.STEPCONFIG2_bit.FIFO_SELECT = 0;
-
-	/*
-	 * set the ADC_TSC STEPCONFIG3 register for channel 7
-	 * Mode = 0; SW enabled, one-shot
-	 * Averaging = 0x3; 8 sample average
-	 * SEL_INP_SWC_3_0 = 0x6 = Channel 7
-         * SEL_INM_SWC_3_0 = 1xxx = VREFN (reduces noise in single ended mode)
-	 * use FIFO0
-	 */
-	ADC_TSC.STEPCONFIG3_bit.MODE = 0;
-	ADC_TSC.STEPCONFIG3_bit.AVERAGING = 3;
-	ADC_TSC.STEPCONFIG3_bit.SEL_INP_SWC_3_0 = 6;
-	ADC_TSC.STEPCONFIG3_bit.SEL_INM_SWC_3_0 = 8;
-	ADC_TSC.STEPCONFIG3_bit.FIFO_SELECT = 0;
-
-	/*
-	 * set the ADC_TSC STEPCONFIG4 register for channel 8
-	 * Mode = 0; SW enabled, one-shot
-	 * Averaging = 0x3; 8 sample average
-	 * SEL_INP_SWC_3_0 = 0x7= Channel 8
-         * SEL_INM_SWC_3_0 = 1xxx = VREFN (reduces noise in single ended mode)
-	 * use FIFO0
-	 */
-	ADC_TSC.STEPCONFIG4_bit.MODE = 0;
-	ADC_TSC.STEPCONFIG4_bit.AVERAGING = 3;
-	ADC_TSC.STEPCONFIG4_bit.SEL_INP_SWC_3_0 = 7;
-	ADC_TSC.STEPCONFIG4_bit.SEL_INM_SWC_3_0 = 8;
-	ADC_TSC.STEPCONFIG4_bit.FIFO_SELECT = 0;
-
-	/*
 	 * set the ADC_TSC CTRL register
 	 * set step configuration registers to protected
 	 * store channel ID tag if needed for debug
@@ -218,17 +136,9 @@ uint16_t read_adc(uint16_t adc_chan)
 		data = ADC_TSC.FIFO0DATA;
 	}
 
-	/* read from the specified ADC channel */
-	switch (adc_chan) {
-		case 5 :
+	/* read from the ADC channel 5*/
 			ADC_TSC.STEPENABLE_bit.STEP1 = 1;
-		case 6 :
-			ADC_TSC.STEPENABLE_bit.STEP2 = 1;
-		case 7 :
-			ADC_TSC.STEPENABLE_bit.STEP3 = 1;
-		case 8 :
-			ADC_TSC.STEPENABLE_bit.STEP4 = 1;
-		default :
+
 			/*
 			 * this error condition should not occur because of
 			 * checks in userspace code
