@@ -22,11 +22,11 @@ def readADCchannel(adcChannel):
     os.write(dev, b'5')
     return_voltage = os.read(dev, 4)
     os.close(dev)
-    return return_voltage.decode("utf-8");
+    return bytes_to_int(return_voltage);
 
 def convertVoltage(rawVoltage):
     finalVoltage = (rawVoltage * 1.8)/(4096 - 1)
-    return finalVoltage
+    return finalVoltage.decode("utf-8")
 
 parser = argparse.ArgumentParser(description='Select ADC channel(5/6): ')
 parser.add_argument("channel")
@@ -45,4 +45,4 @@ else:
 
 time.sleep(2)
 
-print("Reading voltage at ADC channel: "+ readADCchannel(args.channel))
+print("Reading voltage at ADC channel: "+ convertVoltage(readADCchannel(args.channel)))
