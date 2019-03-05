@@ -2,6 +2,7 @@
 
 import os
 import argparse
+import time
 
 def bytes_to_int(bytes):
     result = 0
@@ -41,5 +42,7 @@ if b'offline' in cur_state:
         print("failed to start device")
 else:
     print("pru is online")
+
+time.sleep(2)
 
 print("Reading voltage at ADC channel: "+ readADCchannel(args.channel))
