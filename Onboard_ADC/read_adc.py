@@ -26,7 +26,7 @@ def readADCchannel(adcChannel):
 
 def convertVoltage(rawVoltage):
     finalVoltage = (rawVoltage * 1.8)/(4096 - 1)
-    return finalVoltage.decode("utf-8")
+    return str(finalVoltage)
 
 parser = argparse.ArgumentParser(description='Select ADC channel(5/6): ')
 parser.add_argument("channel")
