@@ -65,8 +65,8 @@ void main (void) {
       /* Read scratchpad */
       __xin(10, 0, 0, dmemBuf);
 
-      uint16_t v1 = SCALE * dmemBuf.reg0)
-      uint16_t v2 = SCALE * dmemBuf.reg1)
+      uint16_t v1 = SCALE * dmemBuf.reg0);
+      uint16_t v2 = SCALE * dmemBuf.reg1);
 
       /* Compose the string to be send */
       esprintf(buffer,"%04X,%04X\n", v1, v2);
