@@ -21,7 +21,7 @@ uint8_t rec_payload[RPMSG_BUF_SIZE - RPMSG_BUF_HEADER_SIZE];
 #define CM_WKUP_ADC_TSC_CLKCTRL  (*((volatile unsigned int *)0x44E004BC))
 
 void init_adc();
-uint16_t read_adc(uint16_t adc_chan);
+uint16_t read_adc(void);
 
 volatile register uint32_t __R31;
 struct pru_rpmsg_transport transport;
@@ -123,8 +123,7 @@ void init_adc(){
 	ADC_TSC.CTRL_bit.ENABLE = 1;
 }
 
-uint16_t read_adc(void)
-{
+uint16_t read_adc(void) {
 	/*
 	 * Clear FIFO0 by reading from it
 	 * We are using single-shot mode.
@@ -140,7 +139,6 @@ uint16_t read_adc(void)
 	/* read from the ADC channel 5*/
 			ADC_TSC.STEPENABLE_bit.STEP1 = 1;
 
-	}
 
 	while (ADC_TSC.FIFO0COUNT == 0) {
 		/*
