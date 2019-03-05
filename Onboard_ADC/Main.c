@@ -26,7 +26,7 @@ uint16_t read_adc(void);
 volatile register uint32_t __R31;
 struct pru_rpmsg_transport transport;
 uint16_t src, dst, len, voltage;
-char buffer[20];
+char buffer[4];
 
 void main(void) {
   volatile uint8_t *status;
