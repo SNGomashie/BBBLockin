@@ -73,7 +73,6 @@ void main(void)
 			/* Fill the struct with 16 bit adc values */
 			dmemBuf.reg0 = fnRead_WriteSPI(0);
 
-
 			/* Send interrupt over shared memory */
 			shared[0] = INT_ON;
 
@@ -95,7 +94,8 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 	__R30 &= ~(1 << NRD); //Set nRD low
 
 	for (i = 0; i < 16; i++){ //Loop for every clock pulse
-
+		spiReceive = spiReceive << 1; //shift
+		
 		if ((spiCommand << i) & 0x80){//write the command
 			__R30 |= (1 << MOSI);
 		}else{
@@ -112,14 +112,12 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 
 		__R30 ^= (1 << CLK);//Falling edge Լ
 
-		spiReceive = spiReceive << 1; //shift
+
 
 	}
 	__R30 &= ~( 1 << CS ); //Set CS low
 	__R30 |= ( 1 << CONVST ); //Set convST high
 	__R30 |= ( 1 << NRD ); //Set nRD high
-
-
 
 	return spiReceive;
 }
