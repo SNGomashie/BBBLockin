@@ -73,7 +73,7 @@ void main(void)
 			__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 			/* Fill the struct with 16 bit adc values */
 			dmemBuf.reg0 = fnRead_WriteSPI(0);
-			dmemBuf.reg1 = fnRead_WriteSPI(1);
+			dmemBuf.reg1 = fnRead_WriteSPI(2);
 
 			/* Send interrupt over shared memory */
 			shared[0] = INT_ON;
