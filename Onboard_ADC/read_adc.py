@@ -42,6 +42,4 @@ if b'offline' in cur_state:
 else:
     print("pru is online")
 
-print("Reading voltage at ADC channel: "+ args.channel)
-Voltage = convertVoltage(readADCchannel(args.channel))
-print("Voltage on ADC channel 5 is: " + Voltage)
+print("Reading voltage at ADC channel: "+ readADCchannel(args.channel))
