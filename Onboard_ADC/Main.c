@@ -26,7 +26,7 @@ uint16_t read_adc(void);
 volatile register uint32_t __R31;
 struct pru_rpmsg_transport transport;
 uint16_t src, dst, len, voltage;
-char buffer[4];
+char buffer[3];
 
 void main(void) {
   volatile uint8_t *status;
@@ -70,7 +70,7 @@ void main(void) {
 			/* ARM sends a message using shared_struct */
 
 			voltage = read_adc();
-      esprintf(buffer,"%03X\n", voltage);
+      esprintf(buffer,"%03X", voltage);
 			/*
 			 * Send reply message to the address that sent
 			 * the initial message
