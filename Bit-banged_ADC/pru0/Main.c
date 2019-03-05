@@ -91,7 +91,7 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 	const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
 
 	//spiCommand = ( ADCch[chan] << 4 ) | 0b10001000;	// single-ended, input +5V
-	spiCommand = (ADCch[chan] << 4) | B10000000; // single-ended, input +/-5V
+	spiCommand = (ADCch[chan] << 4) | 0b10000000; // single-ended, input +/-5V
 	__R30 |= (1 << CS); //Set CS high
 	__R30 &= ~(1 << CONVST); //Set ConvST low
 	__R30 &= ~(1 << NRD); //Set nRD low
