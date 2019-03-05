@@ -3,7 +3,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Select ADC channel(5/6): ')
 parser.add_argument("channel")
-
+args = parser.parse_args()
 remoteproc_state = "/sys/class/remoteproc/remoteproc1/state"
 state = os.open(remoteproc_state, os.O_RDWR)
 cur_state = os.read(state, 7)
