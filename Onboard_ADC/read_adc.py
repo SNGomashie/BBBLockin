@@ -13,7 +13,7 @@ def bytes_to_int(bytes):
     return result
 
 def readADCchannel(adcChannel):
-    outputFile = "/dev/rpmsgpru30"
+    outputFile = "/dev/rpmsg_pru30"
     try:
         dev = os.open(CHAR_DEV0, os.O_RDWR)
     except:
