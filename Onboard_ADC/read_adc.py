@@ -22,7 +22,7 @@ def readADCchannel(adcChannel):
     os.write(dev, b'5')
     return_voltage = os.read(dev, 4)
     os.close(dev)
-    return int(return_voltage)
+    return int.from_bytes(return_voltage, byteorder='big')
 
 def convertVoltage(rawVoltage):
     finalVoltage = (rawVoltage * 1.7)/(4096 - 1)
