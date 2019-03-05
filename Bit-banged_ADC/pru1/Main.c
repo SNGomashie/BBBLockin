@@ -7,7 +7,6 @@
 #include "eprintf.h"
 #include "resource_table.h"
 
-#define PRU1
 
 /* Used to make sure the Linux drivers are ready for RPMsg communication */
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
@@ -40,7 +39,6 @@ uint16_t src, dst, len;
 char buffer[20];
 
 void main (void) {
-  bufferData buf;
   volatile uint8_t *status;
 
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
