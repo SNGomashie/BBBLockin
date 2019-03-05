@@ -38,11 +38,11 @@ volatile register uint32_t __R31;
 struct pru_rpmsg_transport transport;
 uint16_t src, dst, len;
 char buffer[20];
-float SCALE = (10 / pow(2, 16));
+
 
 void main (void) {
   volatile uint8_t *status;
-
+  float SCALE = (10 / pow(2, 16));
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
