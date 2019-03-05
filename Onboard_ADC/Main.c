@@ -64,11 +64,11 @@ void main(void) {
 		 * Multiple messages can be sent per kick.
 		 */
 		while (pru_rpmsg_receive(&transport, &src, &dst,
-				payload, &len) == PRU_RPMSG_SUCCESS) {
+				rec_payload, &len) == PRU_RPMSG_SUCCESS) {
 
 			/* ARM sends a message using shared_struct */
 
-			voltage = read_adc(message.channel);
+			voltage = read_adc();
       esprintf(buffer,"%03X\n", voltage);
 			/*
 			 * Send reply message to the address that sent
@@ -122,7 +122,7 @@ void init_adc(){
 	ADC_TSC.CTRL_bit.ENABLE = 1;
 }
 
-uint16_t read_adc(uint16_t adc_chan)
+uint16_t read_adc(void)
 {
 	/*
 	 * Clear FIFO0 by reading from it
@@ -139,11 +139,6 @@ uint16_t read_adc(uint16_t adc_chan)
 	/* read from the ADC channel 5*/
 			ADC_TSC.STEPENABLE_bit.STEP1 = 1;
 
-			/*
-			 * this error condition should not occur because of
-			 * checks in userspace code
-			 */
-			ADC_TSC.STEPENABLE_bit.STEP1 = 1;
 	}
 
 	while (ADC_TSC.FIFO0COUNT == 0) {
