@@ -98,19 +98,20 @@ void init_adc(){
 	ADC_TSC.CTRL_bit.ENABLE = 0;
 	ADC_TSC.CTRL_bit.STEPCONFIG_WRITEPROTECT_N_ACTIVE_LOW = 1;
 
-	/*
-	 * set the ADC_TSC STEPCONFIG1 register for channel 5
+  /*
+	 * set the ADC_TSC STEPCONFIG2 register for channel 6
 	 * Mode = 0; SW enabled, one-shot
 	 * Averaging = 0x3; 8 sample average
-	 * SEL_INP_SWC_3_0 = 0x4 = Channel 5
+	 * SEL_INP_SWC_3_0 = 0x5 = Channel 6
          * SEL_INM_SWC_3_0 = 1xxx = VREFN (reduces noise in single ended mode)
 	 * use FIFO0
 	 */
-	ADC_TSC.STEPCONFIG1_bit.MODE = 0;
-	ADC_TSC.STEPCONFIG1_bit.AVERAGING = 3;
-	ADC_TSC.STEPCONFIG1_bit.SEL_INP_SWC_3_0 = 4;
-	ADC_TSC.STEPCONFIG1_bit.SEL_INM_SWC_3_0 = 8;
-	ADC_TSC.STEPCONFIG1_bit.FIFO_SELECT = 0;
+	ADC_TSC.STEPCONFIG2_bit.MODE = 0;
+	ADC_TSC.STEPCONFIG2_bit.AVERAGING = 3;
+	ADC_TSC.STEPCONFIG2_bit.SEL_INP_SWC_3_0 = 5;
+	ADC_TSC.STEPCONFIG2_bit.SEL_INM_SWC_3_0 = 8;
+	ADC_TSC.STEPCONFIG2_bit.FIFO_SELECT = 0;
+
 
 	/*
 	 * set the ADC_TSC CTRL register
