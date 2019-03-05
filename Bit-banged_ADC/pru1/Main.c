@@ -37,9 +37,9 @@ struct pru_rpmsg_transport transport;
 uint16_t src, dst, len;
 char buffer[20];
 uint32_t Vch1;
-uint32_t Scale;
-uint32_t result = 762939;
-uint_least64_t
+uint32_t Scale = 762939; 
+uint_least64_t result;
+
 void main (void) {
   volatile uint8_t *status;
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
@@ -77,7 +77,7 @@ void main (void) {
       shared[0] = INT_OFF;
 
       /* Delay half a second */
-      __delay_cycles(200000000);
+      __delay_cycles(2000);
     }
   }
 
