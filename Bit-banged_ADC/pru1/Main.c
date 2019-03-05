@@ -14,7 +14,6 @@
 /* Data object to be send through the scratchpad */
 typedef struct buffer{
   uint16_t reg0;
-  uint16_t reg1;
 } bufferData;
 
 bufferData dmemBuf;

@@ -19,7 +19,6 @@
 /* Data object to be send through the scratchpad */
 typedef struct {
 	uint16_t reg0;
-	uint16_t reg1;
 } bufferData;
 
 bufferData dmemBuf;
@@ -73,8 +72,7 @@ void main(void)
 			__R30 |= (1 << CONVST); //Initialize conversion start HIGH.
 			/* Fill the struct with 16 bit adc values */
 			dmemBuf.reg0 = fnRead_WriteSPI(0);
-			__delay_cycles(1000);
-			dmemBuf.reg1 = fnRead_WriteSPI(1);
+
 
 			/* Send interrupt over shared memory */
 			shared[0] = INT_ON;
@@ -83,7 +81,7 @@ void main(void)
 			__xout(10, 0, 0, dmemBuf);
 
 			/* Delay for a second */
-			__delay_cycles(200000000);
+			__delay_cycles(2000);
 		}
 	}
 }
