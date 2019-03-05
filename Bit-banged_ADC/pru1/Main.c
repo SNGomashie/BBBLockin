@@ -63,9 +63,6 @@ void main (void) {
       /* Read scratchpad */
       __xin(10, 0, 0, dmemBuf);
 
-      /* load scratchpad into Dram */
-      buf = dmemBuf;
-
       /* Compose the string to be send */
       esprintf(buffer,"%04X,%04X\n", dmemBuf.reg0, dmemBuf.reg1);
 
