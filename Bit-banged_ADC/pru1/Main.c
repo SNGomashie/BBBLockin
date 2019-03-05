@@ -69,10 +69,10 @@ void main (void) {
       endVal = result >> 16;
 
       /* Compose the string to be send */
-      esprintf(buffer,"%04X,%04X\n", endVal);
+      esprintf(buffer,"%04X\n", endVal);
 
       /* Send message to ARM using RPMSG, buffer is the payload, 20 is the length of the payload */
-      pru_rpmsg_send(&transport, dst, src, buffer, 10);
+      pru_rpmsg_send(&transport, dst, src, buffer, 5);
 
       /* reset shared memory interrupt*/
       shared[0] = INT_OFF;
