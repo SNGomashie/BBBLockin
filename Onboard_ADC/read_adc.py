@@ -3,6 +3,14 @@
 import os
 import argparse
 
+def bytes_to_int(bytes):
+    result = 0
+
+    for b in bytes:
+        result = result * 256 + int(b)
+
+    return result
+
 def readADCchannel(adcChannel):
     outputFile = "/dev/rpmsgpru30"
     try:
@@ -13,7 +21,7 @@ def readADCchannel(adcChannel):
     os.write(dev, b'5')
     return_voltage = os.read(dev, 4)
     os.close(dev)
-    return return_voltage
+    return bytes_to_int(return_voltage);
 
 def convertVoltage(rawVoltage):
     finalVoltage = (rawVoltage * 1.8)/(4096 - 1)
