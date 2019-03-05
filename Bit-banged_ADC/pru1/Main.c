@@ -4,7 +4,6 @@
 #include <pru_virtqueue.h>
 #include <pru_intc.h>
 #include <rsc_types.h>
-#include <math.h>
 #include "eprintf.h"
 #include "resource_table.h"
 
@@ -38,11 +37,12 @@ volatile register uint32_t __R31;
 struct pru_rpmsg_transport transport;
 uint16_t src, dst, len;
 char buffer[20];
-
-
+uint32_t Vch1;
+uint32_t Scale;
+uint32_t result = 762939;
+uint_least64_t
 void main (void) {
   volatile uint8_t *status;
-  float SCALE = (10 / pow(2, 16));
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
@@ -64,12 +64,12 @@ void main (void) {
     while(shared[0] == INT_ON){
       /* Read scratchpad */
       __xin(10, 0, 0, dmemBuf);
-
-      uint16_t v1 = SCALE * dmemBuf.reg0;
-      uint16_t v2 = SCALE * dmemBuf.reg1;
+      Vch1 += dmemBuf.reg0 << 16;
+      result = Vch1 * Scale;
+      result = result >> 16;
 
       /* Compose the string to be send */
-      esprintf(buffer,"%04X,%04X\n", v1, v2);
+      esprintf(buffer,"%04X,%04X\n", result);
 
       /* Send message to ARM using RPMSG, buffer is the payload, 20 is the length of the payload */
       pru_rpmsg_send(&transport, dst, src, buffer, 10);
