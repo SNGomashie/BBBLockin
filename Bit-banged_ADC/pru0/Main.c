@@ -35,7 +35,7 @@ bufferData dmemBuf;
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
-uint16_t spiCommand = 0x00000000;
+uint8_t spiCommand = 0x00000000;
 uint16_t spiReceive = 0x00000000;
 
 /* Shared memory location & definiton*/
@@ -97,6 +97,7 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 	__R30 &= ~(1 << NRD); //Set nRD low
 
 	for (i = 0; i < 16; i++){ //Loop for every clock pulse
+		spiReceive = spiReceive << 1; //shift
 		if (spiCommand & (1 << i)){//write the command
 			__R30 |= (1 << MOSI);
 		}else{
@@ -113,7 +114,7 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 
 		__R30 ^= (1 << CLK);//Falling edge Լ
 
-		spiReceive = spiReceive << 1; //shift
+
 	}
 
 	__R30 |= ( 1 << NRD ); //Set nRD high
