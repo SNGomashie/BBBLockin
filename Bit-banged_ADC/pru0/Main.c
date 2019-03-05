@@ -81,7 +81,7 @@ void main(void)
 			__xout(10, 0, 0, dmemBuf);
 
 			/* Delay for a second */
-			__delay_cycles(2000);
+			__delay_cycles(20000000);
 		}
 	}
 }
