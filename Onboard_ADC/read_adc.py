@@ -15,7 +15,7 @@ def bytes_to_int(bytes):
 def readADCchannel(adcChannel):
     outputFile = "/dev/rpmsg_pru30"
     try:
-        dev = os.open(CHAR_DEV0, os.O_RDWR)
+        dev = os.open(outputFile, os.O_RDWR)
     except:
         print("Failed to open character device")
         return
