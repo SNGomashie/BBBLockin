@@ -37,4 +37,4 @@ else:
 
 time.sleep(2)
 
-print("Reading voltage at ADC channel: "+ convertVoltage(readADCchannel(args.channel)))
+print("Reading voltage at ADC channel: "+ readADCchannel(args.channel))
