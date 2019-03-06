@@ -138,7 +138,7 @@ uint16_t read_adc(void) {
 	}
 
 	/* read from the ADC channel 5*/
-			ADC_TSC.STEPENABLE_bit.STEP1 = 1;
+			ADC_TSC.STEPENABLE_bit.STEP2 = 1;
 
 
 	while (ADC_TSC.FIFO0COUNT == 0) {
