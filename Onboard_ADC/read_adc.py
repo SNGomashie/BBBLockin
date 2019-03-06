@@ -14,7 +14,7 @@ def readADCchannel(adcChannel):
     os.write(dev, b'5')
     return_voltage = os.read(dev, 4)
     os.close(dev)
-    return int.from_bytes(return_voltage, byteorder='big')
+    return str(return_voltage)
 
 def convertVoltage(rawVoltage):
     finalVoltage = (rawVoltage * 1.7)/(4096 - 1)
@@ -37,4 +37,4 @@ else:
 
 time.sleep(2)
 
-print("Reading voltage at ADC channel: "+ str(readADCchannel(args.channel)))
+print("Reading voltage at ADC channel: "+ readADCchannel(args.channel))
