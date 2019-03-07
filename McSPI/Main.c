@@ -25,7 +25,7 @@ volatile register uint32_t __R31;
 void main(void){
   uint32_t result;
 	volatile uint8_t *ptr_cm;
-
+  _R30 &= ~(1 << CONVST);
 	ptr_cm = CM_PER_BASE;
 
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
