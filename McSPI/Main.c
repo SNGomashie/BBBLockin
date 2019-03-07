@@ -69,6 +69,8 @@ void main(void){
   //Configure interrupts
   CT_MCSPI0.IRQENABLE = 0b0101;
 
+  __R30 &= ~(1 << CONVST);
+
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
