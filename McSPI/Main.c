@@ -65,7 +65,7 @@ void main(void){
   CT_MCSPI0.CH0CONF_bit.WL = 0xF;
 
   // Set SPID0 as not a transmissionline
-  CT_MCSPI0.CH0CONF_bit.DPE0 = 1;
+  CT_MCSPI0.CH0CONF_bit.DPE0 = 0;
 
   // Set SPID1 as transmissionline
   CT_MCSPI0.CH0CONF_bit.DPE1 = 0;
@@ -83,13 +83,13 @@ void main(void){
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
 
-  // Disable channel
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
-
   //Wait until RX is full
   while(!(CT_MCSPI0.CH0STAT_bit.EOT == 1));
 
   __R30 |= (1 << CONVST); //Set ConvST high
+
+  // Disable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
   __halt();
 }
