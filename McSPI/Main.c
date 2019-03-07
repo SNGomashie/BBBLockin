@@ -55,12 +55,6 @@ void main(void){
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x1;
 
-  // Set SPID0 as input
-  CT_MCSPI0.CH0CONF_bit.IS = 0;
-
-  // Set SPID1 as output
-  CT_MCSPI0.CH0CONF_bit.DPE1 = 0;
-
   CT_MCSPI0.CH0CONF_bit.EPOL = 1;
 
   // Set amount of bytes in buffer
@@ -85,7 +79,7 @@ void main(void){
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
   //Wait until RX is full
-  while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0));
+  while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 1));
 
   __R30 |= (1 << CONVST); //Set ConvST high
 
