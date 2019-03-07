@@ -11,7 +11,7 @@
 #define SPI0_CLKCTRL  (0x4C)
 #define ON (0x2)
 
-#define HOST_INT			((uint32_t) 1 << 30)
+#define HOST_INT			((uint32_t) 1 << 31)
 
 //Define pin locations
 #define NRD 7
