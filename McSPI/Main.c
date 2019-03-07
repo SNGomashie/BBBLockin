@@ -50,8 +50,8 @@ void main(void){
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
 
-  while ((__R31 & (1<<30)) == 0) {
-  }
+  //Wait until interrupt
+  while((__R31 & (0x1<<31))==0);
 
   __R30 |= (1 << CONVST);
 
@@ -107,13 +107,11 @@ void initSPI(void){
 }
 
 void initINTC(void){
-  // Clear system events
-  CT_INTC.SECR0 = 0xFFFFFFFF;
-	CT_INTC.SECR1 = 0xFFFFFFFF;
-
-  //Enable host interrupt
-  CT_INTC.HIER = 0x00000003;
-
-  //Globally enable all interrupts
-  CT_INTC.GER = 0x1;
+   __R31 = 0x00000000;					// Clear any pending PRU-generated events
+	 CT_INTC.CMR11_bit.CH_MAP_44 = 1;		// Map event 16 to channel 1
+	 CT_INTC.HMR0_bit.HINT_MAP_1 = 1;	// Map channel 1 to host 1
+	 CT_INTC.SICR = 44;					// Ensure event 16 is cleared
+	 CT_INTC.EISR = 44;					// Enable event 16
+	 CT_INTC.HIEISR |= (1 << 0);			// Enable Host interrupt 1
+	 CT_INTC.GER = 1; 					// Globally enable host interrupts
 }
