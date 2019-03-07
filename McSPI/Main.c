@@ -63,6 +63,10 @@ void main(void){
 
   CT_MCSPI0.CH0CONF_bit.EPOL = 1;
 
+  // Set amount of bytes in buffer
+  CT_MCSPI0.XFERLEVEL_bit.AEL = 1;
+  CT_MCSPI0.XFERLEVEL_bit.AFL = 1;
+
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0x11111111;
 
