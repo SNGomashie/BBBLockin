@@ -85,7 +85,7 @@ void main(void){
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
   //Wait until RX is full
-  while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 1));
+  while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0));
 
   __R30 |= (1 << CONVST); //Set ConvST high
 
