@@ -22,6 +22,8 @@
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
+void initSPI(void);
+void initINTC(void);
 
 void main(void){
   uint32_t result;
@@ -38,6 +40,28 @@ void main(void){
   /* Access PRCM (without CT) to initialize McSPI0 clock */
 	ptr_cm[SPI0_CLKCTRL] = ON;
 
+  initINTC();
+
+  initSPI();
+
+  // Enable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+
+  //Write word to transmit
+  CT_MCSPI0.TX0 = 0x8800;
+
+  while ((__R31 & (1<<30)) == 0) {
+  }
+
+  __R30 |= (1 << CONVST);
+
+  // Disable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
+
+  __halt();
+}
+void initSPI(void){
   /* Reset McSPI0 module */
   CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 1;
 
@@ -80,17 +104,16 @@ void main(void){
   // Set amount of bytes in buffer
   CT_MCSPI0.XFERLEVEL_bit.AEL = 1;
   CT_MCSPI0.XFERLEVEL_bit.AFL = 1;
+}
 
-  // Enable channel
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+void initINTC(void){
+  // Clear system events
+  CT_INTC.SECR0 = 0xFFFFFFFF;
+	CT_INTC.SECR1 = 0xFFFFFFFF;
 
-  //Write word to transmit
-  CT_MCSPI0.TX0 = 0x8800;
+  //Enable host interrupt
+  CT_INTC.HIER = 0x00000003;
 
-  // Disable channel
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
-
-  __R30 |= (1 << CONVST); //Set ConvST high
-
-  __halt();
+  //Globally enable all interrupts
+  CT_INTC.GER = 0x1;
 }
