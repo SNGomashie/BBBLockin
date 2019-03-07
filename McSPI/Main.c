@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <pru_cfg.h>
 #include <pru_ctrl.h>
+#include <pru_intc.h>
 #include <sys_mcspi.h>
 #include "resource_table.h"
 
@@ -63,6 +64,9 @@ void main(void){
 
   /* Set world length to 16bit */
   CT_MCSPI0.CH0CONF_bit.WL = 0xF;
+
+  // Set transfer and receive mode
+  CT_MCSPI0.CH0CONF_bit.TRM = 0x0;
 
   // Set SPID0 as not a transmissionline
   CT_MCSPI0.CH0CONF_bit.DPE0 = 1;

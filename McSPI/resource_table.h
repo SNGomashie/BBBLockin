@@ -24,6 +24,9 @@
 /* Definition for unused interrupts */
 #define HOST_UNUSED		255
 
+#define FROM_SPI_HOST		44
+#define FROM_SPI_CH		1
+
 #ifdef PRU0
 #define TO_ARM_HOST			16
 #define FROM_ARM_HOST			17
@@ -38,20 +41,7 @@
 #define TO_ARM_CHANNEL PRU0_TO_ARM_CHANNEL
 #define FROM_ARM_CHANNEL PRU0_FROM_ARM_CHANNEL
 #endif
-#ifdef PRU1
-#define TO_ARM_HOST			18
-#define FROM_ARM_HOST			19
-#define PRU1_TO_ARM_CHANNEL  3
-#define PRU1_FROM_ARM_CHANNEL 1
-#define PRU0_TO_ARM_CHANNEL  HOST_UNUSED
-#define PRU0_FROM_ARM_CHANNEL HOST_UNUSED
-#define HOST_INT			0x80000000
-#define CHAN_NAME			"rpmsg-pru"
-#define CHAN_DESC			"Channel 31"
-#define CHAN_PORT			31
-#define TO_ARM_CHANNEL PRU1_TO_ARM_CHANNEL
-#define FROM_ARM_CHANNEL PRU1_FROM_ARM_CHANNEL
-#endif
+
 /* Mapping sysevts to a channel. Each pair contains a sysevt, channel. */
 struct ch_map pru_intc_map[] = { {TO_ARM_HOST, TO_ARM_CHANNEL},
 				 {FROM_ARM_HOST, FROM_ARM_CHANNEL},
