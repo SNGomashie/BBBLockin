@@ -10,8 +10,16 @@
 #define SPI0_CLKCTRL  (0x4C)
 #define ON (0x2)
 
+//Define pin locations
+#define NRD 7
+#define CS 5
+#define MISO 3
+#define MOSI 1
+#define CLK 2
+#define CONVST 0
 
-volatile register uint8_t __R31;
+volatile register uint32_t __R30;
+volatile register uint32_t __R31;
 
 
 void main(void){
@@ -39,7 +47,7 @@ void main(void){
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 
   // Set input and output
-  CT_MCSPI0.SYST = 0b000101000000;
+  CT_MCSPI0.SYST = 0b000101000001;
 
   /* Set world length to 16bit */
   CT_MCSPI0.CH0CONF_bit.WL = 0xF;
@@ -59,6 +67,8 @@ void main(void){
   //Configure interrupts
   CT_MCSPI0.IRQENABLE = 0b0101;
 
+	__R30 &= ~(1 << CONVST); //Set ConvST low
+
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
@@ -67,6 +77,12 @@ void main(void){
 
   // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
+  __R30 |= ( 1 << CONVST ); //Set convST high
+
+  __delay_cycles(6000);
+
+  __R30 &= ~(1 << CONVST); //Set ConvST low
 
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0x11111111;
