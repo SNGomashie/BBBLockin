@@ -65,7 +65,7 @@ void main(void){
   CT_MCSPI0.CH0CONF_bit.WL = 0xF;
 
   // Set SPID0 as not a transmissionline
-  CT_MCSPI0.CHOCONF_bit.DPE0 = 1;
+  CT_MCSPI0.CH0CONF_bit.DPE0 = 1;
 
   // Set SPID1 as transmissionline
   CT_MCSPI0.CH0CONF_bit.DPE1 = 0;
