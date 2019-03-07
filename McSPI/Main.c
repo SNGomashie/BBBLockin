@@ -74,8 +74,8 @@ void main(void){
   CT_MCSPI0.CH0CONF_bit.IS = 0;
 
   // Set amount of bytes in buffer
-  CT_MCSPI0.XFERLEVEL_bit.AEL = 2;
-  CT_MCSPI0.XFERLEVEL_bit.AFL = 2;
+  CT_MCSPI0.XFERLEVEL_bit.AEL = 1;
+  CT_MCSPI0.XFERLEVEL_bit.AFL = 1;
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
