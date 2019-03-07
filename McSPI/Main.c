@@ -11,6 +11,8 @@
 #define SPI0_CLKCTRL  (0x4C)
 #define ON (0x2)
 
+#define HOST_INT			((uint32_t) 1 << 30)
+
 //Define pin locations
 #define NRD 7
 #define CS 5
@@ -51,7 +53,7 @@ void main(void){
   CT_MCSPI0.TX0 = 0x8800;
 
   //Wait until interrupt
-  while ((__R31 & (1<<30)) == 0);
+  while (!(__R31 & HOST_INT));
 
   __R30 |= (1 << CONVST);
 
