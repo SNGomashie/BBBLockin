@@ -38,11 +38,20 @@ void main(void){
   /* Set SPI module to Master Mode*/
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 
+  // Set input and output
+  CT_MCSPI0.SYST = 0b000101000000;
+
   /* Set world length to 16bit */
   CT_MCSPI0.CH0CONF_bit.WL = 0xF;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x1;
+
+  // Set SPID0 as input
+  CT_MCSPI0.CH0CONF_bit.IS = 0;
+
+  // Set SPID1 as output
+  CT_MCSPI0.CH0CONF_bit.DPE1 = 0;
 
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0x11111111;
