@@ -73,7 +73,7 @@ void main(void){
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   //Write word to transmit
-  CT_MCSPI0.TX0 = 0b10001000;
+  CT_MCSPI0.TX0 = 0x8800;
 
   // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
