@@ -51,7 +51,7 @@ void main(void){
   CT_MCSPI0.TX0 = 0x8800;
 
   //Wait until interrupt
-  while((__R31 & (0x1<<31))==0);
+  while ((__R31 & (1<<30)) == 0);
 
   __R30 |= (1 << CONVST);
 
@@ -75,10 +75,10 @@ void initSPI(void){
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 
   //Reset interrupt status
-  CT_MCSPI0.IRQSTATUS = 0x11111111;
+  CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
   //Configure interrupts
-  CT_MCSPI0.IRQENABLE = 0b0101;
+  CT_MCSPI0.IRQENABLE = 0x10005;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
@@ -108,10 +108,10 @@ void initSPI(void){
 
 void initINTC(void){
    __R31 = 0x00000000;					// Clear any pending PRU-generated events
-	 CT_INTC.CMR11_bit.CH_MAP_44 = 1;		// Map event 16 to channel 1
-	 CT_INTC.HMR0_bit.HINT_MAP_1 = 1;	// Map channel 1 to host 1
-	 CT_INTC.SICR = 44;					// Ensure event 16 is cleared
-	 CT_INTC.EISR = 44;					// Enable event 16
-	 CT_INTC.HIEISR |= (1 << 0);			// Enable Host interrupt 1
+	 CT_INTC.CMR11_bit.CH_MAP_44 = 1;		// Map event 44 to channel 0
+	 CT_INTC.HMR0_bit.HINT_MAP_0 = 0;	// Map channel 0 to host 0
+	 CT_INTC.SICR = 44;					// Ensure event 44 is cleared
+	 CT_INTC.EISR = 44;					// Enable event 44
+	 CT_INTC.HIEISR = 0;			// Enable Host interrupt 1
 	 CT_INTC.GER = 1; 					// Globally enable host interrupts
 }
