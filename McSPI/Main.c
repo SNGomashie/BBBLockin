@@ -73,16 +73,16 @@ void main(void){
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   //Write word to transmit
-  CT_MCSPI0.TX0 = 0b10001000;
+  CT_MCSPI0.TX0 = (0b10001000 << 32);
 
   // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
-  __R30 |= ( 1 << CONVST ); //Set convST high
+  __R30 &= ~(1 << CONVST); //Set ConvST low
 
   __delay_cycles(6000);
 
-  __R30 &= ~(1 << CONVST); //Set ConvST low
+  __R30 |= ( 1 << CONVST ); //Set convST high
 
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0x11111111;
