@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <pru_cfg.h>
 #include <pru_ctrl.h>
-#include <sys_mcspi>
+#include <sys_mcspi.h>
 #include "resource_table.h"
 
 
