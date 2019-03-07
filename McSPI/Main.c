@@ -45,7 +45,10 @@ void main(void){
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
 
   //Reset interrupt status
-  CT_MCSPI0.IRQSTATUS = 0x00000000;
+  CT_MCSPI0.IRQSTATUS = 0x11111111;
+
+  //Configure interrupts
+  CT_MCSPI0.IRQENA = 0b0101;
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
@@ -53,7 +56,9 @@ void main(void){
   //Write word to transmit
   CT_MCSPI0.TX0 = 0b10001000;
 
-  // Enable channel
+  WHILE(!(CT_MCSPI0.IRQSTATUS.RX0_FULL == 1));
+  
+  // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
 }
