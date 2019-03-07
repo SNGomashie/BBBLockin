@@ -43,23 +43,11 @@ void main(void){
   /* Wait until reset is done */
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 1));
 
+  // Set input and output
+  CT_MCSPI0.SYST = 0b010101000001;
+
   /* Set SPI module to Master Mode*/
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
-
-  // Set input and output
-  CT_MCSPI0.SYST = 0b000101000001;
-
-  /* Set world length to 16bit */
-  CT_MCSPI0.CH0CONF_bit.WL = 0xF;
-
-  // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
-  CT_MCSPI0.CH0CONF_bit.CLKD = 0x1;
-
-  CT_MCSPI0.CH0CONF_bit.EPOL = 1;
-
-  // Set amount of bytes in buffer
-  CT_MCSPI0.XFERLEVEL_bit.AEL = 2;
-  CT_MCSPI0.XFERLEVEL_bit.AFL = 2;
 
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0x11111111;
@@ -67,7 +55,27 @@ void main(void){
   //Configure interrupts
   CT_MCSPI0.IRQENABLE = 0b0101;
 
-  __R30 &= ~(1 << CONVST);
+  // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
+  CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
+
+  // Set CS polarity
+  CT_MCSPI0.CH0CONF_bit.EPOL = 1;
+
+  /* Set world length to 16bit */
+  CT_MCSPI0.CH0CONF_bit.WL = 0xF;
+
+  // Set SPID0 as not a transmissionline
+  CT_MCSPI0.CHOCONF_bit.DPE0 = 1;
+
+  // Set SPID1 as transmissionline
+  CT_MCSPI0.CH0CONF_bit.DPE1 = 0;
+
+  // Set SPID0 as input
+  CT_MCSPI0.CH0CONF_bit.IS = 0;
+
+  // Set amount of bytes in buffer
+  CT_MCSPI0.XFERLEVEL_bit.AEL = 2;
+  CT_MCSPI0.XFERLEVEL_bit.AFL = 2;
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
@@ -79,7 +87,7 @@ void main(void){
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
   //Wait until RX is full
-  while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 1));
+  while(!(CT_MCSPI0.CH0STAT_bit.EOT == 1));
 
   __R30 |= (1 << CONVST); //Set ConvST high
 
