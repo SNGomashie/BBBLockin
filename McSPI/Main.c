@@ -60,7 +60,6 @@ void main(void){
   // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
-
   __halt();
 }
 void initSPI(void){

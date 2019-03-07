@@ -92,7 +92,7 @@ struct my_resource_table am335x_pru_remoteproc_ResourceTable = {
 		{
 			0x0000,
 			/* Channel-to-host mapping, 255 for unused */
-			0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 1, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED,
 			/* Number of evts being mapped to channels */
 			(sizeof(pru_intc_map) / sizeof(struct ch_map)),
 			/* Pointer to the structure containing mapped events */
