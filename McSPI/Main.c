@@ -61,6 +61,8 @@ void main(void){
   // Set SPID1 as output
   CT_MCSPI0.CH0CONF_bit.DPE1 = 0;
 
+  CT_MCSPI0.CH0CONF_bit.EPOL = 1;
+
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0x11111111;
 
@@ -78,11 +80,11 @@ void main(void){
   // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
-  __R30 &= ~(1 << CONVST); //Set ConvST low
+  __R30 |= (1 << CONVST); //Set ConvST high
 
   __delay_cycles(6000);
 
-  __R30 |= ( 1 << CONVST ); //Set convST high
+  __R30 &= ~( 1 << CONVST ); //Set convST high
 
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0x11111111;
@@ -102,4 +104,5 @@ void main(void){
   // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
+  __halt();
 }
