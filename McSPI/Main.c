@@ -39,14 +39,21 @@ void main(void){
   CT_MCSPI0.MODULCTRL.MS = 0;
 
   /* Set world length to 16bit */
-  CT_MCSPI0.CH0CONF_bit.WL = F;
+  CT_MCSPI0.CH0CONF.WL = F;
 
+  // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
+  CT_MCSPI0.CH0CONF.CLKD = 2;
 
-  /* Access CH0CONF register, Set word size to 16-bit*/
-  MCSPI0_CH0CONF |= (0xE << 7);
+  //Reset interrupt status
+  CT_MCSPI0.IRQSTATUS = 0x00000000;
 
-  /* Access CH0CTRL register, Activate channel 1*/
-  MCSPI0_CH0CTRL ^= 0x0;
+  // Enable channel
+  CT_MCSPI0.CH0CTRL.EN = 1;
 
+  //Write word to transmit
+  CT_MCSPI0.TX0 = 0b10001000;
+
+  // Enable channel
+  CT_MCSPI0.CH0CTRL.EN = 0;
 
 }
