@@ -30,30 +30,30 @@ void main(void){
 	ptr_cm[SPI0_CLKCTRL] = ON;
 
   /* Reset McSPI0 module */
-  CT_MCSPI0.SYSCONFIG.SOFTRESET = 1;
+  CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 1;
 
   /* Wait until reset is done */
-  while(!(CT_MCSPI0.SYSSTATUS.RESETDONE = 1));
+  while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE = 1));
 
   /* Set SPI module to Master Mode*/
-  CT_MCSPI0.MODULCTRL.MS = 0;
+  CT_MCSPI0.MODULCTRL_bit.MS = 0;
 
   /* Set world length to 16bit */
-  CT_MCSPI0.CH0CONF.WL = F;
+  CT_MCSPI0.CH0CONF_bit.WL = F;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
-  CT_MCSPI0.CH0CONF.CLKD = 2;
+  CT_MCSPI0.CH0CONF_bit.CLKD = 2;
 
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0x00000000;
 
   // Enable channel
-  CT_MCSPI0.CH0CTRL.EN = 1;
+  CT_MCSPI0.CH0CTRL_bit.EN = 1;
 
   //Write word to transmit
   CT_MCSPI0.TX0 = 0b10001000;
 
   // Enable channel
-  CT_MCSPI0.CH0CTRL.EN = 0;
+  CT_MCSPI0.CH0CTRL_bit.EN = 0;
 
 }
