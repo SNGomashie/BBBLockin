@@ -109,12 +109,12 @@ void initSPI(void){
 }
 
 void initINTC(void){
-   __R31 = 0x00000000;					// Clear any pending PRU-generated events
-	 CT_INTC.CMR11_bit.CH_MAP_44 = 0;		// Map event 44 to channel 0
-	 CT_INTC.HMR0_bit.HINT_MAP_0 = 0;	// Map channel 0 to host 0
-	 CT_INTC.SICR = 44;					// Ensure event 44 is cleared
-   CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800;
-	 CT_INTC.EISR_bit.EN_SET_IDX = 44;					// Enable event 44
-	 CT_INTC.HIEISR = 0;			// Enable Host interrupt 1
-	 CT_INTC.GER = 1; 					// Globally enable host interrupts
+    __R31 = 0x00000000;					      //Clear any events
+     CT_INTC.SIPR1_bit.POLARITY_63_32 = 0x800; // Set polarity of interrupt
+     CT_INTC.SITR1_bit.TYPE_63_32 = 0x000; // Set type of interrupt
+     CT_INTC.CMR11_bit.CH_MAP_44 = 0b111; //map event 44 to channel 0
+     CT_INTC.HMR0_bit.HINT_MAP_0 = ;//map channel 0 to host 0
+     CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800; // clear system event 44 (McSPI)
+     CT_INTC.HIEISR = 0;			// Enable Host interrupt 1
+     CT_INTC.GER = 1;
 }
