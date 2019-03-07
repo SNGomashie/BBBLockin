@@ -27,24 +27,8 @@
 #define FROM_SPI_HOST		44
 #define FROM_SPI_CH		1
 
-#ifdef PRU0
-#define TO_ARM_HOST			16
-#define FROM_ARM_HOST			17
-#define PRU0_TO_ARM_CHANNEL  2
-#define PRU0_FROM_ARM_CHANNEL 0
-#define PRU1_TO_ARM_CHANNEL  HOST_UNUSED
-#define PRU1_FROM_ARM_CHANNEL HOST_UNUSED
-#define HOST_INT			0x40000000
-#define CHAN_NAME			"rpmsg-pru"
-#define CHAN_DESC			"Channel 30"
-#define CHAN_PORT			30
-#define TO_ARM_CHANNEL PRU0_TO_ARM_CHANNEL
-#define FROM_ARM_CHANNEL PRU0_FROM_ARM_CHANNEL
-#endif
-
 /* Mapping sysevts to a channel. Each pair contains a sysevt, channel. */
-struct ch_map pru_intc_map[] = { {TO_ARM_HOST, TO_ARM_CHANNEL},
-				 {FROM_ARM_HOST, FROM_ARM_CHANNEL},
+struct ch_map pru_intc_map[] = { {FROM_SPI_HOST, FROM_SPI_CH},
 };
 
 struct my_resource_table {
@@ -108,7 +92,7 @@ struct my_resource_table resourceTable = {
 		{ /* PRU_INTS version */
 			0x0000,
 			/* Channel-to-host mapping, 255 for unused */
-			PRU0_FROM_ARM_CHANNEL, PRU1_FROM_ARM_CHANNEL, PRU0_TO_ARM_CHANNEL, PRU1_TO_ARM_CHANNEL, HOST_UNUSED,
+			FROM_SPI_CH, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED,
 			HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED,
 			/* Number of evts being mapped to channels */
 			(sizeof(pru_intc_map) / sizeof(struct ch_map)),
