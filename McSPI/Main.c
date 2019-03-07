@@ -64,9 +64,6 @@ void main(void){
   /* Set world length to 16bit */
   CT_MCSPI0.CH0CONF_bit.WL = 0xF;
 
-  // Set SPID0 as not a transmissionline
-  CT_MCSPI0.CH0CONF_bit.DPE0 = 0;
-
   // Set SPID1 as transmissionline
   CT_MCSPI0.CH0CONF_bit.DPE1 = 0;
 
