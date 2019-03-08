@@ -40,12 +40,7 @@ void main(void){
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
 
-  __delay_cycles(300);
-
-  __R30 |= (1 << CONVST);
-
   CT_MCSPI0.TX0 = 0x0000;
-
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
