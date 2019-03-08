@@ -117,8 +117,8 @@ void initSPI(void){
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
 
   // Enable FIFO
-  CT_MCSPI0.CH0CONF_bits.FFER = 1;
-  CT_MCSPI0.CH0CONF_bits.FFEW = 1;
+  CT_MCSPI0.CH0CONF_bit.FFER = 1;
+  CT_MCSPI0.CH0CONF_bit.FFEW = 1;
 
   // Set amount of bytes in buffer
   CT_MCSPI0.XFERLEVEL_bit.AEL = 0x1;
