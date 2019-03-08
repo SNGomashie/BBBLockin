@@ -46,8 +46,6 @@ void main(void){
 
   initINTC();
 
-
-
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
@@ -85,10 +83,10 @@ void initSPI(void){
   CT_MCSPI0.SYST_bit.SSB = 0;
 
   //Reset interrupt status
-  CT_MCSPI0.IRQSTATUS = 0xFFFF;
+  CT_MCSPI0.IRQSTATUS = 0x0000;
 
   //Configure interrupts
-  CT_MCSPI0.IRQENABLE = 0x5;
+  CT_MCSPI0.IRQENABLE = 0x0;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
