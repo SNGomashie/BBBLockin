@@ -41,6 +41,7 @@ void main(void){
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   SPItransfer(0);
+  SPItransfer(1);
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
@@ -109,7 +110,7 @@ void SPItransfer(uint8_t chan){
   __R30 &= ~(1 << CONVST);
 
   //Write word to transmit
-  CT_MCSPI0.TX0 = (SPIsend << 31);
+  CT_MCSPI0.TX0 = (SPIsend << 24);
 
   CT_MCSPI0.TX0 = 0x0000;
 
