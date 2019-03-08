@@ -50,7 +50,7 @@ void main(void){
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   //Write word to transmit
-  CT_MCSPI0.TX0 = 0x8800;
+  CT_MCSPI0.TX0 = 0x8801;
 
   //Wait until interrupt
   while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
