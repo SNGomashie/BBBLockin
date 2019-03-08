@@ -5,12 +5,6 @@
 #include <sys_mcspi.h>
 #include "resource_table.h"
 
-
-/* PRCM Registers */
-#define CM_PER_BASE	((volatile uint8_t *)(0x44E00000))
-#define SPI0_CLKCTRL  (0x4C)
-#define ON (0x2)
-
 #define HOST_INT			((uint32_t) 1 << 30)
 
 // BUSY_ (conversion done):					P9.26 pr1_pru0_pru_r30_16
@@ -31,19 +25,9 @@ void initSPI(void);
 void initINTC(void);
 
 void main(void){
-  uint32_t result;
-	volatile uint8_t *ptr_cm;
   __R30 &= ~(1 << CONVST);
-  ptr_cm = CM_PER_BASE;
-
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
-
-  /* Read IEPCLK[OCP_EN] for IEP clock source */
-  result = CT_CFG.IEPCLK_bit.OCP_EN;
-
-  /* Access PRCM (without CT) to initialize McSPI0 clock */
-  ptr_cm[SPI0_CLKCTRL] = ON;
 
   initSPI();
 
