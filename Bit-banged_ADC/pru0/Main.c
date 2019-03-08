@@ -8,6 +8,7 @@
 //  SDI ( Serial Data In (MOSI)):   P9.29 pr1_pru0_pru_r30_1
 //  SCK ( Serial clock ) :      		P9.30 pr1_pru0_pru_r30_2
 //  Convst (  Start conversion ) : 	P9.31 pr1_pru0_pru_r30_0
+// BUSY_ (conversion done):					P9.26 pr1_pru0_pru_r30_16
 
 #include <stdint.h>
 #include <pru_cfg.h>
@@ -95,7 +96,7 @@ uint16_t fnRead_WriteSPI(uint8_t chan){
 
 	for (i = 0; i < 16; i++){ //Loop for every clock pulse
 		spiReceive = spiReceive << 1; //shift
-		
+
 		if ((spiCommand << i) & 0x80){//write the command
 			__R30 |= (1 << MOSI);
 		}else{

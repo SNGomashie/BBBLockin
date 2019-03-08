@@ -13,13 +13,16 @@
 
 #define HOST_INT			((uint32_t) 1 << 30)
 
+// BUSY_ (conversion done):					P9.26 pr1_pru0_pru_r30_16
+
 //Define pin locations
-#define NRD 7
-#define CS 5
-#define MISO 3
-#define MOSI 1
-#define CLK 2
-#define CONVST 0
+#define NRD       7
+#define CS        5
+#define MISO      3
+#define MOSI      1
+#define CLK       2
+#define CONVST    0
+#define BUSY      16
 
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
@@ -53,7 +56,7 @@ void main(void){
   CT_MCSPI0.TX0 = 0x8800;
 
   //Wait until transfer is done
-  	__delay_cycles(300);
+  	__delay_cycles(326);
 
   // Disable channel
   //  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
@@ -64,10 +67,10 @@ void main(void){
 
   __R30 &= ~(1 << CONVST);
 
+  while(__R31 & (O << BUSY));
 
   CT_MCSPI0.TX0 = 0x0000;
 
-  __halt();
 }
 
 void initSPI(void){
