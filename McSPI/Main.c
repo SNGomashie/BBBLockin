@@ -52,13 +52,19 @@ void main(void){
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
 
+  //Wait until transfer is done
+  	__delay_cycles(300);
+
   // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
   //Wait until interrupt
   while((__R31 & HOST_INT));
 
+  // Start conversion
   __R30 |= (1 << CONVST);
+
+  __halt();
 }
 
 void initSPI(void){
@@ -122,6 +128,6 @@ void initINTC(void){
      // CT_INTC.CMR11_bit.CH_MAP_44 = 0b111; //map event 44 to channel 0
      // CT_INTC.HMR0_bit.HINT_MAP_0 = 0x0;//map channel 0 to host 0
      // CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800; // clear system event 44 (McSPI)
-     CT_INTC.HIEISR = 0x0;			// Enable Host interrupt 1
+     // CT_INTC.HIEISR = 0x0;			// Enable Host interrupt 1
      CT_INTC.GER = 0x1;
 }
