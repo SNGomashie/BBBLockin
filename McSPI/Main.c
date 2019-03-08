@@ -44,12 +44,13 @@ void main(void){
 
   __R30 |= (1 << CONVST);
 
+  __delay_cycles(8);
+
+  __R30 &= ~(1 << CONVST);
+
   __delay_cycles(100);
 
   while(!(__R30 & (1 << BUSY)));
-
-  __R30 &= ~(1 << NRD);
-  __R30 &= ~(1 << CONVST);
 
   CT_MCSPI0.TX0 = 0x0000;
 
