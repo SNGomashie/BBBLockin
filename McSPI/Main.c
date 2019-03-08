@@ -25,7 +25,7 @@ volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 void main(void)
 {
-  __R30 &= ~(1 << CONVST);
+  __R30 |= (1 << CONVST); //Initialize conversion start HIGH.__R30 &= ~(1 << CONVST);
 
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
@@ -78,6 +78,8 @@ void main(void)
 
   // Set SPID0 as input
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
+
+  __R30 &= ~(1 << CONVST); //Set ConvST low
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
