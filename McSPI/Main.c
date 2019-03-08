@@ -40,11 +40,11 @@ void main(void){
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
 
-  __delay_cycles(290);
+  __delay_cycles(230);
 
   __R30 |= (1 << CONVST);
 
-  __delay_cycles(11);
+  __delay_cycles(20);
 
   __R30 &= ~(1 << CONVST);
 
