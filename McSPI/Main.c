@@ -53,7 +53,7 @@ void main(void){
   CT_MCSPI0.TX0 = 0x8800;
 
   //Wait until interrupt
-  __delay_cycles(280);
+  __delay_cycles(326);
   __R30 |= (1 << CONVST);
 
   // Disable channel
