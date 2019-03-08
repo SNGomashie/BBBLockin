@@ -41,10 +41,12 @@ void main(void){
 
   __delay_cycles(350);
 
+  __R30 |= (1 << NRD);
   __R30 |= (1 << CONVST);
 
-  __delay_cycles(10);
+  __delay_cycles(1000);
 
+  __R30 &= ~(1 << NRD);
   __R30 &= ~(1 << CONVST);
 
   while(!(__R30 & (1 << BUSY)));
