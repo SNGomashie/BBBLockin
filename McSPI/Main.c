@@ -56,7 +56,7 @@ void main(void){
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
   //Wait until interrupt
-  while(!(__R31 & HOST_INT));
+  while((__R31 & HOST_INT));
 
   __R30 |= (1 << CONVST);
 }
