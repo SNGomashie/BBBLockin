@@ -103,7 +103,7 @@ void initINTC(void){
 
 void SPItransfer(uint8_t chan){
   const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
-  uint8_t SPIsend = (ADCch[chan] << 4) | B10001000; // single-ended, input 0V to 5V
+  uint8_t SPIsend = (ADCch[chan] << 4) | 0b10001000; // single-ended, input 0V to 5V
   __R30 |= (1 << CS);
   __R30 &= ~(1 << NRD);
   __R30 &= ~(1 << CONVST);
