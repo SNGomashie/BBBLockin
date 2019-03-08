@@ -46,14 +46,13 @@ void main(void){
 
   initINTC();
 
-  __halt();
-
-
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
+
+  __halt();
 
   //Wait until interrupt
   while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
