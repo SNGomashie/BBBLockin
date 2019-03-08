@@ -53,9 +53,7 @@ void main(void){
   CT_MCSPI0.TX0 = 0x8800;
 
   //Wait until interrupt
-  while ((__R31 & (1<<30)) == 0) {
-	}
-
+  __delay_cycles(280);
   __R30 |= (1 << CONVST);
 
   // Disable channel
@@ -80,7 +78,7 @@ void initSPI(void){
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
   //Configure interrupts
-  CT_MCSPI0.IRQENABLE = 0x10005;
+  CT_MCSPI0.IRQENABLE = 0x5;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
