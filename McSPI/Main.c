@@ -25,13 +25,17 @@ void initSPI(void);
 void initINTC(void);
 
 void main(void){
-  __R30 &= ~(1 << NRD);
+  __R30 |= (1 << NRD); // Initialize Read input HIGH.
+  __R30 |= (1 << CONVST); //Initialize conversion start HIGH.
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   initSPI();
 
   initINTC();
+
+  __R30 &= ~(1 << CONVST); //Set ConvST low
+  __R30 &= ~(1 << NRD); //Set nRD low
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
@@ -43,6 +47,10 @@ void main(void){
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
+  __R30 |= ( 1 << CONVST ); //Set convST high
+	__R30 |= ( 1 << NRD ); //Set nRD high
+  
 }
 
 void initSPI(void){
