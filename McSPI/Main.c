@@ -49,8 +49,6 @@ void main(void){
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
-  while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
-  }
 
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
@@ -79,13 +77,15 @@ void initSPI(void){
   /* Wait until reset is done */
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 1));
 
-  // Set input and output
-  CT_MCSPI0.SYST = 0b010101000001;
-
   /* Set SPI module to Master Mode*/
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 
   /* clear interrupts */
+  CT_MCSPI0.SYST_bit.SPIEN_0 = 0;
+  CT_MCSPI0.SYST_bit.SPICLK = 1;
+  CT_MCSPI0.SYST_bit.SPIDATDIR0 = 1;
+  CT_MCSPI0.SYST_bit.SPIDATADIR1 = 0;
+  CT_MCSPI0.SYST_bit.SPIENDIR = 0;
   CT_MCSPI0.SYST_bit.SSB = 1;
 
   //Reset interrupt status
