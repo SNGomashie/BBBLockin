@@ -42,9 +42,9 @@ void main(void){
   /* Access PRCM (without CT) to initialize McSPI0 clock */
 	ptr_cm[SPI0_CLKCTRL] = ON;
 
-  initINTC();
-
   initSPI();
+
+  initINTC();
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
@@ -53,7 +53,7 @@ void main(void){
   CT_MCSPI0.TX0 = 0x8800;
 
   //Wait until interrupt
-  while ((__R31 & (1<<31)) == 0) {
+  while ((__R31 & (1<<30)) == 0) {
 	}
 
   __R30 |= (1 << CONVST);
