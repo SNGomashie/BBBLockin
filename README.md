@@ -42,7 +42,7 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [x] Write library for easy usage of remoteproc on the PRU
 - [x] Send message from PRU0 -> PRU1 using scratch pad
 - [x] Read the onboard ADC
-- [x] Bit-bang and SPI ADC
+- [x] Bit-bang an SPI ADC
 - [ ] Using the McSPI chip
 - [ ] Determine reading speed PRU
 - [ ] Implement lock-in amplifier on the PRU
