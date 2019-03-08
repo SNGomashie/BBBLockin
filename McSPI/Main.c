@@ -81,6 +81,8 @@ void main(void)
 
   __R30 &= ~(1 << CONVST); //Set ConvST low
 
+  __delay_cycles(20000000);
+
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
