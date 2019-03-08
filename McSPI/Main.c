@@ -26,6 +26,7 @@ void initINTC(void);
 
 void main(void){
   __R30 &= ~(1 << CONVST);
+  __R30 &= ~(1 << NRD);
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
@@ -41,7 +42,6 @@ void main(void){
 
   __delay_cycles(350);
 
-  __R30 |= (1 << NRD);
   __R30 |= (1 << CONVST);
 
   __delay_cycles(100);
