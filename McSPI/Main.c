@@ -45,12 +45,14 @@ void main(void){
 
   CT_MCSPI0.TX0 = 0x0000;
 
-  // Enable channel
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+  __delay_cycles(1000);
 
   __R30 |= ( 1 << CONVST ); //Set convST high
 	__R30 |= ( 1 << NRD ); //Set nRD high
-  
+
+  // Enable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
 }
 
 void initSPI(void){
