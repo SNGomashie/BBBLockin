@@ -49,10 +49,14 @@ void main(void){
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
-  __halt();
+  while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
+  }
 
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
+
+  //Reset interrupt status
+  CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
   //Wait until interrupt
   while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
@@ -88,7 +92,7 @@ void initSPI(void){
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
   //Configure interrupts
-  CT_MCSPI0.IRQENABLE = 0x0;
+  CT_MCSPI0.IRQENABLE = 0x0005;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
