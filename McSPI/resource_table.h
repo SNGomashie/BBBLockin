@@ -63,7 +63,7 @@
 #define HOST_UNUSED		255
 
 /* Mapping sysevts to a channel. Each pair contains a sysevt, channel */
-struct ch_map pru_intc_map[] = { {44, 1}, {44, 0}
+struct ch_map pru_intc_map[] = { {44, 0},
 };
 
 struct my_resource_table {
@@ -92,7 +92,7 @@ struct my_resource_table am335x_pru_remoteproc_ResourceTable = {
 		{
 			0x0000,
 			/* Channel-to-host mapping, 255 for unused */
-			0, 1, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED,
+			0, 0, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED, HOST_UNUSED,
 			/* Number of evts being mapped to channels */
 			(sizeof(pru_intc_map) / sizeof(struct ch_map)),
 			/* Pointer to the structure containing mapped events */

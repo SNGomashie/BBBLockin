@@ -53,7 +53,8 @@ void main(void){
   CT_MCSPI0.TX0 = 0x8800;
 
   //Wait until interrupt
-  while (!(__R31 & HOST_INT));
+  while ((__R31 & (1<<30)) == 0) {
+	}
 
   __R30 |= (1 << CONVST);
 
