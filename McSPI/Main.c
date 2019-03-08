@@ -42,6 +42,14 @@ void main(void)
   /* Wait until reset is done */
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 1));
 
+  /* Set SPI module to Master Mode*/
+  CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
+
+  CT_MCSPI0.SYST_bit.SPIEN_0 = 0; // Set CS
+  CT_MCSPI0.SYST_bit.SPICLK = 1; //Set CLK
+  CT_MCSPI0.SYST_bit.SPIDATDIR0 = 1; // Set data direction D0
+  CT_MCSPI0.SYST_bit.SPIDATDIR1 = 0; // Set data direction D1
+  CT_MCSPI0.SYST_bit.SPIENDIR = 0; // Set CS polarity
   CT_MCSPI0.SYST_bit.SSB = 1; // Clear interrupts
 
   //Reset interrupt status
