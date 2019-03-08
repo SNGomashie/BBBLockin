@@ -42,8 +42,6 @@ void main(void){
 
   __R30 |= (1 << CONVST);
 
-  __delay_cycles(100);
-
   __R30 &= ~(1 << CONVST);
 
   while((__R30 & (1 << BUSY)));
