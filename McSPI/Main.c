@@ -80,7 +80,7 @@ void initSPI(void){
   /* Set SPI module to Master Mode*/
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 
-  CT_MCSPI0.SYST_bit.SSB = 0;
+  CT_MCSPI0.SYST_bit.SSB = 1;
 
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0x0000;
