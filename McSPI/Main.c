@@ -53,7 +53,10 @@ void main(void){
   CT_MCSPI0.TX0 = 0x8800;
 
   //Wait until interrupt
-  __delay_cycles(326);
+  while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
+		}
+	CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800; // clear system event 44 (McSPI)
+
   __R30 |= (1 << CONVST);
 
   // Disable channel
@@ -78,13 +81,13 @@ void initSPI(void){
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
   //Configure interrupts
-  CT_MCSPI0.IRQENABLE = 0x5;
+  CT_MCSPI0.IRQENABLE = 0x4;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
 
   // Set CS polarity
-  CT_MCSPI0.CH0CONF_bit.EPOL = 1;
+  CT_MCSPI0.CH0CONF_bit.EPOL = 0x1;
 
   /* Set world length to 16bit */
   CT_MCSPI0.CH0CONF_bit.WL = 0xF;
@@ -93,17 +96,17 @@ void initSPI(void){
   CT_MCSPI0.CH0CONF_bit.TRM = 0x0;
 
   // Set SPID0 as not a transmissionline
-  CT_MCSPI0.CH0CONF_bit.DPE0 = 1;
+  CT_MCSPI0.CH0CONF_bit.DPE0 = 0x1;
 
   // Set SPID1 as transmissionline
-  CT_MCSPI0.CH0CONF_bit.DPE1 = 0;
+  CT_MCSPI0.CH0CONF_bit.DPE1 = 0x0;
 
   // Set SPID0 as input
-  CT_MCSPI0.CH0CONF_bit.IS = 0;
+  CT_MCSPI0.CH0CONF_bit.IS = 0x0;
 
   // Set amount of bytes in buffer
-  CT_MCSPI0.XFERLEVEL_bit.AEL = 1;
-  CT_MCSPI0.XFERLEVEL_bit.AFL = 1;
+  CT_MCSPI0.XFERLEVEL_bit.AEL = 0x1;
+  CT_MCSPI0.XFERLEVEL_bit.AFL = 0x1;
 }
 
 void initINTC(void){
