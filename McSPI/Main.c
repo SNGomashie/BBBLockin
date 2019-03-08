@@ -5,15 +5,12 @@
 #include <sys_mcspi.h>
 #include "resource_table.h"
 
-
 /* PRCM Registers */
 #define CM_PER_BASE	((volatile uint8_t *)(0x44E00000))
 #define SPI0_CLKCTRL  (0x4C)
 #define ON (0x2)
 
 #define HOST_INT			((uint32_t) 1 << 30)
-
-// BUSY_ (conversion done):					P9.26 pr1_pru0_pru_r30_16
 
 //Define pin locations
 #define NRD       7
@@ -26,77 +23,31 @@
 
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
-
-void initSPI(void);
-void initINTC(void);
-
-void main(void){
-  uint32_t result;
-	volatile uint8_t *ptr_cm;
+void main(void)
+{
   __R30 &= ~(1 << CONVST);
-  ptr_cm = CM_PER_BASE;
 
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
-  /* Read IEPCLK[OCP_EN] for IEP clock source */
-  result = CT_CFG.IEPCLK_bit.OCP_EN;
+  // Enable global interrupts
+   CT_INTC.GER = 0x1;
 
-  /* Access PRCM (without CT) to initialize McSPI0 clock */
-  ptr_cm[SPI0_CLKCTRL] = ON;
+  // Clear current events
+  __R31 = 0x00000000;
 
-  initSPI();
-
-  initINTC();
-
-  // Enable channel
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
-
-  //Write word to transmit
-  CT_MCSPI0.TX0 = 0x8800;
-
-  //Wait until transfer is done
-  	__delay_cycles(326);
-
-  // Disable channel
-  //  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
-  // Start conversion
-  __R30 |= (1 << CONVST);
-
-  __delay_cycles(9);
-
-  __R30 &= ~(1 << CONVST);
-
-  //__delay_cycles(1000);
-
-  while(__R31 & (1 << BUSY));
-
-  CT_MCSPI0.TX0 = 0x0000;
-
-}
-
-void initSPI(void){
   /* Reset McSPI0 module */
   CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 1;
 
   /* Wait until reset is done */
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 1));
 
-  /* Set SPI module to Master Mode*/
-  CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
-
-  CT_MCSPI0.SYST_bit.SPIEN_0 = 0; // Set CS
-  CT_MCSPI0.SYST_bit.SPICLK = 1; //Set CLK
-  CT_MCSPI0.SYST_bit.SPIDATDIR0 = 1; // Set data direction D0
-  CT_MCSPI0.SYST_bit.SPIDATDIR1 = 0; // Set data direction D1
-  CT_MCSPI0.SYST_bit.SPIENDIR = 0; // Set CS polarity
   CT_MCSPI0.SYST_bit.SSB = 1; // Clear interrupts
 
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
   //Configure interrupts
-  CT_MCSPI0.IRQENABLE = 0x0;
   CT_MCSPI0.IRQENABLE_bit.EOWKE = 0X1;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
@@ -120,22 +71,10 @@ void initSPI(void){
   // Set SPID0 as input
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
 
-  // Enable FIFO
-  CT_MCSPI0.CH0CONF_bit.FFER = 1;
-  CT_MCSPI0.CH0CONF_bit.FFEW = 1;
+  // Enable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
-  // Set amount of bytes in buffer
-  CT_MCSPI0.XFERLEVEL_bit.AEL = 0x1;
-  CT_MCSPI0.XFERLEVEL_bit.AFL = 0x1;
-}
+  //Write word to transmit
+  CT_MCSPI0.TX0 = 0x8800;
 
-void initINTC(void){
-    __R31 = 0x00000000;					      //Clear any events
-     // CT_INTC.SIPR1_bit.POLARITY_63_32 = 0x800; // Set polarity of interrupt
-     // CT_INTC.SITR1_bit.TYPE_63_32 = 0x000; // Set type of interrupt
-     // CT_INTC.CMR11_bit.CH_MAP_44 = 0b111; //map event 44 to channel 0
-     // CT_INTC.HMR0_bit.HINT_MAP_0 = 0x0;//map channel 0 to host 0
-     // CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800; // clear system event 44 (McSPI)
-     // CT_INTC.HIEISR = 0x0;			// Enable Host interrupt 1
-     CT_INTC.GER = 0x1;
 }
