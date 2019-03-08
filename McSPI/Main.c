@@ -46,6 +46,9 @@ void main(void){
 
   initINTC();
 
+  __halt();
+
+
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
@@ -65,7 +68,6 @@ void main(void){
 
 
 
-  __halt();
 }
 void initSPI(void){
   /* Reset McSPI0 module */
@@ -83,7 +85,7 @@ void initSPI(void){
   CT_MCSPI0.SYST_bit.SSB = 1;
 
   //Reset interrupt status
-  CT_MCSPI0.IRQSTATUS = 0x0000;
+  CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
   //Configure interrupts
   CT_MCSPI0.IRQENABLE = 0x0;
