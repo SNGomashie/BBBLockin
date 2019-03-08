@@ -76,7 +76,7 @@ void initSPI(void){
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
 
   // Set CS polarity
-  CT_MCSPI0.CH0CONF_bit.EPOL = 0x1;
+  CT_MCSPI0.CH0CONF_bit.EPOL = 0x0;
 
   /* Set world length to 16bit */
   CT_MCSPI0.CH0CONF_bit.WL = 0xF;
