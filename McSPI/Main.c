@@ -58,6 +58,8 @@ void main(void){
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8801;
 
+  // Disable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
   //Wait until interrupt
   while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
 		}
@@ -66,8 +68,7 @@ void main(void){
 
   __R30 |= (1 << CONVST);
 
-  // Disable channel
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
 
   __halt();
 }
