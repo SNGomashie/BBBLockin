@@ -45,7 +45,7 @@ void main(void){
 
   __R30 &= ~(1 << CONVST);
 
-  while(!(__R30 & (1 << BUSY));
+  while(!(__R30 & (1 << BUSY)));
 
   CT_MCSPI0.TX0 = 0x0000;
 
