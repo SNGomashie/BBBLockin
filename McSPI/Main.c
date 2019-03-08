@@ -25,7 +25,6 @@ void initSPI(void);
 void initINTC(void);
 
 void main(void){
-  __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << NRD);
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
