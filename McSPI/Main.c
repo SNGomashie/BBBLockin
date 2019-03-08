@@ -113,3 +113,21 @@ void initINTC(void){
      // CT_INTC.HIEISR = 0x0;			// Enable Host interrupt 1
      CT_INTC.GER = 0x1;
 }
+void SPItransfer(uint8_t chan){
+  const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
+  uint8_t SPIsend = (ADCch[chan] << 4) | B10001000; // single-ended, input 0V to 5V
+  __R30 |= (1 << CS);
+  __R30 &= ~(1 << NRD);
+  __R30 &= ~(1 << CONVST);
+
+  //Write word to transmit
+  CT_MCSPI0.TX0 = (SPIsend << 31);
+
+  CT_MCSPI0.TX0 = 0x0000;
+
+  __delay_cycles(280);
+
+  __R30 &= ~(1 << CS);
+  __R30 |= (1 << NRD);
+  __R30 |= (1 << CONVST);
+}
