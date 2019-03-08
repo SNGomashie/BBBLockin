@@ -31,7 +31,7 @@ void main(void){
   uint32_t result;
 	volatile uint8_t *ptr_cm;
   __R30 &= ~(1 << CONVST);
-	ptr_cm = CM_PER_BASE;
+  ptr_cm = CM_PER_BASE;
 
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
@@ -40,31 +40,28 @@ void main(void){
   result = CT_CFG.IEPCLK_bit.OCP_EN;
 
   /* Access PRCM (without CT) to initialize McSPI0 clock */
-	ptr_cm[SPI0_CLKCTRL] = ON;
+  ptr_cm[SPI0_CLKCTRL] = ON;
 
   initSPI();
 
   initINTC();
 
-  //Reset interrupt status
-  CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
-  //Configure interrupts
-  CT_MCSPI0.IRQENABLE = 0x0;
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   //Write word to transmit
-  CT_MCSPI0.TX0 = 0x8801;
+  CT_MCSPI0.TX0 = 0x8800;
+
+  //Wait until interrupt
+  while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
+  }
 
   // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
-  //Wait until interrupt
-  while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
-		}
 
-	CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800; // clear system event 44 (McSPI)
+  CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800; // clear system event 44 (McSPI)
 
   __R30 |= (1 << CONVST);
 
@@ -85,7 +82,13 @@ void initSPI(void){
   /* Set SPI module to Master Mode*/
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 
+  CT_MCSPI0.SYST_bit.SSB = 0;
 
+  //Reset interrupt status
+  CT_MCSPI0.IRQSTATUS = 0xFFFF;
+
+  //Configure interrupts
+  CT_MCSPI0.IRQENABLE = 0x5;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
