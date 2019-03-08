@@ -42,7 +42,7 @@ void main(void){
 
   __R30 |= (1 << CONVST);
 
-  __delay_cycles(20);
+  __delay_cycles(100);
 
   __R30 &= ~(1 << CONVST);
 
