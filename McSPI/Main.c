@@ -79,7 +79,7 @@ void initSPI(void){
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 
   //Reset interrupt status
-  CT_MCSPI0.IRQSTATUS = 0xFFFF;
+  CT_MCSPI0.IRQSTATUS = 0x0000;
 
   //Configure interrupts
   CT_MCSPI0.IRQENABLE = 0x0;
