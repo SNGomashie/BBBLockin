@@ -25,30 +25,35 @@ void initSPI(void);
 void initINTC(void);
 
 void main(void){
-  __R30 |= (1 << NRD); // Initialize Read input HIGH.
-  __R30 |= (1 << CONVST); //Initialize conversion start HIGH.
+
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   initSPI();
+  __R30 &= ~(1 << CS);
+  __R30 |= (1 << NRD);
+  __R30 |= (1 << CONVST);
 
   initINTC();
-
-  __R30 &= ~(1 << CONVST); //Set ConvST low
-  __R30 &= ~(1 << NRD); //Set nRD low
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
+  __R30 |= (1 << CS);
+  __R30 &= ~(1 << NRD);
+  __R30 &= ~(1 << CONVST);
+
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
 
+  __delay_cycles(280);
+
   CT_MCSPI0.TX0 = 0x0000;
 
-  __delay_cycles(1000);
 
-  __R30 |= ( 1 << CONVST ); //Set convST high
-	__R30 |= ( 1 << NRD ); //Set nRD high
+  __R30 &= ~(1 << CS);
+  __R30 |= (1 << NRD);
+  __R30 |= (1 << CONVST);
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
@@ -64,6 +69,8 @@ void initSPI(void){
 
   /* Set SPI module to Master Mode*/
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
+
+  CT_MCSPI0.MODULCTRL_bit.PIN34 = 0x1;
 
   CT_MCSPI0.SYST_bit.SSB = 1; // Clear interrupts
 
