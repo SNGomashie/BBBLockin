@@ -28,6 +28,8 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
      3. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
      4. [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad)
      5. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC)
+     6. [Using the onboard ADC](https://github.com/SNGomashie/BBBLockin/tree/master/Onboard_ADC)
+     7. [Using the McSPI chip](https://github.com/SNGomashie/BBBLockin/tree/master/McSPI)
 
 
 
@@ -39,7 +41,9 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [x] Read first message from PRU using remoteproc and python
 - [x] Write library for easy usage of remoteproc on the PRU
 - [x] Send message from PRU0 -> PRU1 using scratch pad
-- [ ] Read a ADC with the PRU (mcSPI, SPI by means of bit-banging, onboard ADC)
+- [x] Read the onboard ADC
+- [x] Bit-bang and SPI ADC
+- [ ] Using the McSPI chip
 - [ ] Determine reading speed PRU
 - [ ] Implement lock-in amplifier on the PRU
 
