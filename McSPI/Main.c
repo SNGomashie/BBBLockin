@@ -56,13 +56,16 @@ void main(void){
   	__delay_cycles(300);
 
   // Disable channel
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
-
-  //Wait until interrupt
-  while((__R31 & HOST_INT));
-
+  //  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
   // Start conversion
   __R30 |= (1 << CONVST);
+
+  __delay_cycles(9);
+
+  __R30 &= ~(1 << CONVST);
+
+
+  CT_MCSPI0.TX0 = 0x0000;
 
   __halt();
 }
