@@ -44,7 +44,7 @@ void main(void){
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
   __delay_cycles(300);
-  
+
   __R30 |= (1 << CONVST);
 
   CT_MCSPI0.TX0 = 0x0000;
@@ -68,7 +68,6 @@ void initSPI(void){
 
   //Configure interrupts
   CT_MCSPI0.IRQENABLE = 0x0;
-  CT_MCSPI0.IRQENABLE_bit.EOWKE = 0X1;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
@@ -91,13 +90,6 @@ void initSPI(void){
   // Set SPID0 as input
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
 
-  // Enable FIFO
-  CT_MCSPI0.CH0CONF_bit.FFER = 1;
-  CT_MCSPI0.CH0CONF_bit.FFEW = 1;
-
-  // Set amount of bytes in buffer
-  CT_MCSPI0.XFERLEVEL_bit.AEL = 0x1;
-  CT_MCSPI0.XFERLEVEL_bit.AFL = 0x1;
 }
 
 void initINTC(void){
