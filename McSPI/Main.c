@@ -56,20 +56,16 @@ void main(void){
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
+  // Disable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
   //Wait until interrupt
   while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
   }
 
-  // Disable channel
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
-
-  CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800; // clear system event 44 (McSPI)
-
   __R30 |= (1 << CONVST);
-
-
-
 }
+
 void initSPI(void){
   /* Reset McSPI0 module */
   CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 1;
