@@ -55,6 +55,7 @@ void main(void){
   //Wait until interrupt
   while((__R31 & (0x1<<30))==0) {		// Wait for PRU 0
 		}
+
 	CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800; // clear system event 44 (McSPI)
 
   __R30 |= (1 << CONVST);
@@ -81,7 +82,7 @@ void initSPI(void){
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
   //Configure interrupts
-  CT_MCSPI0.IRQENABLE = 0x4;
+  CT_MCSPI0.IRQENABLE = 0x0;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
   CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
