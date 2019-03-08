@@ -49,12 +49,8 @@ void main(void){
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
-
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
-
-  //Reset interrupt status
-  CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
   // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
@@ -75,13 +71,12 @@ void initSPI(void){
   /* Set SPI module to Master Mode*/
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 
-  /* clear interrupts */
-  CT_MCSPI0.SYST_bit.SPIEN_0 = 0;
-  CT_MCSPI0.SYST_bit.SPICLK = 1;
-  CT_MCSPI0.SYST_bit.SPIDATDIR0 = 1;
-  CT_MCSPI0.SYST_bit.SPIDATDIR1 = 0;
-  CT_MCSPI0.SYST_bit.SPIENDIR = 0;
-  CT_MCSPI0.SYST_bit.SSB = 1;
+  CT_MCSPI0.SYST_bit.SPIEN_0 = 0; // Set CS
+  CT_MCSPI0.SYST_bit.SPICLK = 1; //Set CLK
+  CT_MCSPI0.SYST_bit.SPIDATDIR0 = 1; // Set data direction D0
+  CT_MCSPI0.SYST_bit.SPIDATDIR1 = 0; // Set data direction D1
+  CT_MCSPI0.SYST_bit.SPIENDIR = 0; // Set CS polarity
+  CT_MCSPI0.SYST_bit.SSB = 1; // Clear interrupts
 
   //Reset interrupt status
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
