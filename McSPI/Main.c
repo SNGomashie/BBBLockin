@@ -44,7 +44,7 @@ void main(void){
 
   __R30 |= (1 << CONVST);
 
-  __delay_cycles(8);
+  __delay_cycles(10);
 
   __R30 &= ~(1 << CONVST);
 
