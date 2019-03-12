@@ -45,7 +45,7 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [x] Read the onboard ADC
 - [x] Bit-bang an SPI ADC
 - [x] Using the McSPI chip
-- [ ] Determine requierments for lock in
+- [ ] Determine max speed for lock in on PRU
 - [ ] Determine reading speed PRU
 - [ ] Implement lock-in amplifier on the PRU
 
