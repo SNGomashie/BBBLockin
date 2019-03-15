@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.fftpack
 import matplotlib.pyplot as plt
 
 
@@ -9,7 +10,8 @@ Ar = 1  # reference amplitude
 Ai = 1.8  # input amplitude
 fo = 50  # frequency of sinusoid
 n = np.arange(0, 4 / fo, dt)  # time axis
-a = 14  # Noise scaling factor
+a = 0.1  # Noise scaling factor
+
 
 # Quantizition
 quant_bits = 16
@@ -49,6 +51,7 @@ VsigCosandNoiseQ = np.float64(VsigCosandNoise16)
 Vc = VsigCosandNoiseQ * VrefCos
 Vs = VsigCosandNoiseQ * VrefSin
 
+
 # calculate RMS
 Ivs = np.mean(Vs)
 Qvc = np.mean(Vc)
@@ -71,11 +74,15 @@ Aerr = Ao - Ai
 print("SNR is : %.3f dB" % SNR)
 print("Amplitude error : %.6f V" % Aerr)
 
+J = len(n)
+T = dt
+x = np.linspace(0.0, J * T, J)
+Vcfft = scipy.fftpack.fft(Vc)
+Vsfft = scipy.fftpack.fft(Vs)
+
+xfft = np.linspace(0.0, 1.0 / (2.0 * T), J / 2)
+plt.plot(xfft, 2.0 / J * np.abs(Vcfft[:J // 2]))
+plt.show()
+
 plt.plot(n, VsigCos, 'rx')
-plt.show()
-plt.plot(n, VsigCosandNoiseQ)
-plt.show()
-plt.plot(n, Vs)
-plt.show()
-plt.plot(n, Vc)
 plt.show()
