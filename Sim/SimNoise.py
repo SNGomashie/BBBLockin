@@ -1,15 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import signal
 
+# Frequncies and periods
+Fs = 4800  # Hz
+Ts = 1 / Fs  # s
+Fr = 100  # Hz
+Tr = 1 / Fr  # s
+# Constants
+Ar = 1  # V
+Ai = 1.8  # V
+P = 1000  # Periods
+a = 13.219  # Randomness
 
-# define the configuration
-fs = 8000  # sampling frequency
-dt = 1 / fs  # step time
-Ar = 1  # reference amplitude
-Ai = 1.8  # input amplitude
-fo = 50  # frequency of sinusoid
-n = np.arange(0, 4 / fo, dt)  # time axis
-a = 14  # Noise scaling factor
+# Samples
+T = P * Tr  # periods
+n = int(T * Fs)
+t = np.linspace(0, T, n, endpoint=False)
+Ao = np.zeros(len(t))
 
 # Quantizition
 quant_bits = 16
@@ -17,7 +25,7 @@ quant_levels = np.power(2, quant_bits) / 2
 quant_step = 1 / quant_levels
 
 # Experimental signal
-VsigCos = Ai * np.cos((n * 2 * np.pi * fo) - (np.pi / 10))
+VsigCos = Ai * np.cos((t * 2 * np.pi * Fr) - (np.pi / 10))
 # Added phase difference
 
 # Reference signal(square wave) ( Also uncomment Ao)
@@ -25,12 +33,12 @@ VsigCos = Ai * np.cos((n * 2 * np.pi * fo) - (np.pi / 10))
 # VrefSin = Ar * signal.square(( n * 2 * np.pi * fo) - (np.pi/2))
 
 # Reference signals(sinus and cosinus)
-VrefCos = Ar * np.cos(n * 2 * np.pi * fo)
-VrefSin = Ar * np.cos((n * 2 * np.pi * fo) - (np.pi / 2))
+VrefCos = Ar * np.cos(t * 2 * np.pi * Fr)
+VrefSin = Ar * np.cos((t * 2 * np.pi * Fr) - (np.pi / 2))
 
 # Noise generation
 np.random.seed(45)
-Expnoise = a * np.random.randn(len(n), 1)
+Expnoise = a * np.random.randn(len(t), 1)
 
 # SNR
 npwr = np.sum(np.power(Expnoise, 2))
@@ -39,19 +47,20 @@ sigpwr = np.sum(np.power(VsigCos, 2))
 # Input + Noise
 VsigCosandNoise = VsigCos + Expnoise
 
-# Make a 16bit number
-VsigCosandNoise16 = np.round(VsigCosandNoise / quant_step) * quant_step
-
-# Convet back to double
-VsigCosandNoiseQ = np.float64(VsigCosandNoise16)
+nyq = 0.5 * Fs
+Fc = 0.01 / nyq
+a = 1
+b, a = signal.butter(4, 0.0001, btype='low', analog=False)
 
 # Multiply signal with reference Sin and Cos
-Vc = VsigCosandNoiseQ * VrefCos
-Vs = VsigCosandNoiseQ * VrefSin
+Vc = VsigCosandNoise * VrefCos
+Vs = VsigCosandNoise * VrefSin
 
 # calculate RMS
-Ivs = np.mean(Vs)
-Qvc = np.mean(Vc)
+filtVc = signal.lfilter(b, a, Vs)
+filtVs = signal.lfilter(b, a, Vc)
+Ivs = np.mean(filtVs)
+Qvc = np.mean(filtVc)
 
 # Find magnitude (Square wave)
 # Ao[k] = (np.pi/4) * 2 * np.sqrt((np.power(Ivs, 2))+(np.power(Qvc, 2)));
@@ -73,7 +82,7 @@ print("Amplitude error : %.6f V" % Aerr)
 
 plt.plot(n, VsigCos, 'rx')
 plt.show()
-plt.plot(n, VsigCosandNoiseQ)
+plt.plot(n, VsigCosandNoise)
 plt.show()
 plt.plot(n, Vs)
 plt.show()
