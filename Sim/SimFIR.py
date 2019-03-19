@@ -8,7 +8,7 @@ d = np.array([1., -3.99777533, 5.99332846, -3.99333093, 0.9977778])
 
 Fs = 4800  # Hz
 nyq = 0.5 * Fs
-Fcl = 0.5 / nyq
+Fcl = 0.1 / nyq
 Fch = 3 / nyq
 order = 6
 N, Wn = buttord(Fcl, Fch, 0.5, 40)

@@ -1,14 +1,15 @@
 // Access the CYCLE and STALL registers
-// devmem2 0x4A32200C - PRU0 CTRl register 0x4A322000 - offset cycle register 0x000C
+// pr1_pru0_pru_r31_16
 #include <stdint.h>
 #include <pru_cfg.h>
+#include <pru_iep.h>
 #include <pru_ctrl.h>
 #include "resource_table.h"
 
-#define out 1       // Bit number to output on
+#define SYNC 16     // Bit number to output on
 
-volatile register unsigned int __R30;
-volatile register unsigned int __R31;
+volatile register uint32_t __R30;
+volatile register uint32_t __R31;
 
 void main(void)
 {
@@ -25,8 +26,11 @@ void main(void)
     uint8_t c = 0;
     // Reset cycle counter, cycle is on the right side to force the compiler
     // to put it in it's own register
-    PRU0_CTRL.CYCLE = cycle;
-    c = a * b
-    cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
+
+    while (!(__R31 & (1 << SYNC));
+      PRU0_CTRL.CYCLE = cycle;
+      while (_R31 & (1 << SYNC));
+      while(!(__R31 & (1 << SYNC)));
+      cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
     __halt();
 }

@@ -10,7 +10,7 @@ Tr = 1 / Fr  # s
 # Constants
 Ar = 1  # V
 Ai = 1.8  # V
-P = 1000  # Periods
+P = 100  # Periods
 a = 13.219  # Randomness
 
 # Samples
@@ -57,10 +57,10 @@ Vc = VsigCosandNoise * VrefCos
 Vs = VsigCosandNoise * VrefSin
 
 # calculate RMS
-filtVc = signal.lfilter(b, a, Vs)
-filtVs = signal.lfilter(b, a, Vc)
-Ivs = np.mean(filtVs)
-Qvc = np.mean(filtVc)
+# filtVc = signal.lfilter(b, a, Vs)
+# filtVs = signal.lfilter(b, a, Vc)
+Ivs = np.mean(Vs)
+Qvc = np.mean(Vc)
 
 # Find magnitude (Square wave)
 # Ao[k] = (np.pi/4) * 2 * np.sqrt((np.power(Ivs, 2))+(np.power(Qvc, 2)));
@@ -80,11 +80,8 @@ Aerr = Ao - Ai
 print("SNR is : %.3f dB" % SNR)
 print("Amplitude error : %.6f V" % Aerr)
 
-plt.plot(n, VsigCos, 'rx')
+plt.plot(t, VsigCos, 'r-')
 plt.show()
-plt.plot(n, VsigCosandNoise)
-plt.show()
-plt.plot(n, Vs)
-plt.show()
-plt.plot(n, Vc)
+plt.magnitude_spectrum(Ao, Fs=Fs, color='C1', scale='dB')
+plt.magnitude_spectrum(VsigCosandNoise, Fs=Fs, color='C2', scale='dB')
 plt.show()

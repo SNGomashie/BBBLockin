@@ -1,23 +1,26 @@
 import numpy as np
-from scipy import signal
+from scipy import signal, fftpack
 import matplotlib.pyplot as plt
 
-# define the configuration
-fs = 16000  # sampling frequency
-dt = 1 / fs  # step time
-Ar = 1  # Reference amplitude
-Ai = 1.8  # Input amplitude
-n = np.arange(0, 0.025, dt)  # Time axis
-fo = 100  # Refernce frequency
-errIncr = 0.02  # Error percentage allowed
+# Frequncies and periods
+Fs = 4800  # Hz
+Ts = 1 / Fs  # s
+Fr = 100  # Hz
+Tr = 1 / Fr  # s
 
-# Quantizition
-quant_bits = 16
-quant_levels = np.power(2, quant_bits) / 2
-quant_step = 1 / quant_levels
+# Constants
+Ar = 1  # V
+Ai = 1.8  # V
+P = 500
+Navr = 1000  # num of samples to be averaged
+
+# Samples
+T = P * Tr  # periods
+n = int(T * Fs)
+t = np.linspace(0, T, n, endpoint=False)
 
 # Experimental signal (Sinusoid)
-VsigCos = Ai * np.cos((n * 2 * np.pi * fo) - (np.pi / 10)
+VsigCos = Ai * np.cos((t * 2 * np.pi * Fr) - (np.pi / 10)
                       )  # Added phase difference
 
 # Reference signal(square wave) ( Also uncomment Ao)
@@ -25,12 +28,12 @@ VsigCos = Ai * np.cos((n * 2 * np.pi * fo) - (np.pi / 10)
 # VrefSin = Ar * signal.square(( n * 2 * np.pi * fo) - (np.pi/2))
 
 # Reference signals(sinus and cosinus)
-VrefCos = Ar * np.cos(n * 2 * np.pi * fo)
+VrefCos = Ar * np.cos(t * 2 * np.pi * Fr)
 # Cosinus phase shifted to create Sinus
-VrefSin = Ar * np.cos((n * 2 * np.pi * fo) - (np.pi / 2))
+VrefSin = Ar * np.cos((t * 2 * np.pi * Fr) - (np.pi / 2))
 
 # Amount of random noise samples to be averaged
-kmax = np.arange(0, 10, 1)
+kmax = np.arange(0, 100, 1)
 
 # Amount of noise levels
 stepn = -1
@@ -43,13 +46,13 @@ Aerr = np.zeros(len(kmax))
 aveSNRsin = np.zeros(len(x))
 aveAerrsin = np.zeros(len(x))
 aveAo = np.zeros(len(x))
-
+we_did_it = 0
 i = 0
 for a in x:
     for k in kmax:
         # Noise generation
         np.random.seed(k + 45)
-        Expnoise = a * np.random.randn(len(n), 1)
+        Expnoise = a * np.random.randn(len(t))
 
         # SNR
         npwr = np.sum(np.power(Expnoise, 2))
@@ -58,15 +61,9 @@ for a in x:
         # Input + Noise
         VsigCosandNoise = VsigCos + Expnoise
 
-        # Make a 16bit number
-        VsigCosandNoise16 = np.round(VsigCosandNoise / quant_step) * quant_step
-
-        # Convet back to double
-        VsigCosandNoiseQ = np.float64(VsigCosandNoise16)
-
         # Multiply signal with reference Sin and Cos
-        Vc = VsigCosandNoiseQ * VrefCos
-        Vs = VsigCosandNoiseQ * VrefSin
+        Vc = VsigCosandNoise * VrefCos
+        Vs = VsigCosandNoise * VrefSin
 
         # calculate RMS
         Ivs = np.mean(Vs)
@@ -88,13 +85,26 @@ for a in x:
     aveSNRsin[i] = np.mean(SNR)
     aveAerrsin[i] = np.mean(np.power(Aerr, 2))
     aveAo[i] = np.mean(Ao)
+
+    if (aveSNRsin[i] < -20 and we_did_it == 0):
+        print(aveSNRsin[i])
+        print(a)
+        print(i)
+        J = len(VsigCosandNoise)
+        T = Ts
+        x = np.linspace(0.0, J * T, J)
+        Aofft = fftpack.fft(VsigCosandNoise)
+        xfft = np.linspace(0.0, 1.0 / (2.0 * T), J / 2)
+        plt.plot(xfft, 2.0 / J * np.abs(Aofft[:J // 2]))
+        plt.xlim(0, 200)
+        plt.show()
+        we_did_it = 1
     i += 1
     # END
 
-plt.plot(aveSNRsin, aveAo, 'rx')
+plt.plot(aveSNRsin, aveAo, 'r-')
+plt.axhline(y=1.8, linestyle="--")
 plt.yscale('log')
-plt.yticks(np.arange(min(aveAo), max(aveAo), 0.1))
-plt.axhline(y=1.836, linestyle="--")
-plt.grid(True)
+plt.grid()
 plt.title('Voltage x SNR')
 plt.show()

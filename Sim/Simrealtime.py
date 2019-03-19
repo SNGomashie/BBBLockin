@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy import signal
 
 # Frequncies and periods
-Fs = 4800  # Hz
+Fs = 80000  # Hz
 Ts = 1 / Fs  # s
 Fr = 100  # Hz
 Tr = 1 / Fr  # s
@@ -13,7 +13,7 @@ Ai = 1.8  # V
 P = 1000  # Periods
 Navr = 1001  # num of samples to be averaged
 a = 13.219  # Randomness
-w = 0.001  # Weight of EWMA
+w = 0.0001  # Weight of EWMA
 
 # Samples
 T = P * Tr  # periods
@@ -66,12 +66,8 @@ for s in VsigCosandNoise:
     i += 1
 finalSNR = 10 * np.log10(np.mean(Ao[-1000:]) / Ai)
 filtAo = signal.lfilter(b, a, Ao)
-w, h = signal.freqz(b, a, worN=8000)
-plt.semilogx(0.5 * Fs * w / np.pi, np.abs(h), 'b')
-plt.plot(Fcl, 0.5 * np.sqrt(2), 'ko')
-# plt.axvline(Fcl, color='k')
-# plt.yscale('log')
-# plt.xlim(0, 100)
+w, h = signal.freqz(b, a)
+plt.semilogx(w, 20 * np.log10(abs(h)), 'b')
 plt.title("Lowpass Filter Frequency Response")
 plt.xlabel('Frequency [Hz]')
 plt.grid()
@@ -81,14 +77,13 @@ print("SNR pre-LIA : %.3f dB" % SNR)
 print("SNR post-LIA: %.3f dB" % finalSNR)
 print(np.mean(Ao[-1000:]))
 plt.title("Magnitude spectrum ")
-plt.magnitude_spectrum(VsigCosandNoise, Fs=Fs, color='C2')
-plt.magnitude_spectrum(filtAo, Fs=Fs, color='C1')
-plt.xlim(0, 1)
+plt.magnitude_spectrum(VsigCosandNoise, Fs=Fs, color='C2', scale='dB')
+plt.magnitude_spectrum(Ao, Fs=Fs, color='C1', scale='dB')
 plt.show()
 
 plt.title("Filtered signal ")
 plt.plot(t, VsigCosandNoise, 'b-', linewidth=2, label='unfilted signal')
-plt.plot(t, filtAo, 'g-', linewidth=2, label='filtered signal')
+plt.plot(t, Ao, 'g-', linewidth=2, label='filtered signal')
 plt.xlabel('Time [sec]')
 plt.ylabel('Amlitude [Voltage]')
 plt.grid()
