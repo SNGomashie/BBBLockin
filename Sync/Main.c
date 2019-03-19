@@ -24,7 +24,7 @@ void main(void)
 
     while (!(__R31 & (1 << SYNC)));
       PRU0_CTRL.CYCLE = cycle;
-      while (_R31 & (1 << SYNC));
+      while (__R31 & (1 << SYNC));
       while(!(__R31 & (1 << SYNC)));
       cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
     __halt();
