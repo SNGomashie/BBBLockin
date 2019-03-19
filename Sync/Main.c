@@ -21,13 +21,8 @@ void main(void)
 
     PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
 
-    uint8_t a = 10;
-    uint8_t b = 5;
-    uint8_t c = 0;
-    // Reset cycle counter, cycle is on the right side to force the compiler
-    // to put it in it's own register
 
-    while (!(__R31 & (1 << SYNC));
+    while (!(__R31 & (1 << SYNC)));
       PRU0_CTRL.CYCLE = cycle;
       while (_R31 & (1 << SYNC));
       while(!(__R31 & (1 << SYNC)));
