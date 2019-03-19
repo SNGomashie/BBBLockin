@@ -27,7 +27,5 @@ void main(void)
     PRU0_CTRL.CYCLE = cycle;
     c = a * b
     cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
-    stall = PRU0_CTRL.STALL;    // Ditto for stall
-
     __halt();
 }
