@@ -25,7 +25,7 @@ void main(void)
     // Reset cycle counter, cycle is on the right side to force the compiler
     // to put it in it's own register
     PRU0_CTRL.CYCLE = cycle;
-    __delay_cycles(100);
+    c = a  * b;
     cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
     __halt();
 }
