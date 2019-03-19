@@ -9,6 +9,8 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [TI AM335x Technical Reference Manual](https://www.ti.com/lit/ug/spruh73p/spruh73p.pdf)
 - [TI PRU Optimizing C/C++ Compiler](http://www.ti.com/lit/ug/spruhv7c/spruhv7c.pdf)
 - [TI PRU Read Latencies](http://www.ti.com/lit/an/sprace8a/sprace8a.pdf)
+- [TI Hands-on labs](http://processors.wiki.ti.com/index.php/PRU_Training:_Hands-on_Labs)
+- [Old Elinux entry](https://elinux.org/Ti_AM33XX_PRUSSv2)
 
 
 ## Table of contents
