@@ -13,7 +13,7 @@ volatile register uint32_t __R31;
 uint8_t idx = 0;
 uint8_t jdx = 0;
 
-const uint8_t Navr = 1000;
+const uint16_t Navr = 1000;
 const uint8_t Nchl = 4;
 uint16_t in = 0;
 
