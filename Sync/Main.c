@@ -15,6 +15,8 @@ volatile register uint32_t __R31;
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
 void initIEP(void);
+uint32_t lockPeriod(uint32_t pin);
+uint32_t lockPeriod(uint32_t pin);
 
 void main(void)
 {
@@ -24,35 +26,42 @@ void main(void)
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
+    period = lockPeriodIEP(SYNC);
 
-
-    // Using the IEP counter external to the PRU
-    initIEP();
-    while (!(__R31 & (1 << SYNC)));
-    CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x1;  // Enable counter
-    while (__R31 & (1 << SYNC));
-    while(!(__R31 & (1 << SYNC)));
-    pru0_mem[0] = CT_IEP.TMR_CNT;    // Read cycle and store in a register
-
-    // Using the cycle counter internal to the PRU
-
-    // PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
-    // while (!(__R31 & (1 << SYNC)));
-    //   PRU0_CTRL.CYCLE = cycle;
-    //   while (__R31 & (1 << SYNC));
-    //   while(!(__R31 & (1 << SYNC)));
-    //   cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
     __halt();
 }
 
 void initIEP (void){
   /* Disable counter */
-  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0;
+  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
 
   /* Clear CNT register */
   CT_IEP.TMR_CNT = 0xFFFFFFFF;
 
   /* Clear overflow register */
-  CT_IEP.TMR_GLB_STS = 0x1;
+  CT_IEP.TMR_GLB_STS = 0x0001;
+
+  /* Set increment to 1 (default = 5)*/
+  CT_IEP.TMR_GLB_CFG_bit.DEFAULT_INC = 0x0001;
+
+}
+
+uint32_t lockPeriod (uint8_t pin){
+  PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
+  while (!(__R31 & (1 << pin)));
+  PRU0_CTRL.CYCLE = cycle;
+  while (__R31 & (1 << pin));
+  while(!(__R31 & (1 << pin)));
+  return PRU0_CTRL.CYCLE;    // Read cycle and store in a register
+}
+
+uint32_t lockPeriodIEP (uint8_t pin){
+  initIEP();
+  while (!(__R31 & (1 << pin)));
+  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x1;  // Enable counter
+  while (__R31 & (1 << pin));
+  while(!(__R31 & (1 << pin)));
+  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0;
+  return CT_IEP.TMR_CNT;    // Read cycle and store in a register
 
 }
