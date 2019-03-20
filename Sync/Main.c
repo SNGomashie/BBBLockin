@@ -49,7 +49,7 @@ void initIEP (void){
 uint32_t lockPeriod (uint8_t pin){
   PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
   while (!(__R31 & (1 << pin)));
-  PRU0_CTRL.CYCLE = cycle;
+  PRU0_CTRL.CYCLE = 0x0001;
   while (__R31 & (1 << pin));
   while(!(__R31 & (1 << pin)));
   return PRU0_CTRL.CYCLE;    // Read cycle and store in a register
@@ -58,10 +58,10 @@ uint32_t lockPeriod (uint8_t pin){
 uint32_t lockPeriodIEP (uint8_t pin){
   initIEP();
   while (!(__R31 & (1 << pin)));
-  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x1;  // Enable counter
+  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0001;  // Enable counter
   while (__R31 & (1 << pin));
   while(!(__R31 & (1 << pin)));
-  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0;
+  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
   return CT_IEP.TMR_CNT;    // Read cycle and store in a register
 
 }
