@@ -15,8 +15,8 @@ volatile register uint32_t __R31;
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
 void initIEP(void);
-uint32_t lockPeriod(uint32_t pin);
-uint32_t lockPeriod(uint32_t pin);
+uint32_t lockPeriod(uint8_t pin);
+uint32_t lockPeriodIEP(uint8_t pin);
 
 void main(void)
 {
