@@ -61,7 +61,7 @@ uint32_t lockPeriodIEP (uint8_t pin){
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0001;  // Enable counter
   while (__R31 & (1 << pin));
   while(!(__R31 & (1 << pin)));
-  // CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
+  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
   return CT_IEP.TMR_CNT;    // Read cycle and store in a register
 
 }
