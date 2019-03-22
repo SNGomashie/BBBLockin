@@ -2,6 +2,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
 
+
+def int_sqrt32(x):
+    res = 0
+    add = 0x8000
+    for i in range(16):
+        temp = res | add
+        g2 = temp * temp
+        if x >= g2:
+            res = temp
+        add = add >> 1
+    return res
+
+
 # Frequncies and periods
 Fs = 4800  # Hz
 Ts = 1 / Fs  # s
@@ -9,7 +22,7 @@ Fr = 100  # Hz
 Tr = 1 / Fr  # s
 # Constants
 Ar = 1  # V
-Ai = 1.8  # V
+Ai = 5  # V
 P = 100  # Periods
 a = 13.219  # Randomness
 
@@ -66,6 +79,12 @@ Qvc = np.mean(Vc)
 # Ao[k] = (np.pi/4) * 2 * np.sqrt((np.power(Ivs, 2))+(np.power(Qvc, 2)));
 
 # Find magnitude
+# if Ivs < Qvc:
+#     Ao = 2 * (0.96 * Qvc + 0.40 * Ivs)
+# elif Qvc < Ivs:
+#     Ao = 2 * (0.96 * Qvc + 0.40 * Ivs)
+# R = (Ivs * Ivs) + (Qvc * Qvc)
+# Ao = 2 * int_sqrt32(R)
 Ao = 2 * np.sqrt((np.power(Ivs, 2)) + (np.power(Qvc, 2)))
 
 print("Input amplitude : %.3f V" % Ai)
@@ -82,6 +101,6 @@ print("Amplitude error : %.6f V" % Aerr)
 
 plt.plot(t, VsigCos, 'r-')
 plt.show()
-plt.magnitude_spectrum(Ao, Fs=Fs, color='C1', scale='dB')
-plt.magnitude_spectrum(VsigCosandNoise, Fs=Fs, color='C2', scale='dB')
+# plt.magnitude_spectrum(Ao, Fs=Fs, color='C1', scale='dB')
+# plt.magnitude_spectrum(VsigCosandNoise, Fs=Fs, color='C2', scale='dB')
 plt.show()

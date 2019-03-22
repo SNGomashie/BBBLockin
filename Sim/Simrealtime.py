@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy import signal
 
 # Frequncies and periods
-Fs = 80000  # Hz
+Fs = 4800  # Hz
 Ts = 1 / Fs  # s
 Fr = 100  # Hz
 Tr = 1 / Fr  # s
@@ -46,12 +46,12 @@ Fch = 3 / nyq
 order = 6
 N, Wn = signal.buttord(Fcl, Fch, 0.5, 40)
 b, a = signal.butter(N, Wn, btype='low', analog=False)
-print(b)
-print(a)
 
 i = 0
 Qvc, Ivs, R = [0, 0, 0]
+print(len(np.linspace(0, Tr, n, endpoint=False)))
 for s in VsigCosandNoise:
+
     # Multiply signal with reference Sin and Cos
     Qvc = w * (s * VrefCos[i]) + (1 - w) * Qvc
     # Qvc -= Qvc / Navr
