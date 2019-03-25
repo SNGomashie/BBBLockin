@@ -22,6 +22,7 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
    - [Flash image onto SD card (windows 10 and linux) ](#flash)
    - [Enabling the Beaglebone PRU](#en_pru)
    - [Installing the TI PRU Code Generation Tools](#installing-the-ti-pru-code-generation-toolspru-cgt)
+   - [Configure GPIO at startup](#Configure-gpio-at-startup)
 3. [Programming the PRU](#programming-the-pru)
    - [Cloning the Repo](#cloning-the-repositories)
    - [Examples](#running-our-first-program)
@@ -211,6 +212,46 @@ This command shows where the TI PRU Code Generation Tool is located:
 ```
 whereis clpru
 ```
+
+### Configure GPIO
+
+Configuring a pin on the BeagleBone Black is very simple. You can use the 'config-pin' utility to configure the pin. You only need to know the position on the header. For example: pin 30 on the P9 header (P9_30)
+<img src="https://i.imgur.com/v99FHnQ.png" alt="drawing"/>
+<br><br>
+
+To load our custom pin configuration at startup we first create a file with our pin configs. (In this example we use pin 17 on the P9 header and configure it as SPI chip select)
+```
+~$ sudo nano /usr/bin/enable-spi-pins.sh
+
+#!/bin/bash
+
+config-pin P9_17 spi_cs
+```
+We have to give this file the right permission by running:
+```
+~$ sudo chmod 755 /usr/bin/enable-spi-pins.sh
+```
+Now we create another file which will call the previous file on startup.
+```
+~$ sudo nano /lib/systemd/system/enable-spi-pins.service
+
+[Unit]
+Description=Enable SPI pins
+After=generic-board-startup.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/enable-spi-pins.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+Now we enable our new systemd service
+```
+~$ sudo systemctl daemon-reload
+~$ sudo systemctl enable enable-spi-pins.service
+```
+Reboot and test if the pins are set on boot
 
 ## Programming the PRU
 
