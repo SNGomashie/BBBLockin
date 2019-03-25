@@ -31,22 +31,19 @@ void main(void){
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   initSPI();
+
   __R30 &= ~(1 << CS);
   __R30 |= (1 << NRD);
   __R30 |= (1 << CONVST);
 
-  initINTC();
+  // initINTC();
 
   // Enable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   SPItransfer(0);
 
-  while(__R30 & (0 << BUSY));
-
-  SPItransfer(1);
-
-  // Enable channel
+  // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
 }
@@ -58,17 +55,17 @@ void initSPI(void){
   /* Wait until reset is done */
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 1));
 
-  /* Set SPI module to Master Mode*/
+  /* Set SPI module to Master Mode */
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 
   CT_MCSPI0.MODULCTRL_bit.PIN34 = 0x1;
 
   CT_MCSPI0.SYST_bit.SSB = 1; // Clear interrupts
 
-  //Reset interrupt status
+  /* Reset interrupt status */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
-  //Configure interrupts
+  /* Configure interrupts */
   CT_MCSPI0.IRQENABLE = 0x0;
 
   // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
@@ -94,21 +91,21 @@ void initSPI(void){
 
 }
 
-void initINTC(void){
-    __R31 = 0x00000000;					      //Clear any events
-     // CT_INTC.SIPR1_bit.POLARITY_63_32 = 0x800; // Set polarity of interrupt
-     // CT_INTC.SITR1_bit.TYPE_63_32 = 0x000; // Set type of interrupt
-     // CT_INTC.CMR11_bit.CH_MAP_44 = 0b111; //map event 44 to channel 0
-     // CT_INTC.HMR0_bit.HINT_MAP_0 = 0x0;//map channel 0 to host 0
-     // CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800; // clear system event 44 (McSPI)
-     // CT_INTC.HIEISR = 0x0;			// Enable Host interrupt 1
-     CT_INTC.GER = 0x1;
-}
+// void initINTC(void){
+//     __R31 = 0x00000000;					      //Clear any events
+//      // CT_INTC.SIPR1_bit.POLARITY_63_32 = 0x800; // Set polarity of interrupt
+//      // CT_INTC.SITR1_bit.TYPE_63_32 = 0x000; // Set type of interrupt
+//      // CT_INTC.CMR11_bit.CH_MAP_44 = 0b111; //map event 44 to channel 0
+//      // CT_INTC.HMR0_bit.HINT_MAP_0 = 0x0;//map channel 0 to host 0
+//      // CT_INTC.SECR1_bit.ENA_STS_63_32 = 0x800; // clear system event 44 (McSPI)
+//      // CT_INTC.HIEISR = 0x0;			// Enable Host interrupt 1
+//      CT_INTC.GER = 0x1;
+// }
 
 void SPItransfer(uint8_t chan){
   const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
   uint8_t SPIsend = (ADCch[chan] << 4) | 0b10001000; // single-ended, input 0V to 5V
-  
+
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << NRD);
   __R30 |= (1 << CS);
@@ -116,8 +113,6 @@ void SPItransfer(uint8_t chan){
   CT_MCSPI0.TX0 = 0x8800;
 
   CT_MCSPI0.TX0 = 0x0000;
-
-  __delay_cycles(280);
 
   __R30 &= ~(1 << CS);
   __R30 |= (1 << NRD);
