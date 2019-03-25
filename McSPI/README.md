@@ -22,7 +22,6 @@ The PRU constants table is a structure of hard-coded memory addresses for common
 ```
 volatile __far sysMcspi CT_MCSPI0 __attribute__((cregister("MCSPI0", far), peripheral));
 volatile __far sysMcspi CT_MCSPI1 __attribute__((cregister("MCSPI1", far), peripheral));
-
 ```
 These bind the addresses of the registers corresponding to MCSPI0/1 to the names CT_MCSPI0/1. More information about this statement can be found in the __*TI PRU Optimizing C/C++ Compiler V2.3 User's Guide Chapter 5*__
 <br><br><br>
@@ -47,6 +46,7 @@ The table below shows the timing characteristics:
 | Tconv | Conversion time| 5000ns|
 | Tclk  | Clock period   | 50ns  |
 | Fclk  | Clock frequency| 20Mhz |
+
 <br><br>
 
 ### McSPI registers
@@ -69,6 +69,7 @@ offset | Acronym | Name | Description
 0x017C|MCSPI_XFERLEVEL| McSPI transfer levels register |Provides transfer levels needed while using FIFO buffer during transfer
 0x0180|MCSPI_DAFTX| McSPI DMA address aligned FIFO transmitter register|DMA TX register
 0x01A0|MCSPI_DAFRX| McSPI DMA address aligned FIFO receiver register|DMA RX register
+
 <br><br>
 
 ### Programming aid
