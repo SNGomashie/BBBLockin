@@ -1,4 +1,4 @@
-# McSPI (SPI peripherals)
+# Multichannel Serial Port Interface (McSPI)
 In this example we will read out the LTC1859 from Analog Devices using the Multichannel Serial Port Interface (McSPI) of the device. The goal of this example is to explore more ways to read out SPI devices using the PRUs. This example will also teach the reader how to access other peripherals using the constants table.
 <br><br>
 
