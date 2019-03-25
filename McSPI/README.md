@@ -18,4 +18,4 @@ The Master/Slave Multichannel Serial Port Interface(McSPI) module is a general-p
 
 ### LTC1859
 We use the McSPI module to read out our LTC1859 ADC. The LTC1859 is an 8 channel, 16-bit, 100ksps Analog-to-Digital converter with a programmable input range form 0V to 5V, 0V to 10V, ±5V or ±10V (Single-ended or differential). The image below shows the operating sequence for the LTC1859:
-<img src="https://i.imgur.com/xuggF9d.png" alt="drawing" width="400" />
+<img src="https://i.imgur.com/xuggF9d.png" alt="drawing"/>
