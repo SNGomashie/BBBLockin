@@ -1,42 +1,21 @@
 # McSPI (SPI peripherals)
 In this example we will read out the LTC1859 from Analog Devices using the Multichannel Serial Port Interface (McSPI) of the device. The goal of this example is to explore more ways to read out SPI devices using the PRUs. This example will also teach the reader how to access other peripherals using the constants table.
+<br><br>
 
 ## Constants table
-The PRU constants table is a structure of hard-coded memory addresses for commonly used peripherals and memories. The constants table is used to more efficiently load/store data to these commonly accessed addresses.
-| Entry No.  |Region Pointed To      |Value[31:0]   |
-|------------|-----------------------|--------------|
-|0           |PRU-ICSS INTC (local)  |0x0002_0000   |
-|1           |DMTIMER2               |0x4804_0000   |
-|2           |I2C1                   |0x4802_A000   |
-|3           |PRU-ICSS-eCAP(local)   |0x0003_0000   |
-|4           |PRU-ICSS CFG(local)    |0x0002_6000   |
-|5           |MMCHS 0                |0x4806_0000   |
-|6           |MCSPI 0                |0x4803_0000   |
-|7           |PRU-ICSS UART0(local)  |0x0002_8000   |
-|8           |McASP0 DMA             |0x4600_0000   |
-|9           |GEMAC                  |0x4A10_0000   |
-|10          |Reserved               |0x4831_8000   |
-|11          |UART 1                 |0x4802_2000   |
-|12          |UART 2                 |0x4802_4000   |
-|13          |Reserved               |0x4831_0000   |
-|14          |DCAN0                  |0x481C_C000   |
-|15          |DCAN1                  |0x481D_0000   |
-|16          |MCSPI1   |0x481A_0000   |
-|17          |I2C2   |0x4819_C000   |
-|18          |eHRPWM1  |0x4830_0000   |
-|19          |eHRPWM2   |0x4830_2000   |
-|20          |eHRPWM3   |0x4830_4000   |
-|21          |PRU-ICSS MDIO(local)   |0x0003_2400   |
-|22          |Mailbox 0   |0x480C_8000   |
-|23          |Spinlock   |0x480C_A000   |
-|24          |PRU-ICSS PRU0/1 Data RAM(local)   |0x0000_0n00, n = c24_blk_index[3:0]   |
-|25          |PRU-ICSS PRU0/1 Data RAM(local)   |0x0000_2n00, n = c25_blk_index[3:0]   |
-|26          |PRU-ICSS IEP(local)   |0x0002_En00, n = c26_blk_index[3:0]   |
-|27          |PRU-ICSS MII-RT(local)   |0x0003_2n00, n = c27_blk_index[3:0   |
-|28          |PRU-ICSS Shared RAM(local)   |0x00nn_nn00, nnnn = c28_pointer[15:0]   |
-|29          |TPCC   |0x49nn_nn00, nnnn = c29_pointer[15:0]   |
-|30          |L3 OCMC0   |0x40nn_nn00, nnnn = c30_pointer[15:0]   |
-|31          |EMIF0 DDR Base   |0x80nn_nn00, nnnn = c31_pointer[15:0]   |
+The PRU constants table is a structure of hard-coded memory addresses for commonly used peripherals and memories. The constants table is used to more efficiently load/store data to these commonly accessed addresses. The constants table for the PRUs can be found in __*TI am335x TRM Chapter 4.4.1.1 table 4.9. PRU0/1 Constants Table*__. TI provides a few headers which make using the constants table a little easier. These can be found in *pru-software-support-package-5.4.0\include\am335x* many of the header files here will be using the constants table. We are particularly interested in sys_mcspi.h. This file includes declarations for every register available in the McSPI module. We also see these lines at the bottom of our file.
+```
+volatile __far sysMcspi CT_MCSPI0 __attribute__((cregister("MCSPI0", far), peripheral));
+volatile __far sysMcspi CT_MCSPI1 __attribute__((cregister("MCSPI1", far), peripheral));
+
+```
+These bind the addresses of the registers corresponding to MCSPI0/1 to the names CT_MCSPI0/1. More information about this statement can be found in the __*TI PRU Optimizing C/C++ Compiler V2.3 User's Guide Chapter 5*__
+
 
 ## McSPI module
-The McSPI module can function as a Master or slave and has a transmit mode, receive mode and transmit and receive mode.   
+The Master/Slave Multichannel Serial Port Interface(McSPI) module is a general-purpose receive/transmit master/slave controller that can interface with up to four external slave devices or one external master. It allows duplex, synchronous and serial communication between de CPU and an SPI compliant external device. More information on this module can be found in __*TI am335x TRM Chapter 24 Multichannel Serial Port Interface (McSPI)*__.
+<br><br>
+
+### LTC1859
+We use the McSPI module to read out our LTC1859 ADC. The LTC1859 is an 8 channel, 16-bit, 100ksps Analog-to-Digital converter with a programmable input range form 0V to 5V, 0V to 10V, ±5V or ±10V (Single-ended or differential). The image below shows the operating sequence for the LTC1859:
+<img src="https://i.imgur.com/xuggF9d.png" alt="drawing" width="400" />
