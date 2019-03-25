@@ -19,3 +19,15 @@ The Master/Slave Multichannel Serial Port Interface(McSPI) module is a general-p
 ### LTC1859
 We use the McSPI module to read out our LTC1859 ADC. The LTC1859 is an 8 channel, 16-bit, 100ksps Analog-to-Digital converter with a programmable input range form 0V to 5V, 0V to 10V, ±5V or ±10V (Single-ended or differential). The image below shows the operating sequence for the LTC1859:
 <img src="https://i.imgur.com/xuggF9d.png" alt="drawing"/>
+1. First we send an 8-bit word over the Serial Data In (SDI (Master Out Slave In)) line that contains information about the mux address in the 4 MSBs and information about the input range and power management in the 4 LSB.
+2. Allow the ADC to do the conversion by raising the CONVST pin (Pin 28 on the IC). CONVST needs to be high for 40ns to start a conversion, one conversion takes 5000 ns. While a conversion is ongoing the BUSY line(Pin 22 of the IC) will be low.
+3. The conversion will be clocked out on the Serial Data Out(SDO (Master In Slave Out)) while the RD pin(Pin 27 of the IC) is low and a new word can be loaded into the SDI line (Step one).
+<br><br>
+The image below show the configuration for the input data word
+<img src="https://i.imgur.com/blsXJrE.png" alt="drawing"/>
+The table below shows the timing characteristics:
+|Symbol|Parameter      |Max   |
+|------|---------------|------|
+|Tconv |Conversion time|5000ns|
+|Tclk  |Clock period   |50ns  |
+|Fclk  |Clock frequency|20Mhz |
