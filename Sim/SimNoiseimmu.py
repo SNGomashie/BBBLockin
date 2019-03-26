@@ -2,14 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Frequncies and periods
-Fs = 4800  # Hz
+Fs = 9600  # Hz
 Ts = 1 / Fs  # s
-Fr = 100  # Hz
+Fr = 50  # Hz
 Tr = 1 / Fr  # s
 
 # Constants
 Ar = 1  # V
 Ai = 1.8  # V
+maxErr = Ai * 1.01
 P = 1000
 Navr = 1000  # num of samples to be averaged
 
@@ -44,7 +45,6 @@ Aerr = np.zeros(len(kmax))
 aveSNRsin = np.zeros(len(x))
 aveAerrsin = np.zeros(len(x))
 aveAo = np.zeros(len(x))
-we_did_it = 0
 i = 0
 for a in x:
     for k in kmax:
@@ -55,6 +55,7 @@ for a in x:
         # SNR
         npwr = np.sum(np.power(Expnoise, 2))
         sigpwr = np.sum(np.power(VsigCos, 2))
+        SNR[k] = 10 * np.log10((sigpwr) / (npwr))
 
         # Input + Noise
         VsigCosandNoise = VsigCos + Expnoise
@@ -76,33 +77,28 @@ for a in x:
         # Find phase
         Phase = np.arctan2(Ivs, Qvc)
 
-        SNR[k] = 10 * np.log10((sigpwr) / (npwr))
+        # Find amount of error
         Aerr[k] = Ao[k] - Ai
         # END
 
     aveSNRsin[i] = np.mean(SNR)
-    aveAerrsin[i] = np.mean(np.power(Aerr, 2))
+    aveAerrsin[i] = np.mean(Aerr)
     aveAo[i] = np.mean(Ao)
 
-    if (aveSNRsin[i] < -20 and we_did_it == 0):
-        print(aveSNRsin[i])
-        print(a)
-        print(i)
-        J = len(VsigCosandNoise)
-        T = Ts
-        x = np.linspace(0.0, J * T, J)
-        Aofft = fftpack.fft(VsigCosandNoise)
-        xfft = np.linspace(0.0, 1.0 / (2.0 * T), J / 2)
-        plt.plot(xfft, 2.0 / J * np.abs(Aofft[:J // 2]))
-        plt.xlim(0, 200)
-        plt.show()
-        we_did_it = 1
+    if aveAo[i] > maxErr:
+        maxSNR = aveSNRsin[i]
+        maxAo = aveAo[i]
+        break
     i += 1
     # END
 
+print(maxSNR)
+print(maxAo)
 plt.plot(aveSNRsin, aveAo, 'r-')
 plt.axhline(y=1.8, linestyle="--")
 plt.yscale('log')
-plt.grid()
+plt.ylim(1.7, 1.9)
+plt.yticks(np.arange(1.7, 1.9, step=0.01))
+plt.grid(True)
 plt.title('Voltage x SNR')
 plt.show()

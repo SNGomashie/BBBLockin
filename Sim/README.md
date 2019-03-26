@@ -77,3 +77,20 @@ This simulation showed us that our lock-in algorithm functions properly. It gene
 This is basically exactly the same code as with the previous example except for the fact that we are injecting noise into the single in this example. The goal of this simulation is to show that we can properly inject noise into our signal which is truly random. This is also the script we used to generate the graphs seen above.
 
 This simulation showed us that we can properly inject noise into our signal. It also shows that our lock-in algorithm is still able to function properly if we choose the right sampling frequency. Read and Run the simulation to see the results
+
+### Lock-in amplifier noise immunity
+[Lock-in Noise immunity]()
+
+In this simulation we try to find the optimal sampling frequency with 3 reference frequencies common for choppers. We do this by running through different noise levels for each sampling frequency and simulating the LIA with these different noise levels. Per noise level we will do 100 simulations and take the average of the SNR, output amplitude and error. The sampling frequencies we are trying are 300Hz, 600Hz, 1200Hz, 2400Hz, 4800Hz, 9600Hz, 19200hz. These are based on the fact that the arduino DUO can achieve 300Hz sampling frequency. We will be able to see at what sampling frequency we are able to withstand -20dB noise.
+
+
+
+|50|100|150|
+---|---|---|---
+300|-15dB
+600|
+1200|
+2400|
+4800|
+9600|
+19200|
