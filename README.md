@@ -22,7 +22,7 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
    - [Flash image onto SD card (windows 10 and linux) ](#flash)
    - [Enabling the Beaglebone PRU](#en_pru)
    - [Installing the TI PRU Code Generation Tools](#installing-the-ti-pru-code-generation-toolspru-cgt)
-   - [Configure GPIO at startup](#Configure-gpio-at-startup)
+   - [Configure GPIO at startup](#Configure-gpio)
 3. [Programming the PRU](#programming-the-pru)
    - [Cloning the Repo](#cloning-the-repositories)
    - [Examples](#running-our-first-program)
