@@ -29,8 +29,10 @@
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
-/* Control Module registers to enable the SPI peripheral */
-#define CM_PER_SPI0_CLKCTRL  (*((volatile unsigned int *)0x44E0044C))
+/* PRCM Registers */
+#define CM_PER_BASE	((volatile uint8_t *)(0x44E00000))
+#define SPI0_CLKCTRL  (0x4C)
+#define ON (0x2)
 
 /* Function declaration */
 void initSPImod(void);
@@ -44,9 +46,9 @@ void main(void){
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
-  while (!(CM_PER_SPI0_CLKCTRL == 0x02)) {
-    CM_PER_SPI0_CLKCTRL = 0x02;
-  }
+  ptr_cm = CM_PER_BASE;
+	/* Access PRCM (without CT) to initialize McSPI0 clock */
+	ptr_cm[SPI0_CLKCTRL] = ON;
 
   /* Initialize the McSPI module */
   initSPImod();
