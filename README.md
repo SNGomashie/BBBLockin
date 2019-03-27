@@ -28,11 +28,12 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
    - [Examples](#running-our-first-program)
      1. [PRUlib](https://github.com/SNGomashie/BBBLockin/tree/master/Python)
      2. [Blinky](https://github.com/SNGomashie/BBBLockin/tree/master/Blinky)
-     3. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
-     4. [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad)
-     5. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC)
-     6. [Using the onboard ADC](https://github.com/SNGomashie/BBBLockin/tree/master/Onboard_ADC)
-     7. [Using the McSPI chip](https://github.com/SNGomashie/BBBLockin/tree/master/McSPI)
+     3. [PRU instruction speed test](https://github.com/SNGomashie/BBBLockin/tree/master/Cycle_test)
+     4. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
+     5. [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad)
+     6. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC)
+     7. [Using the onboard ADC](https://github.com/SNGomashie/BBBLockin/tree/master/Onboard_ADC)
+     8. [Using the McSPI chip](https://github.com/SNGomashie/BBBLockin/tree/master/McSPI)
 4. [Simulating a Lock-in Amplifier](https://github.com/SNGomashie/BBBLockin/tree/master/Sim)
 
 
