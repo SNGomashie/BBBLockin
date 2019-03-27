@@ -29,8 +29,10 @@
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
-/* PRCM Registers */
+/* PRCM (Power Reset Control Module) Registers */
+/* Base adress for the clock control module */
 #define CM_PER_BASE	((volatile uint8_t *)(0x44E00000))
+/* Adress for the SPI clk control register */
 #define SPI0_CLKCTRL  (0x4C)
 #define ON (0x2)
 
@@ -40,6 +42,7 @@ void initSPIchan(void);
 void SPItransfer(uint8_t chan);
 
 void main(void){
+  	volatile uint8_t *ptr_cm;
 
   __R30 = 0x00000000;
 
