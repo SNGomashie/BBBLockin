@@ -1,5 +1,4 @@
-//  Attempt to read the
-//  SPI ADC read program in C.
+//  Attempt to use the McSPI chip to read the ADC
 //
 //	Pin configuration:
 //  CS	( chip select ):  					P9.17 cs
@@ -30,6 +29,9 @@
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
+/* Control Module registers to enable the SPI peripheral */
+#define CM_PER_SPI0_CLKCTRL  (*((volatile unsigned int *)0x44E0044C))
+
 /* Function declaration */
 void initSPImod(void);
 void initSPIchan(void);
@@ -41,6 +43,10 @@ void main(void){
 
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
+
+  while (!(CM_PER_SPI0_CLKCTRL == 0x02)) {
+    CM_PER_SPI0_CLKCTRL = 0x02;
+  }
 
   /* Initialize the McSPI module */
   initSPImod();
@@ -56,10 +62,10 @@ void main(void){
 
 void initSPImod(void){
   /* Reset McSPI0 module */
-  CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 0b10;
+  CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 0x0001;
 
   /* Wait until reset is done */
-  while((CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x0));
+  while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
 
   /* Set SPI module to Master Mode */
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
