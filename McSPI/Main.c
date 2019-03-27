@@ -37,7 +37,7 @@ void main(void){
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   while(1){
-    __R30 |= (1 << CS)
-    __R30 &= ~(1 << CS)
+    __R30 |= (1 << CONVST)
+    __R30 &= ~(1 << CONVST)
   }
 }
