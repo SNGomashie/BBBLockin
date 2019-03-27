@@ -72,7 +72,7 @@ for a in x:
         Qvc = np.mean(Vc)
 
         # Find magnitude (Square wave)
-        # Ao[k] = (np.pi/4) * 2 * np.sqrt((np.power(Ivs, 2))+(np.power(Qvc, 2)));
+        # Ao[k] = (np.pi/4) * 2 * np.sqrt((np.power(Ivs, 2))+(np.power(Qvc, 2)))
 
         # Find magnitude (Sinusoid)
         Ao[k] = 2 * np.sqrt((np.power(Ivs, 2)) + (np.power(Qvc, 2)))
