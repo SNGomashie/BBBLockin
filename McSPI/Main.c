@@ -29,15 +29,15 @@
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
-void initSPI(void)
-void SPItransfer(uint8_t chan)
+void initSPI(void);
+void SPItransfer(uint8_t chan);
 
 void main(void){
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   while(1){
-    __R30 |= (1 << CONVST)
-    __R30 &= ~(1 << CONVST)
+    __R30 |= (1 << CONVST);
+    __R30 &= ~(1 << CONVST);
   }
 }
