@@ -31,7 +31,8 @@ volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
 /* Function declaration */
-void initSPI(void);
+void initSPImod(void);
+void initSPIchan(void);
 void SPItransfer(uint8_t chan);
 
 void main(void){
@@ -48,8 +49,8 @@ void main(void){
   initSPIchan();
 
  /* Set pins */
- __R30 |= (1 << _RD)
- __R30 |= (1 << CONVST)
+ __R30 |= (1 << _RD);
+ __R30 |= (1 << CONVST);
 }
 
 
