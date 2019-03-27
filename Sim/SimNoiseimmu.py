@@ -2,15 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Frequncies and periods
-Fs = 9600  # Hz
+Fs = 4800  # Hz
 Ts = 1 / Fs  # s
-Fr = 50  # Hz
+Fr = 150  # Hz
 Tr = 1 / Fr  # s
 
 # Constants
 Ar = 1  # V
 Ai = 1.8  # V
-maxErr = Ai * 1.01
+maxErr = Ai * 1.001
 P = 1000
 Navr = 1000  # num of samples to be averaged
 
@@ -45,8 +45,11 @@ Aerr = np.zeros(len(kmax))
 aveSNRsin = np.zeros(len(x))
 aveAerrsin = np.zeros(len(x))
 aveAo = np.zeros(len(x))
+
 i = 0
+# Loop thourgh different noise levels
 for a in x:
+    # Loop through 100 simulations for each noise level
     for k in kmax:
         # Noise generation
         np.random.seed(k + 45)
@@ -81,10 +84,12 @@ for a in x:
         Aerr[k] = Ao[k] - Ai
         # END
 
+    # Take the average of the 100 simulations per noise level
     aveSNRsin[i] = np.mean(SNR)
     aveAerrsin[i] = np.mean(Aerr)
     aveAo[i] = np.mean(Ao)
 
+    # When the error is over 0.001% break the loop and save the SNR and output
     if aveAo[i] > maxErr:
         maxSNR = aveSNRsin[i]
         maxAo = aveAo[i]
@@ -92,8 +97,8 @@ for a in x:
     i += 1
     # END
 
-print(maxSNR)
-print(maxAo)
+print("SNR is : %.3f dB" % maxSNR)
+print("Output amplitude : %.6f V" % maxAo)
 plt.plot(aveSNRsin, aveAo, 'r-')
 plt.axhline(y=1.8, linestyle="--")
 plt.yscale('log')
