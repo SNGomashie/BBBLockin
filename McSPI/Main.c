@@ -42,9 +42,9 @@ void main(void){
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
- //  /* Initialize the McSPI module */
- //  initSPImod();
- // 
+  /* Initialize the McSPI module */
+  initSPImod();
+
  // /* Initialize channel 0 of the McSPI module */
  //  initSPIchan();
 
