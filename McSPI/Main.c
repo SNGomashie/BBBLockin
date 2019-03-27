@@ -59,10 +59,10 @@ void initSPImod(void){
   CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 0x1;
 
   /* Wait until reset is done */
-  while((CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x0));
+  // while((CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x0));
 
   /* Set SPI module to Master Mode */
-  CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
+  // CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 }
 
 
