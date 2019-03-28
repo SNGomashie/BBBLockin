@@ -1,12 +1,13 @@
 //  Attempt to use the McSPI chip to read the ADC
 //
 //	Pin configuration:
-//  CS	( chip select ):  					P9.17 cs
+//  CS	( chip select ):  					P9.27 pr1_pru0_pru_r30_5
+//  CS	( McSPI chip select ):  		P9.17 cs
 //  SDI ( Serial Data In (MOSI)):   P9.18 spi
 //  SDO ( Serial Data Out (MISO)):  P9.21 sdo
 //  SCK ( Serial clock ) :      		P9.22 sck
 //  nRD (  Read Input ) :						P9.25 pr1_pru0_pru_r30_7
-//  BUSY_ (conversion done):					P9.26 pr1_pru0_pru_r30_16
+//  BUSY_ (conversion done):				P9.26 pr1_pru0_pru_r30_16
 //  Convst (  Start conversion ) : 	P9.31 pr1_pru0_pru_r30_0
 
 /* Includes */
@@ -17,13 +18,13 @@
 #include "resource_table.h"
 
 /* Define pin locations */
-#define CS
+#define CS      5
 #define SDI
 #define SDO
 #define SCK
-#define _RD 7
-#define _BUSY 16
-#define CONVST 0
+#define _RD     7
+#define _BUSY   16
+#define CONVST  0
 
 /* Input and output registers */
 volatile register uint32_t __R30;
@@ -61,6 +62,7 @@ void main(void){
   initSPIchan();
 
  /* Set pins */
+ __R30 |= (1 << CS);
  __R30 |= (1 << _RD);
  __R30 |= (1 << CONVST);
 
@@ -83,7 +85,6 @@ void initSPImod(void){
   /* Set SPI module to Master Mode */
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
 }
-
 
 void initSPIchan(void){
   /* Reset interrupt status */
