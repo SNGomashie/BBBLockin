@@ -62,7 +62,7 @@ void main(void){
   initSPIchan();
 
  /* Set pins */
- // __R30 |= (1 << CS);
+ __R30 |= (1 << CS);
  __R30 |= (1 << _RD);
 
 
