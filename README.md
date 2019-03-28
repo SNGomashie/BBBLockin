@@ -32,9 +32,10 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
      3. [PRU instruction speed test](https://github.com/SNGomashie/BBBLockin/tree/master/Cycle_test)
      4. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
      5. [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad)
-     6. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC)
-     7. [Using the onboard ADC](https://github.com/SNGomashie/BBBLockin/tree/master/Onboard_ADC)
-     8. [Using the McSPI chip](https://github.com/SNGomashie/BBBLockin/tree/master/McSPI)
+     6. [MAC](https://github.com/SNGomashie/BBBLockin/tree/master/MAC)
+     7. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC)
+     8. [Using the onboard ADC](https://github.com/SNGomashie/BBBLockin/tree/master/Onboard_ADC)
+     9. [Using the McSPI chip](https://github.com/SNGomashie/BBBLockin/tree/master/McSPI)
 4. [Simulating a Lock-in Amplifier](https://github.com/SNGomashie/BBBLockin/tree/master/Sim)
 
 
@@ -48,10 +49,12 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [x] Write library for easy usage of remoteproc on the PRU
 - [x] Send message from PRU0 -> PRU1 using scratch pad
 - [x] Read the onboard ADC
+- [x] Use the MAC
 - [x] Bit-bang an SPI ADC
 - [x] Using the McSPI chip
-- [ ] Determine max speed for lock in on PRU
-- [ ] Determine reading speed PRU
+- [x] Determine max speed for lock in on PRU
+- [x] Determine reading speed PRU
+- [] Implement PLL
 - [ ] Implement lock-in amplifier on the PRU
 
 ## Setup
