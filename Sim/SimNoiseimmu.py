@@ -2,9 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Frequncies and periods
-Fs = 4800  # Hz
+Fs = 11200  # Hz
 Ts = 1 / Fs  # s
-Fr = 150  # Hz
+Fr = 100  # Hz
 Tr = 1 / Fr  # s
 
 # Constants
@@ -12,7 +12,6 @@ Ar = 1  # V
 Ai = 1.8  # V
 maxErr = Ai * 1.001
 P = 1000
-Navr = 1000  # num of samples to be averaged
 
 # Samples
 T = P * Tr  # periods
@@ -93,7 +92,7 @@ for a in x:
     if aveAo[i] > maxErr:
         maxSNR = aveSNRsin[i]
         maxAo = aveAo[i]
-        break
+        # break
     i += 1
     # END
 
