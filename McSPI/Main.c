@@ -46,9 +46,9 @@ void initSPIchan(void);
 uint16_t SPItransfer(uint8_t chan);
 
 void main(void){
-  	volatile uint8_t *ptr_cm;
+  volatile uint8_t *ptr_cm;
 
-    /* Clear output register */
+  /* Clear output register */
   __R30 = 0x00000000;
 
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
@@ -56,27 +56,27 @@ void main(void){
 
   /* Access PRCM (without CT) to initialize McSPI0 clock */
   ptr_cm = CM_PER_BASE;
-	ptr_cm[SPI0_CLKCTRL] = ON;
+  ptr_cm[SPI0_CLKCTRL] = ON;
 
   /* Initialize the McSPI module */
   initSPImod();
 
- /* Initialize channel 0 of the McSPI module */
+  /* Initialize channel 0 of the McSPI module */
   initSPIchan();
 
- /* Set pins */
- __R30 |= (1 << CS);
- __R30 |= (1 << _RD);
+  /* Set pins */
+  __R30 |= (1 << CS);
+  __R30 |= (1 << _RD);
 
- // Enable channel
- CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+  // Enable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
- // pru0_mem[0] = SPItransfer(0);
-SPItransfer(0);
- // Disable channel
- // CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
- //
- // __halt();
+  // pru0_mem[0] = SPItransfer(0);
+  SPItransfer(0);
+  // Disable channel
+  // CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+  //
+  // __halt();
 }
 
 
@@ -124,32 +124,35 @@ uint16_t SPItransfer(uint8_t chan){
   const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
   uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
 
-  while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
-
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
+
+  while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
 
   //Write word to transmit
   CT_MCSPI0.TX0 = SPIsend;
 
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
-  while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1));
-  
+  CT_MCSPI0.IRQSTATUS = 0xFFFF;
+  // while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1));
+
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
 
-  // __delay_cycles(100);
-  //
-  // while(!(__R31 & (1 << _BUSY)));
-  //
-  // __R30 &= ~(1 << CONVST);
-  // __R30 &= ~(1 << _RD);
-  //
-  // CT_MCSPI0.TX0 = 0x0000;
-  //
-  // // while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1));
-  // //
-  // // __R30 |= (1 << CONVST);
-  // // __R30 |= (1 << _RD);
-  // return CT_MCSPI0.RX0;
+  __delay_cycles(100);
+
+  while(!(__R31 & (1 << _BUSY)));
+
+  __R30 &= ~(1 << CONVST);
+  __R30 &= ~(1 << _RD);
+
+  while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
+
+  CT_MCSPI0.TX0 = 0x0000;
+
+  while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
+  CT_MCSPI0.IRQSTATUS = 0xFFFF;
+  __R30 |= (1 << CONVST);
+  __R30 |= (1 << _RD);
+  return CT_MCSPI0.RX0;
 }
