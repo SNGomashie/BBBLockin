@@ -21,7 +21,7 @@ We will only be using the multiply only mode since we will do not need the accum
     * Device ID = 0
     * Base reg = R25
     * Size = 1
-2. Load the operands into R28/R29 using XIN
+2. Load the operands into R28/R29
 3. Delay for 1 clock cycle so the MAC can perform its multiplication
 4. Load product into the PRU using XIN on R26/R27
 5. Repeat steps 2-4 for each new multiplication

@@ -45,7 +45,7 @@ void main(void)
     for (idx = 0; idx < Nchl; idx++) {
       jdx = (idx + 1) % Nchl;
       in = 0xFFFF;
-      // Moving average filter
+      /* Moving average filter */
       // Q[idx] -= Q[idx] / Navr;
       // Q[idx] += (-1 * in) / Navr;
       //
@@ -57,7 +57,7 @@ void main(void)
       // R[idx] -= R[idx] / Navr;
       // R[idx] += sqrt()
 
-      // exponentially weighted moving average
+      /* exponentially weighted moving average */
       I[idx] = W * (in * COS) + (1 - W) * I[idx]
       Q[idx] = W * (in * SIN) + (1 - W) * Q[idx]
 

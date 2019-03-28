@@ -8,12 +8,13 @@ Pin # | Function | Logic analyzer channel | Cable color
 --- | --- | --- | ---
 P9_01|GND||Brown
 P9_03|3V3||Black
-P9_17|SPI0 CS0|CH3|Yellow
+P9_17|SPI0 CS0|CH7|Yellow
+P9_27|Manual CS|CH3|Yellow
 P9_18|SPI0 D1 - SDI(MOSI)|CH2|Green
 P9_21|SPI0 D0 - SDO(MISO)|CH1|Orange
 P9_22|SPI0 CLK|CH0|Blue
-P9_25|PRU RD_|CH4|Purple
 P9_24|PRU BUSY_|CH6|Red
+P9_25|PRU RD_|CH4|Purple
 P9_31|PRU CONVST|CH5|Gray
 
 
@@ -39,18 +40,12 @@ We use the McSPI module to read out our LTC1859 ADC. The LTC1859 is an 8 channel
 <br><br>
 The image below show the configuration for the input data word
 <img src="https://i.imgur.com/blsXJrE.png" alt="drawing"/>
-The table below shows the timing characteristics:
-
-| Symbol | Parameter | Value |
-| --- | --- | --- |
-| Tconv | Conversion time| 5000ns|
-| Tclk  | Clock period   | 50ns  |
-| Fclk  | Clock frequency| 20Mhz |
+Timing characterization can be found in the TRM.
 
 <br><br>
 
 ### McSPI registers
-The McSPI module needs to be configured properly to interface with the LTC1859 ADC. This is done by writing into registers of the McSPI module. The registers we are most concerned with are shown in the table below. A more detailed description of the registers can be found in the __*TI am353x TRM Chapter 24 Paragraph 4 McSPI register*__
+The McSPI module needs to be configured properly to interface with the LTC1859 ADC. This is done by writing into registers of the McSPI module. We can also use these registers to debug the McSPI chip. We can use devmem2 to, for example, read the IRQSTATUS register to see which interrupts were asserted. The registers we are most concerned with are shown in the table below. A more detailed description of the registers can be found in the __*TI am353x TRM Chapter 24 Paragraph 4 McSPI register*__
 <br><br>
 
 offset | Acronym | Name | Description

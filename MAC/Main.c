@@ -1,32 +1,43 @@
-// Access the CYCLE and STALL registers
-// devmem2 0x4A32200C - PRU0 CTRl register 0x4A322000 - offset cycle register 0x000C
+// Access the MAC
 #include <stdint.h>
 #include <pru_cfg.h>
 #include <pru_ctrl.h>
 #include "resource_table.h"
 
-#define out 1       // Bit number to output on
 
+volatile register unsigned int __R25;
+volatile register unsigned int __R28;
+volatile register unsigned int __R29;
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
 void main(void)
 {
-    // These will be kept in registers and never witten to DRAM
-    uint32_t cycle;
+    /* Generate 32-bit numbers */
+    uint32_t a = 0xFFFFFFFF;
+    uint32_t b = 0xF0F0F0F0;
 
-    // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
-    CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
+    /* Initialize output*/
+    uint32_t x = 0;
+    uint32_t y= 0;
 
-    PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
+    /* Clear R25 for MAC mode = 0 */
+    __R25 = 0x000000000;
 
-    uint8_t a = 10;
-    uint8_t b = 5;
-    uint8_t c = 0;
-    // Reset cycle counter, cycle is on the right side to force the compiler
-    // to put it in it's own register
-    PRU0_CTRL.CYCLE = cycle;
-    c = a * b
-    cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
+    /* Store the mode on the MAC */
+    __xout(0, 25, 1, 0);
+
+    /* Load operands into R28/R29 */
+    __R28 = a;
+    __R29 = b;
+
+    /* Delay for 1 clock cycle to perform multiplication */
+    __delay_cycles(1);
+
+    /* Load pruduct into the PRU */
+    __xin(0, 26, 1, x)
+    __xin(0, 27, 1, y)
+
+    /* stop PRU */
     __halt();
 }
