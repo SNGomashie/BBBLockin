@@ -123,71 +123,71 @@ void initSPIchan(void){
 uint16_t SPItransfer(uint8_t chan){
   const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
 
-// uint8_t SPIsend = (ADCch[chan] << 12) | 0b1000000000000000; // single-ended, input +/-5V
-uint8_t SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
-// uint8_t SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
-// uint8_t SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
+  uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000000000000000; // single-ended, input +/-5V
+  uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
+  uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
+  uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
 
 
 
-/* Check if ADC is busy with conversion and continue if not*/
+  /* Check if ADC is busy with conversion and continue if not*/
   while(!(__R31 & (1 << _BUSY)));
 
-/* pull down CONVST and _RD */
+  /* pull down CONVST and _RD */
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
 
-/* Enable channel */
+  /* Enable channel */
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
-/* Check if McSPI TX register is empty, if it is continue */
+  /* Check if McSPI TX register is empty, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
 
-/* Write word to be transmitted into TX register */
+  /* Write word to be transmitted into TX register */
   CT_MCSPI0.TX0 = SPIsend;
 
-/* Check if McSPI RX register is full, if it is continue */
+  /* Check if McSPI RX register is full, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
 
-/* Clear interrupts */
+  /* Clear interrupts */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
-/* Disable channel */
+  /* Disable channel */
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
-/* Start conversion, Stop reading */
+  /* Start conversion, Stop reading */
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
 
-/* Delay until conversion starts */
+  /* Delay until conversion starts */
   __delay_cycles(100);
 
-/* Wait until Conversion is done */
+  /* Wait until Conversion is done */
   while(!(__R31 & (1 << _BUSY)));
 
-/* pull down CONVST and _RD */
+  /* pull down CONVST and _RD */
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
 
-/* Enable channel */
+  /* Enable channel */
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
-/* Write nothing to TX Register */
+  /* Write nothing to TX Register */
   CT_MCSPI0.TX0 = 0x0000;
 
-/* Wait until RX register is full */
+  /* Wait until RX register is full */
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
 
-/* Clear interrupts */
+  /* Clear interrupts */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
-/* Disable channel */
+  /* Disable channel */
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
-/* Start conversion */
+  /* Start conversion */
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
 
-/* Return value in RX register */
+  /* Return value in RX register */
   return CT_MCSPI0.RX0;
 }
