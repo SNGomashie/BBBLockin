@@ -127,6 +127,9 @@ uint16_t SPItransfer(uint8_t chan){
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
 
+  // Enable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+
   while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
 
   //Write word to transmit
@@ -134,7 +137,9 @@ uint16_t SPItransfer(uint8_t chan){
 
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
-  // while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1));
+
+  // Disable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
@@ -146,6 +151,9 @@ uint16_t SPItransfer(uint8_t chan){
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
 
+  // Enable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+
   // while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
 
   CT_MCSPI0.TX0 = 0x0000;
@@ -153,8 +161,11 @@ uint16_t SPItransfer(uint8_t chan){
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
+  // Disable channel
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
-  
+
   return CT_MCSPI0.RX0;
 }
