@@ -9,11 +9,11 @@ Pin # | Function | Logic analyzer channel | Cable color
 P9_01|GND||Brown
 P9_03|3V3||Black
 P9_17|SPI0 CS0|CH3|Yellow
-P9_18|SPI0 D1 - SDI(MOSI)|CH2|Orange
-P9_21|SPI0 D0 - SDO(MISO)|CH1|Green
+P9_18|SPI0 D1 - SDI(MOSI)|CH2|Green
+P9_21|SPI0 D0 - SDO(MISO)|CH1|Orange
 P9_22|SPI0 CLK|CH0|Blue
 P9_25|PRU RD_|CH4|Purple
-P9_26|PRU BUSY_|CH6|Red
+P9_24|PRU BUSY_|CH6|Red
 P9_31|PRU CONVST|CH5|Gray
 
 

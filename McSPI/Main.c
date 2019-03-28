@@ -128,8 +128,6 @@ uint16_t SPItransfer(uint8_t chan){
   // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
   // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
 
-
-
   /* Check if ADC is busy with conversion and continue if not*/
   while(!(__R31 & (1 << _BUSY)));
 
