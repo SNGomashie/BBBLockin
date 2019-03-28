@@ -73,7 +73,7 @@ void main(void){
   PRU0_CTRL.CYCLE = cycle;
 
   pru0_mem[0] = SPItransfer(0);
-  
+
   cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
 
   __halt();
@@ -164,8 +164,8 @@ uint16_t SPItransfer(uint8_t chan){
   // Disable channel
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
-  __R30 |= (1 << CONVST);
-  __R30 |= (1 << _RD);
+  // __R30 |= (1 << CONVST);
+  // __R30 |= (1 << _RD);
 
   return CT_MCSPI0.RX0;
 }
