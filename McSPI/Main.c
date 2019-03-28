@@ -65,13 +65,16 @@ void main(void){
  __R30 |= (1 << CS);
  __R30 |= (1 << _RD);
 
+ // Enable channel
+ CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
  SPItransfer(0);
+ SPItransfer(1);
 
- // // Disable channel
- // CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
- //
- // __halt();
+ // Disable channel
+ CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
+ __halt();
 }
 
 
@@ -117,20 +120,19 @@ void initSPIchan(void){
 
 void SPItransfer(uint8_t chan){
   const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
-  uint8_t SPIsend = (ADCch[chan] << 4) | 0b10001000; // single-ended, input 0V to 5V
-  // Enable channel
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+  uint16_t SPIsend = (ADCch[0] << 12) | 0b1000100000000000;; // single-ended, input 0V to 5V
 
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
 
   //Write word to transmit
-  CT_MCSPI0.TX0 = 0x8800;
+  CT_MCSPI0.TX0 = SPIsend;
 
   while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1))
 
-  CT_MCSPI0.TX0 = 0x8800;
-
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
+  __delay_cycles(1000);
+
+  return CT_MCSPI0.RX0
 }
