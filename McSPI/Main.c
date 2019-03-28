@@ -70,6 +70,8 @@ void main(void){
 
  SPItransfer(0);
  SPItransfer(1);
+ SPItransfer(2);
+ SPItransfer(3);
 
  // Disable channel
  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
@@ -120,7 +122,7 @@ void initSPIchan(void){
 
 uint16_t SPItransfer(uint8_t chan){
   const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
-  uint16_t SPIsend = (ADCch[0] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
+  uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
 
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
