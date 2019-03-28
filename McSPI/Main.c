@@ -122,14 +122,14 @@ void SPItransfer(uint8_t chan){
   uint8_t SPIsend = (ADCch[chan] << 4) | 0b10001000; // single-ended, input 0V to 5V
 
   __R30 &= ~(1 << CONVST);
-  __R30 &= ~(1 << NRD);
-  __R30 |= (1 << CS);
+  __R30 &= ~(1 << _RD);
+
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
 
   CT_MCSPI0.TX0 = 0x0000;
 
-  __R30 &= ~(1 << CS);
-  __R30 |= (1 << NRD);
+
+  __R30 |= (1 << _RD);
   __R30 |= (1 << CONVST);
 }
