@@ -37,6 +37,9 @@ volatile register uint32_t __R31;
 #define SPI0_CLKCTRL  (0x4C)
 #define ON (0x2)
 
+#define PRU0_MEM 0x00000000
+volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
+
 /* Function declaration */
 void initSPImod(void);
 void initSPIchan(void);
@@ -68,7 +71,7 @@ void main(void){
  // Enable channel
  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
- SPItransfer(0);
+ pru0_mem[0] = SPItransfer(0);
 
  // Disable channel
  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
@@ -142,6 +145,7 @@ uint16_t SPItransfer(uint8_t chan){
   CT_MCSPI0.TX0 = 0x0000;
 
   while(!(CT_MCSPI0.CH0STAT_bit.RXS == 0x1));
-
+  __R30 |= (1 << CONVST);
+  __R30 |= (1 << _RD);
   return CT_MCSPI0.RX0;
 }
