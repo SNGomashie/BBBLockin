@@ -127,7 +127,7 @@ uint16_t SPItransfer(uint8_t chan){
   //Write word to transmit
   CT_MCSPI0.TX0 = SPIsend;
 
-  while(!(CT_MCSPI0.CH0STAT_bit.TXS == 0x1));
+  while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1));
 
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
@@ -138,6 +138,8 @@ uint16_t SPItransfer(uint8_t chan){
   __R30 &= ~(1 << _RD);
 
   CT_MCSPI0.TX0 = 0x0000;
+
   while(!(CT_MCSPI0.CH0STAT_bit.RXS == 0x1));
+
   return CT_MCSPI0.RX0;
 }
