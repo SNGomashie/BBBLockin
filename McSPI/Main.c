@@ -134,7 +134,7 @@ uint16_t SPItransfer(uint8_t chan){
 
   __delay_cycles(20);
 
-  while(__R31 & (1 << _BUSY))
+  while(!(__R31 & (1 << _BUSY));
 
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
