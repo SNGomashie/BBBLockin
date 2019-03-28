@@ -127,7 +127,7 @@ void SPItransfer(uint8_t chan){
   //Write word to transmit
   CT_MCSPI0.TX0 = 0x8800;
 
-  while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1))
+  while(!(CT_MCSPI0.CH0STAT_bit.TXS == 0x1))
 
   // CT_MCSPI0.TX0 = 0x00;
   //
