@@ -46,6 +46,7 @@ void initSPIchan(void);
 uint16_t SPItransfer(uint8_t chan);
 
 void main(void){
+  uint32_t cycle;
   volatile uint8_t *ptr_cm;
 
   /* Clear output register */
@@ -68,15 +69,14 @@ void main(void){
   __R30 |= (1 << CS);
   __R30 |= (1 << _RD);
 
-  // Enable channel
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+  PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
+  PRU0_CTRL.CYCLE = cycle;
 
-  // pru0_mem[0] = SPItransfer(0);
-  SPItransfer(0);
-  // Disable channel
-  // CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
-  //
-  // __halt();
+  pru0_mem[0] = SPItransfer(0);
+  
+  cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
+
+  __halt();
 }
 
 
