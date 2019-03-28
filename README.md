@@ -54,7 +54,7 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [x] Using the McSPI chip
 - [x] Determine max speed for lock in on PRU
 - [x] Determine reading speed PRU
-- [] Implement PLL
+- [ ] Implement PLL
 - [ ] Implement lock-in amplifier on the PRU
 
 ## Setup
