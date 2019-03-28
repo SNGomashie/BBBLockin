@@ -40,7 +40,7 @@ volatile register uint32_t __R31;
 /* Function declaration */
 void initSPImod(void);
 void initSPIchan(void);
-void SPItransfer(uint8_t chan);
+uint16_t SPItransfer(uint8_t chan);
 
 void main(void){
   	volatile uint8_t *ptr_cm;
@@ -118,9 +118,9 @@ void initSPIchan(void){
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
 }
 
-void SPItransfer(uint8_t chan){
+uint16_t SPItransfer(uint8_t chan){
   const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
-  uint16_t SPIsend = (ADCch[0] << 12) | 0b1000100000000000;; // single-ended, input 0V to 5V
+  uint16_t SPIsend = (ADCch[0] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
 
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
@@ -134,5 +134,5 @@ void SPItransfer(uint8_t chan){
   __R30 |= (1 << _RD);
   __delay_cycles(1000);
 
-  return CT_MCSPI0.RX0
+  return CT_MCSPI0.RX0;
 }
