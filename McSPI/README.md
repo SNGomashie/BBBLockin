@@ -76,6 +76,11 @@ offset | Acronym | Name | Description
 
 We split our interaction with the McSPI module into three parts, The module initialization, channel initialization and the main program. In the initialization steps we configure the module and channel (and possibly the DMA) and in the main program we actually send/receive information.
 <br><br>
+
+__CLock__
+
+Before being able to reset the McSPI chip you will have to configure the Power Reset Clock Module(PRCM) and activating the module functional clock. More information about the PRCM can be found in the __*TI am353x TRM Chapter 8 Power, Reset, and Clock Management (PRCM)*__
+
 __Module initialization__
 1. Hard or soft reset
 2. Wait until reset is done by reading the *McSPI_SYSSTATUS* register
