@@ -71,12 +71,12 @@ void main(void){
  // Enable channel
  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
- pru0_mem[0] = SPItransfer(0);
-
+ // pru0_mem[0] = SPItransfer(0);
+SPItransfer(0);
  // Disable channel
- CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
-
- __halt();
+ // CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+ //
+ // __halt();
 }
 
 
@@ -130,23 +130,23 @@ uint16_t SPItransfer(uint8_t chan){
   //Write word to transmit
   CT_MCSPI0.TX0 = SPIsend;
 
-  while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1));
-
-  __R30 |= (1 << CONVST);
-  __R30 |= (1 << _RD);
-
-  __delay_cycles(100);
-
-  while(!(__R31 & (1 << _BUSY)));
-
-  __R30 &= ~(1 << CONVST);
-  __R30 &= ~(1 << _RD);
-
-  CT_MCSPI0.TX0 = 0x0000;
-
-  while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1));
-
-  __R30 |= (1 << CONVST);
-  __R30 |= (1 << _RD);
-  return CT_MCSPI0.RX0;
+  // while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1));
+  //
+  // __R30 |= (1 << CONVST);
+  // __R30 |= (1 << _RD);
+  //
+  // __delay_cycles(100);
+  //
+  // while(!(__R31 & (1 << _BUSY)));
+  //
+  // __R30 &= ~(1 << CONVST);
+  // __R30 &= ~(1 << _RD);
+  //
+  // CT_MCSPI0.TX0 = 0x0000;
+  //
+  // // while(!(CT_MCSPI0.CH0STAT_bit.EOT == 0x1));
+  // //
+  // // __R30 |= (1 << CONVST);
+  // // __R30 |= (1 << _RD);
+  // return CT_MCSPI0.RX0;
 }
