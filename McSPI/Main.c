@@ -44,10 +44,12 @@ void SPItransfer(uint8_t chan);
 void main(void){
   	volatile uint8_t *ptr_cm;
 
+    /* Clear output register */
   __R30 = 0x00000000;
 
   /* Clear SYSCFG[STANDBY_INIT] to enable OCP master port */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
+
   /* Access PRCM (without CT) to initialize McSPI0 clock */
   ptr_cm = CM_PER_BASE;
 	ptr_cm[SPI0_CLKCTRL] = ON;
@@ -61,6 +63,16 @@ void main(void){
  /* Set pins */
  __R30 |= (1 << _RD);
  __R30 |= (1 << CONVST);
+
+ // Enable channel
+ CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+
+ SPItransfer(0);
+
+ // Disable channel
+ CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
+ __halt();
 }
 
 
@@ -103,4 +115,21 @@ void initSPIchan(void){
 
   // Set SPID0 as input
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
+}
+
+void SPItransfer(uint8_t chan){
+  const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
+  uint8_t SPIsend = (ADCch[chan] << 4) | 0b10001000; // single-ended, input 0V to 5V
+
+  __R30 &= ~(1 << CONVST);
+  __R30 &= ~(1 << NRD);
+  __R30 |= (1 << CS);
+  //Write word to transmit
+  CT_MCSPI0.TX0 = 0x8800;
+
+  CT_MCSPI0.TX0 = 0x0000;
+
+  __R30 &= ~(1 << CS);
+  __R30 |= (1 << NRD);
+  __R30 |= (1 << CONVST);
 }
