@@ -102,7 +102,7 @@ void initSPIchan(void){
   CT_MCSPI0.CH0CONF_bit.EPOL = 0x0;
 
   /* Set world length to 16bit */
-  CT_MCSPI0.CH0CONF_bit.WL = 0xF;
+  CT_MCSPI0.CH0CONF_bit.WL = 0x7;
 
   // Set transfer and receive mode
   CT_MCSPI0.CH0CONF_bit.TRM = 0x0;
@@ -125,8 +125,7 @@ void SPItransfer(uint8_t chan){
   __R30 &= ~(1 << _RD);
 
   //Write word to transmit
-  CT_MCSPI0.TX0 = 0x8800;
-
+  CT_MCSPI0.TX0 = SPIsend;
   CT_MCSPI0.TX0 = 0x0000;
 
 
