@@ -69,10 +69,10 @@ void main(void){
 
  SPItransfer(0);
 
- // Disable channel
- CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
-
- __halt();
+ // // Disable channel
+ // CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+ //
+ // __halt();
 }
 
 
@@ -130,7 +130,7 @@ void SPItransfer(uint8_t chan){
   while(!(CT_MCSPI0.CH0STAT_bit.RXS == 0x1))
 
   CT_MCSPI0.TX0 = 0x00;
-  
+
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
 }
