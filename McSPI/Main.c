@@ -62,9 +62,9 @@ void main(void){
   initSPIchan();
 
  /* Set pins */
- __R30 |= (1 << CS);
+ // __R30 |= (1 << CS);
  __R30 |= (1 << _RD);
- __R30 |= (1 << CONVST);
+
 
  SPItransfer(0);
 
