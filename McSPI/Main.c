@@ -7,7 +7,7 @@
 //  SDO ( Serial Data Out (MISO)):  P9.21 sdo
 //  SCK ( Serial clock ) :      		P9.22 sck
 //  nRD (  Read Input ) :						P9.25 pr1_pru0_pru_r30_7
-//  BUSY_ (conversion done):				P9.26 pr1_pru0_pru_r30_16
+//  BUSY_ (conversion done):				P9.24 pr1_pru0_pru_r31_16
 //  Convst (  Start conversion ) : 	P9.31 pr1_pru0_pru_r30_0
 
 /* Includes */
@@ -134,7 +134,7 @@ uint16_t SPItransfer(uint8_t chan){
 
   __delay_cycles(100);
 
-  while((__R31 & (0 << _BUSY)));
+  while(!(__R31 & (1 << _BUSY)));
 
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
