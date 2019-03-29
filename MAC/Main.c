@@ -8,6 +8,9 @@
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
+#define PRU0_MEM 0x00000000
+volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
+
 typedef struct {
 	uint32_t op1;
 	uint32_t op2;
@@ -35,8 +38,8 @@ void main(void)
 
 
     result = (uint64_t)buf.op1 * (uint64_t)buf.op2;
-    storeValue = result;
-
+    pru0_mem[0] = result >> 32;
+    pru0_mem[1] = result;
     /* stop PRU */
     __halt();
 }
