@@ -21,7 +21,7 @@ void main(void)
     uint32_t a = 0xFFFFFFFF;
     uint32_t b = 0xF0F0F0F0;
 
-    uint32_t l = 0x00;
+    uint32_t l = 0;
     /* Initialize output*/
     uint32_t x = 0;
     uint32_t y= 0;
