@@ -27,19 +27,17 @@ void main(void)
     uint32_t a = 0xFFFFFFFF;
     uint32_t b = 0xF0F0F0F0;
 
-    uint32_t l = 0x00;
-    /* Initialize output*/
-    uint32_t x = 0;
-    uint32_t y= 0;
-
     /* Load operands into R28/R29 */
     buf.op1 = a;
     buf.op2 = b;
 
-
+    /* Multiply 2 32-bit numbers */
     result = (uint64_t)buf.op1 * (uint64_t)buf.op2;
+
+    /* Since the result is 32-bits wide we have to save it into 2 registers */
     pru0_mem[0] = result >> 32;
     pru0_mem[1] = result;
+
     /* stop PRU */
     __halt();
 }
