@@ -1,5 +1,3 @@
-// Access the CYCLE and STALL registers
-// devmem2 0x4A32200C - PRU0 CTRl register 0x4A322000 - offset cycle register 0x000C
 #include <stdint.h>
 #include <pru_uart.h>
 #include "resource_table.h"

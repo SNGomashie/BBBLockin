@@ -15,7 +15,7 @@ The MAC is directly connected to the internal R25-R29 registers for each PRU. Th
 
 We will only be using the multiply only mode since we will do not need the accumulation. The following steps are the steps needed performed by the PRU to perform one 32-bit multiplication.
 
-1. Enable MAC mode:
+1. Enable MAC mode (Optional):
   - Clear R25[0] for MAC mode
   - Store mode to MAC using XOUT with these parameters
     * Device ID = 0

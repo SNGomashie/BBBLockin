@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+from scipy import signal
 # Frequncies and periods
-Fs = 11200  # Hz
+Fs = 4800  # Hz
 Ts = 1 / Fs  # s
 Fr = 100  # Hz
 Tr = 1 / Fr  # s
@@ -22,13 +22,13 @@ t = np.linspace(0, T, n, endpoint=False)
 VsigCos = Ai * np.cos((t * 2 * np.pi * Fr) - (np.pi / 10))  # Added phase difference
 
 # Reference signal(square wave) ( Also uncomment Ao)
-# VrefCos = Ar * signal.square( n * 2 * np.pi * fo)
-# VrefSin = Ar * signal.square(( n * 2 * np.pi * fo) - (np.pi/2))
+VrefCos = Ar * signal.square(t * 2 * np.pi * Fr)
+VrefSin = Ar * signal.square((t * 2 * np.pi * Fr) - (np.pi/2))
 
 # Reference signals(sinus and cosinus)
-VrefCos = Ar * np.cos(t * 2 * np.pi * Fr)
-# Cosinus phase shifted to create Sinus
-VrefSin = Ar * np.cos((t * 2 * np.pi * Fr) - (np.pi / 2))
+# VrefCos = Ar * np.cos(t * 2 * np.pi * Fr)
+# # Cosinus phase shifted to create Sinus
+# VrefSin = Ar * np.cos((t * 2 * np.pi * Fr) - (np.pi / 2))
 
 # Amount of random noise samples to be averaged
 kmax = np.arange(0, 100, 1)
@@ -71,10 +71,10 @@ for a in x:
         Qvc = np.mean(Vc)
 
         # Find magnitude (Square wave)
-        # Ao[k] = (np.pi/4) * 2 * np.sqrt((np.power(Ivs, 2))+(np.power(Qvc, 2)))
+        Ao[k] = (np.pi/4) * 2 * np.sqrt((np.power(Ivs, 2))+(np.power(Qvc, 2)))
 
         # Find magnitude (Sinusoid)
-        Ao[k] = 2 * np.sqrt((np.power(Ivs, 2)) + (np.power(Qvc, 2)))
+        # Ao[k] = 2 * np.sqrt((np.power(Ivs, 2)) + (np.power(Qvc, 2)))
 
         # Find phase
         Phase = np.arctan2(Ivs, Qvc)

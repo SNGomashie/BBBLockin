@@ -1,9 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import signal, fftpack
+from scipy import signal
 
 # Frequncies and periods
-Fs = 10000  # Hz
+Fs = 4800  # Hz
 Ts = 1 / Fs  # s
 Fr = 100  # Hz
 Tr = 1 / Fr  # s
@@ -23,12 +23,12 @@ t = np.linspace(0, T, n, endpoint=False)
 VsigCos = Ai * np.cos((t * 2 * np.pi * Fr) - (np.pi / 10))
 
 # Reference signals(sinus and cosinus)
-VrefCos = Ar * np.cos(t * 2 * np.pi * Fr)
-VrefSin = Ar * np.cos((t * 2 * np.pi * Fr) - (np.pi / 2))
+# VrefCos = Ar * np.cos(t * 2 * np.pi * Fr)
+# VrefSin = Ar * np.cos((t * 2 * np.pi * Fr) - (np.pi / 2))
 
 # Reference signal(square wave) ( Also uncomment Ao)
-VrefCossqr = Ar * signal.square(t * 2 * np.pi * Fr)
-VrefSinsqr = Ar * signal.square((t * 2 * np.pi * Fr) - (np.pi/2))
+VrefCos = Ar * signal.square(t * 2 * np.pi * Fr)
+VrefSin = Ar * signal.square((t * 2 * np.pi * Fr) - (np.pi/2))
 
 # Noise generation
 np.random.seed(45)
@@ -55,10 +55,10 @@ Ivs = np.mean(Vs)
 Qvc = np.mean(Vc)
 
 # Find magnitude (Square wave)
-# Ao[k] = (np.pi/4) * 2 * np.sqrt((np.power(Ivs, 2))+(np.power(Qvc, 2)));
+Ao = (np.pi/4) * 2 * np.sqrt((np.power(Ivs, 2))+(np.power(Qvc, 2)));
 
 # Calculate magnitude of vector
-Ao = 2 * np.sqrt((np.power(Ivs, 2)) + (np.power(Qvc, 2)))
+# Ao = 2 * np.sqrt((np.power(Ivs, 2)) + (np.power(Qvc, 2)))
 
 # print refernce voltage and Lock-in output
 print("Input amplitude : %.3f V" % Ai)
@@ -81,14 +81,14 @@ plt.ylabel("Amplitude [V]")
 plt.grid(True)
 plt.xlim(0, 0.1)
 plt.plot(t, VsigCos)
-plt.subplot(2, 1, 2)
-plt.title("SYNC signal")
-plt.xlabel("Time [s]")
-plt.ylabel("Amplitude [V]")
-plt.grid(True)
-plt.xlim(0, 0.1)
-plt.plot(t, VrefCossqr)
-plt.tight_layout()
+# plt.subplot(2, 1, 2)
+# plt.title("SYNC signal")
+# plt.xlabel("Time [s]")
+# plt.ylabel("Amplitude [V]")
+# plt.grid(True)
+# plt.xlim(0, 0.1)
+# plt.plot(t, VrefCossqr)
+# plt.tight_layout()
 plt.show()
 
 plt.subplot(3, 1, 1)
