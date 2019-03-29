@@ -22,6 +22,6 @@ void main(void)
 	__delay_cycles(10);
 
 	while(1){
-		pru0_mem[0] = CT_ECAP.CAP1;
+		pru0_mem[0] = CT_ECAP.TSCTR;
 	}
 }
