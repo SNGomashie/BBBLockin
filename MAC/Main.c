@@ -21,15 +21,16 @@ void main(void)
     uint32_t a = 0xFFFFFFFF;
     uint32_t b = 0xF0F0F0F0;
 
+    uint32_t l = 0x00;
     /* Initialize output*/
     uint32_t x = 0;
     uint32_t y= 0;
 
     /* Clear R25 for MAC mode = 0 */
-    __xin(0, 25, 1, 0x00000000);
+    __xin(0, 25, 1, l);
 
     /* Store the mode on the MAC */
-    __xout(0, 25, 1, 0);
+    __xout(0, 25, 1, l);
 
     /* Load operands into R28/R29 */
     buf.op1 = a;
