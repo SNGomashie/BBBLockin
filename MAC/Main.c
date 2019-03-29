@@ -5,11 +5,17 @@
 #include "resource_table.h"
 
 
-volatile register unsigned int __R25;
-volatile register unsigned int __R28;
-volatile register unsigned int __R29;
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
+
+typedef struct {
+	uint32_t op1;
+	uint32_t op2;
+} operands;
+
+#define NUMMACS 256
+
+operands buf[NUMMACS];
 
 void main(void)
 {
@@ -28,15 +34,15 @@ void main(void)
     __xout(0, 25, 1, 0);
 
     /* Load operands into R28/R29 */
-    __R28 = a;
-    __R29 = b;
+    buf.op1 = a;
+    buf.op2 = b;
 
     /* Delay for 1 clock cycle to perform multiplication */
     __delay_cycles(1);
 
     /* Load pruduct into the PRU */
-    __xin(0, 26, 1, x)
-    __xin(0, 27, 1, y)
+    __xin(0, 26, 1, x);
+    __xin(0, 27, 1, y);
 
     /* stop PRU */
     __halt();
