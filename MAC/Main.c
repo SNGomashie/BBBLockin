@@ -13,9 +13,7 @@ typedef struct {
 	uint32_t op2;
 } operands;
 
-#define NUMMACS 256
-
-operands buf[NUMMACS];
+operands buf;
 
 void main(void)
 {
@@ -28,7 +26,7 @@ void main(void)
     uint32_t y= 0;
 
     /* Clear R25 for MAC mode = 0 */
-    __R25 = 0x000000000;
+    __xin(0, 25, 1, 0x00000000);
 
     /* Store the mode on the MAC */
     __xout(0, 25, 1, 0);
