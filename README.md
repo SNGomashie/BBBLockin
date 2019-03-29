@@ -36,7 +36,9 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
      7. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC)
      8. [Using the onboard ADC](https://github.com/SNGomashie/BBBLockin/tree/master/Onboard_ADC)
      9. [Using the McSPI chip](https://github.com/SNGomashie/BBBLockin/tree/master/McSPI)
-     10. [Using UART](https://github.com/SNGomashie/BBBLockin/tree/master/UART)
+     10. [Measuring SYNC period using timer/cycles](https://github.com/SNGomashie/BBBLockin/tree/master/Sync)
+     11. [Using UART](https://github.com/SNGomashie/BBBLockin/tree/master/UART)
+     12. [Measuring SYNC period using eCAP module](https://github.com/SNGomashie/BBBLockin/tree/master/eCAP)
 4. [Simulating a Lock-in Amplifier](https://github.com/SNGomashie/BBBLockin/tree/master/Sim)
 
 
@@ -53,9 +55,11 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [x] Use the MAC
 - [x] Bit-bang an SPI ADC
 - [x] Using the McSPI chip
+- [x] Measure period using timer/cycle
 - [ ] Send messages over UART
 - [x] Determine max speed for lock in on PRU
 - [x] Determine reading speed PRU
+- [ ] Measure period using eCAP
 - [ ] Implement PLL
 - [ ] Implement lock-in amplifier on the PRU
 
