@@ -34,9 +34,9 @@ void main(void)
     buf.op2 = b;
 
 
-    result = (uint64_t)buf[i].op1 * (uint64_t)buf[i].op2;
+    result = (uint64_t)buf.op1 * (uint64_t)buf.op2;
     storeValue = result;
-    
+
     /* stop PRU */
     __halt();
 }
