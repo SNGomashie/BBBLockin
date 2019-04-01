@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy import signal
 
 # Frequncies and periods
-Fs = 4800  # Hz
+Fs = 400  # Hz
 Ts = 1 / Fs  # s
 Fr = 100  # Hz
 Tr = 1 / Fr  # s
