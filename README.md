@@ -29,15 +29,15 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
    - [Examples](#running-our-first-program)
      1. [PRUlib](https://github.com/SNGomashie/BBBLockin/tree/master/Python)
      2. [Blinky](https://github.com/SNGomashie/BBBLockin/tree/master/Blinky)
-     3. [PRU instruction speed test](https://github.com/SNGomashie/BBBLockin/tree/master/Cycle_test)
-     4. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
-     5. [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad)
-     6. [MAC](https://github.com/SNGomashie/BBBLockin/tree/master/MAC)
-     7. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC)
-     8. [Using the onboard ADC](https://github.com/SNGomashie/BBBLockin/tree/master/Onboard_ADC)
-     9. [Using the McSPI chip](https://github.com/SNGomashie/BBBLockin/tree/master/McSPI)
-     10. [Measuring SYNC period using timer/cycles](https://github.com/SNGomashie/BBBLockin/tree/master/Sync)
-     11. [Using UART](https://github.com/SNGomashie/BBBLockin/tree/master/UART)
+     3. [Hello_world](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world)
+     4. [PRU instruction speed test](https://github.com/SNGomashie/BBBLockin/tree/master/Cycle_test)
+     5. [Using UART](https://github.com/SNGomashie/BBBLockin/tree/master/UART)
+     6. [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad)
+     7. [MAC](https://github.com/SNGomashie/BBBLockin/tree/master/MAC)
+     8. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC)
+     9. [Using the onboard ADC](https://github.com/SNGomashie/BBBLockin/tree/master/Onboard_ADC)
+     10. [Using the McSPI chip](https://github.com/SNGomashie/BBBLockin/tree/master/McSPI)
+     11. [Measuring SYNC period using timer/cycles](https://github.com/SNGomashie/BBBLockin/tree/master/Sync)
      12. [Measuring SYNC period using eCAP module](https://github.com/SNGomashie/BBBLockin/tree/master/eCAP)
 4. [Simulating a Lock-in Amplifier](https://github.com/SNGomashie/BBBLockin/tree/master/Sim)
 
@@ -56,10 +56,10 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [x] Bit-bang an SPI ADC
 - [x] Using the McSPI chip
 - [x] Measure period using timer/cycle
-- [ ] Send messages over UART
+- [ ] Send messages over UART (Waiting for FTDI TTL3v3 to USB cable)
 - [x] Determine max speed for lock in on PRU
 - [x] Determine reading speed PRU
-- [ ] Measure period using eCAP
+- [x] Measure period using eCAP
 - [ ] Implement PLL
 - [ ] Implement lock-in amplifier on the PRU
 
