@@ -2,6 +2,12 @@
 #include <pru_uart.h>
 #include "resource_table.h"
 
+/* The FIFO size on the PRU UART is 16 bytes; however, we are (arbitrarily)
+ * only going to send 8 at a time */
+#define FIFO_SIZE	16
+#define MAX_CHARS	8
+#define BUFFER		40
+
 void initUART(void);
 
 void printUART(volatile char* Message);
@@ -13,7 +19,7 @@ void main(void){
   initUART();
 
   while(1){
-    printUART("TEST")
+    printUART("TEST");
     __delay_cycles(500000000/5);
   }
   __halt();
