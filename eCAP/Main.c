@@ -42,7 +42,7 @@ void main(void)
 	initECAP();
 
 	while(1){
-		pru0_mem[0] = CT_ECAP.CAP2 - CT_ECAP.CAP1;
+		pru0_mem[0] = CT_ECAP.CAP1;
 	}
 }
 
@@ -51,10 +51,8 @@ void initECAP(void){
 	CT_ECAP.ECCTL1 |= (0x01 << FREE_SOFT);
 
 	/* Capture polarity & Capture reset */
-	CT_ECAP.ECCTL1 |= (0 << CAP1POL) | (0 << CTRRST1);
-	CT_ECAP.ECCTL1 |= (0 << CAP2POL) | (0 << CTRRST2);
-	CT_ECAP.ECCTL1 |= (0 << CAP3POL) | (0 << CTRRST3);
-	CT_ECAP.ECCTL1 |= (0 << CAP4POL) | (0 << CTRRST4);
+	CT_ECAP.ECCTL1 &= ~(1 << CAP1POL);
+	CT_ECAP.ECCTL1 |= (1 << CTRRST1);
 
 	/* Enable loading of CAP registers */
 	CT_ECAP.ECCTL1 |= (1 << CAPLDEN);
@@ -66,7 +64,7 @@ void initECAP(void){
 	CT_ECAP.ECCTL2 &= ~(1 << CONT_ONESHT);
 
 	/* Wrap after CAP2 */
-	CT_ECAP.ECCTL2 |= (1 << STOP_WRAP);
+	CT_ECAP.ECCTL2 &= ~(1 << STOP_WRAP);
 
 	/* Time Stamp (TSCTR) Counter Stop (freeze) Control */
 	CT_ECAP.ECCTL2 |= (1 << TSCTRSTOP);
