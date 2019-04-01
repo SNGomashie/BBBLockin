@@ -48,7 +48,7 @@ void main(void)
 
 void initECAP(void){
 	/* Soft reset */
-	CT_ECAP.ECCTL1 |= (0x01 << FREE_SOFT)
+	CT_ECAP.ECCTL1 |= (0x01 << FREE_SOFT);
 
 	/* Capture polarity & Capture reset */
 	CT_ECAP.ECCTL1 |= (0 << CAP1POL) | (0 << CTRRST1);
@@ -66,7 +66,7 @@ void initECAP(void){
 	CT_ECAP.ECCTL2 &= ~(1 << CONT_ONESHT);
 
 	/* Wrap after CAP2 */
-	CT_ECAP.ECCTL2 |= (1 << STOP_WRAP)
+	CT_ECAP.ECCTL2 |= (1 << STOP_WRAP);
 
 	/* Time Stamp (TSCTR) Counter Stop (freeze) Control */
 	CT_ECAP.ECCTL2 |= (1 << TSCTRSTOP);
