@@ -81,6 +81,7 @@ void main(void)
 	/* Choose desired protocol settings by writing to LCR */
 	/* 8-bit word, 1 stop bit, no parity, no break control and no divisor latch */
 	CT_UART.LCR = 3;
+	CT_UART.LCR_bit.DLAB = 0;
 
 	/* Enable loopback for test */
 	CT_UART.MCR = 0x10;
