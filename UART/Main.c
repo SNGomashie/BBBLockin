@@ -1,31 +1,22 @@
+// From: http://git.ti.com/pru-software-support-package/pru-software-support-package/trees/master/examples/am335x/PRU_Hardware_UART
+
 #include <stdint.h>
 #include <pru_uart.h>
-
-/* Define UART register "overlay" */
-volatile far pruUart CT_UART __attribute__((cregister("UART0", near), peripheral));
+#include "resource_table.h"
 
 /* The FIFO size on the PRU UART is 16 bytes; however, we are (arbitrarily)
  * only going to send 8 at a time */
 #define FIFO_SIZE	16
 #define MAX_CHARS	8
 
-/* This hostBuffer structure is temporary but stores a data buffer */
-struct {
-	uint8_t msg; // Not used today
-	uint8_t data[FIFO_SIZE];
-} hostBuffer;
-
-/* Making this buffer global will force the received data into memory */
-uint8_t buffer[MAX_CHARS];
-
-void main(){
+void main(void)
+{
 	uint8_t tx;
+	uint8_t rx;
 	uint8_t cnt;
 
-	/* TODO: If modifying this to send data through the pins then PinMuxing
-	 * needs to be taken care of prior to running this code.
-	 * This is usually done via a GEL file in CCS or by the Linux driver */
-
+	/*  hostBuffer points to the string to be printed */
+	char* hostBuffer;
 
 	/*** INITIALIZATION ***/
 
@@ -43,7 +34,7 @@ void main(){
 	 * FIFOs by writing to FCR. FIFOEN bit in FCR must be set first before
 	 * other bits are configured */
 	/* Enable FIFOs for now at 1-byte, and flush them */
-	CT_UART.FCR = (0x4) | (0x2) | (0x1);
+	CT_UART.FCR = (0x8) | (0x4) | (0x2) | (0x1);
 	//CT_UART.FCR = (0x80) | (0x4) | (0x2) | (0x01); // 8-byte RX FIFO trigger
 
 	/* Choose desired protocol settings by writing to LCR */
@@ -51,7 +42,7 @@ void main(){
 	CT_UART.LCR = 3;
 
 	/* Enable loopback for test */
-	CT_UART.MCR = 0x10;
+	CT_UART.MCR = 0x00;
 
 	/* Choose desired response to emulation suspend events by configuring
 	 * FREE bit and enable UART by setting UTRST and URRST in PWREMU_MGMT */
@@ -61,32 +52,17 @@ void main(){
 	/*** END INITIALIZATION ***/
 
 	/* Priming the 'hostbuffer' with a message */
-	hostBuffer.data[0] = 'H';
-	hostBuffer.data[1] = 'e';
-	hostBuffer.data[2] = 'l';
-	hostBuffer.data[3] = 'l';
-	hostBuffer.data[4] = 'o';
-	hostBuffer.data[5] = '!';
-	hostBuffer.data[6] = '\0';
+	hostBuffer = "Hello!  This is a long string\r\n";
 
 	/*** SEND SOME DATA ***/
 
 	/* Let's send/receive some dummy data */
-	for (cnt = 0; cnt < MAX_CHARS; cnt++){
-		/* Load character, ensure it is not string termination */
-		if ((tx = hostBuffer.data[cnt]) == '\0')
-			break;
-		CT_UART.THR = tx;
+	while(1) {
+		cnt = 0;
+		while(1) {
+			CT_UART.THR = "h";
 
-		/* Because we are doing loopback, wait until LSR.DR == 1
-		 * indicating there is data in the RX FIFO */
-		while ((CT_UART.LSR & 0x1) == 0x0);
-
-		/* Read the value from RBR */
-		buffer[cnt] = CT_UART.RBR;
-
-		/* Wait for TX FIFO to be empty */
-		while (!((CT_UART.FCR & 0x2) == 0x2));
+		}
 	}
 
 	/*** DONE SENDING DATA ***/
