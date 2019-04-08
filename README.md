@@ -56,7 +56,7 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [x] Bit-bang an SPI ADC
 - [x] Using the McSPI chip
 - [x] Measure period using timer/cycle
-- [ ] Send messages over UART (Waiting for FTDI TTL3v3 to USB cable)
+- [x] Send messages over UART
 - [x] Determine max speed for lock in on PRU
 - [x] Determine reading speed PRU
 - [x] Measure period using eCAP
@@ -81,8 +81,9 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 
 
 
-   <a name="F-w10"></a>
- ### Format your SD card (windows 10):
+<a name="F-w10"></a>
+
+### Format your SD card (windows 10)
  ---
  Open windows start menu and search for:
  ```
@@ -211,7 +212,7 @@ disable_uboot_overlay_audio=1
 
 ```
 
-### See if PRUs/PRU-CGT are running (sometimes they take some time to startup)
+### See if PRUs are running
 ---
 This command print the linux kernel message buffer
 ```
@@ -241,7 +242,7 @@ This command shows where the TI PRU Code Generation Tool is located:
 whereis clpru
 ```
 
-### Configure GPIO
+## Configure GPIO
 
 Configuring a pin on the BeagleBone Black is very simple. You can use the 'config-pin' utility to configure the pin. You only need to know the position on the header. For example: pin 30 on the P9 header (P9_30)
 <img src="https://i.imgur.com/v99FHnQ.png" alt="drawing"/>
