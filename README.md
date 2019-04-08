@@ -68,16 +68,16 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 ### Quick start guide
 1. Download the latest image from the [BeagleBone website](https://beagleboard.org/latest-images)
 (We use Debian 9.5 2018-10-07 4GB SD IoT)
-- [Flash]((#flash) this image onto your 16Gb SD card
-- Boot from the SD card by pressing [the button close to the microSD card slot and the power button](http://beagleboard.org/getting-started#step1).
-- [SSH into the beaglebone](#en_pru)
-- [Restore partition size and install a new kernel and update your system](#en_pru).
+2. [Flash]((#flash) this image onto your 16Gb SD card
+3. Boot from the SD card by pressing [the button close to the microSD card slot and the power button](http://beagleboard.org/getting-started#step1).
+4. [SSH into the beaglebone](#en_pru)
+5. [Restore partition size and install a new kernel and update your system](#en_pru).
 (We use linux 4.14.94-ti-rt-r93)
-- Update bootloader, update system, update bb overlays
-- Load cape universala
-- __Make sure you are booting from the SD card, eMMC bootloader does not load PRUs__
-- Run /opt/scripts/tools/version.sh to see if the cores are running
-- If you followed these steps and it still does not work. Make sure you are booting from your SD card
+6. Update bootloader, update system, update bb overlays
+7. Load cape universala
+8. __Make sure you are booting from the SD card, eMMC bootloader does not load PRUs__
+9. Run /opt/scripts/tools/version.sh to see if the cores are running
+10. If you followed these steps and it still does not work. Make sure you are booting from your SD card
 
 
 
