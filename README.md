@@ -296,17 +296,17 @@ git clone git@github.com:SNGomashie/BBB-Lockin.git
 ### Example programs
 There are several examples available from both this github and the TI PRU software support package. For a quick start go through the examples on this Github. It is recommended to go through the Python library first so you can easily read messages from the PRU.
 1. [PRUlib](https://github.com/SNGomashie/BBBLockin/tree/master/Python) - A python module for the PRUs
-- [Blink](https://github.com/SNGomashie/BBBLockin/tree/master/Blinky) - Blink a LED
-- [RPMSG](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world) - Send messages using the remoteproc framework
-- [Speed test](https://github.com/SNGomashie/BBBLockin/tree/master/Cycle_test) - Test the speed of instructions
-- [UART](https://github.com/SNGomashie/BBBLockin/tree/master/UART) - Send messages over UART to host PC
-- [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad) - Use scratchpad for instant messaging between PRU cores
-- [MAC](https://github.com/SNGomashie/BBBLockin/tree/master/MAC) - Multiply and accumulate 32-bit numbers in a 32-bit processor
-- [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC) - Implement software SPI
-- [onbaord ADC](https://github.com/SNGomashie/BBBLockin/tree/master/Onboard_ADC) - Read the onboard ADC
-- [McSPI](https://github.com/SNGomashie/BBBLockin/tree/master/McSPI) - Implement hardware SPI
-- [SYNC w/ timer](https://github.com/SNGomashie/BBBLockin/tree/master/Sync) - Measure periods using timers
-- [SYNC w/ ecap](https://github.com/SNGomashie/BBBLockin/tree/master/eCAP) - Measure periods using the eCAP module
+2. [Blink](https://github.com/SNGomashie/BBBLockin/tree/master/Blinky) - Blink a LED
+3. [RPMSG](https://github.com/SNGomashie/BBBLockin/tree/master/Hello_world) - Send messages using the remoteproc framework
+4. [Speed test](https://github.com/SNGomashie/BBBLockin/tree/master/Cycle_test) - Test the speed of instructions
+5. [UART](https://github.com/SNGomashie/BBBLockin/tree/master/UART) - Send messages over UART to host PC
+6. [Scratchpad](https://github.com/SNGomashie/BBBLockin/tree/master/Scratchpad) - Use scratchpad for instant messaging between PRU cores
+7. [MAC](https://github.com/SNGomashie/BBBLockin/tree/master/MAC) - Multiply and accumulate 32-bit numbers in a 32-bit processor
+8. [Bit-banging an SPI slave](https://github.com/SNGomashie/BBBLockin/tree/master/Bit-banged_ADC) - Implement software SPI
+9. [onbaord ADC](https://github.com/SNGomashie/BBBLockin/tree/master/Onboard_ADC) - Read the onboard ADC
+10. [McSPI](https://github.com/SNGomashie/BBBLockin/tree/master/McSPI) - Implement hardware SPI
+11. [SYNC w/ timer](https://github.com/SNGomashie/BBBLockin/tree/master/Sync) - Measure periods using timers
+12. [SYNC w/ ecap](https://github.com/SNGomashie/BBBLockin/tree/master/eCAP) - Measure periods using the eCAP module
 
 ## Problems
 If PRUs are not loaded and you followed all the steps. __Please see if u are booting from the SD card and not eMMC__
