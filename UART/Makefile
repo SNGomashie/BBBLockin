@@ -1,5 +1,5 @@
 
-PRU_CGT:= /usr
+PRU_CGT:= /usr/share/ti/cgt-pru
 PRU_RPMSG:= /usr/lib/ti/pru-software-support-package
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
