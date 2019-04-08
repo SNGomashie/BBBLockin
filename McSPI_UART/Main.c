@@ -19,6 +19,9 @@
 
 /* Define pin locations */
 #define CS      5
+#define SDI
+#define SDO
+#define SCK
 #define _RD     7
 #define _BUSY   16
 #define CONVST  0

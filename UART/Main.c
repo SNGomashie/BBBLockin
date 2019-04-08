@@ -88,6 +88,7 @@ void printUART(volatile char* Message){
 
 }
 
+/* Read message from UART */
 char readUART(void){
   while (!CT_UART.LSR_bit.DR);
 
