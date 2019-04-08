@@ -1,6 +1,5 @@
-
 export PRU_CGT=/usr/share/ti/cgt-pru
-ln -s /usr/bin/ /usr/share/ti/cgt-pru/bin
+
 PRU_RPMSG:= /usr/lib/ti/pru-software-support-package
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
