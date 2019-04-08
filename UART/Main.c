@@ -19,7 +19,7 @@ void main(void){
   initUART();
 
   while(1){
-    printUART("TEST\n");
+    printUART("TEST");
     __delay_cycles(500000000/5);
   }
   __halt();
