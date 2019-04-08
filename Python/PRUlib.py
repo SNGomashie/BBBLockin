@@ -1,5 +1,4 @@
 
-import keyboard
 import os
 
 # Character devices for PRU0&PRU1

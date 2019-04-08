@@ -64,6 +64,22 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [ ] Implement lock-in amplifier on the PRU
 
 ## Setup
+
+### Quick start guide
+1. Download the latest image from the [BeagleBone website](https://beagleboard.org/latest-images)
+(We use Debian 9.5 2018-10-07 4GB SD IoT)
+- [Flash]((#flash) this image onto your 16Gb SD card
+- Boot from the SD card by pressing [the button close to the microSD card slot and the power button](http://beagleboard.org/getting-started#step1).
+- [SSH into the beaglebone](#en_pru)
+- [Install a new kernel and update your system](#en_pru).
+(We use linux 4.14.94-ti-rt-r93)
+- Update bootloader, update system, update bb overlays
+- Load cape universala
+- Run /opt/scripts/tools/version.sh to see if the cores are running
+- If you followed these steps and it still does not work. Make sure you are booting from your SD card
+
+
+
    <a name="F-w10"></a>
  ### Format your SD card (windows 10):
  ---
@@ -159,22 +175,23 @@ sudo reboot
 ```
 After the reboot we update our kernel (We run 4.14.94-ti-rt-r93):
 ```
+sudo apt-get update
 sudo apt-get install linux-image-4.14.94-ti-rt-r93
-
 sudo reboot
 
-sudo ./opt/scripts/tools/update_kernel.sh
-
+sudo apt install --only-upgrade bb-cape-overlays
+sudo config-pin overlay cape-universala
 sudo reboot
+sudo apt-get upgrade
+sudo reboot
+
 ```
 We will now edit our U-boot overlay:
 ```
 sudo cd /boot/uEnv.txt
 ```
-With v4.14x-ti PRU via remoteproc can be enabled by:
+With v4.14x-ti PRU via remoteproc should be enabled by default:
 ```
-dtb_overlay=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo
-
 uboot_overlay_pru=/lib/firmware/AM335X-PRU-RPROC-4-14-TI-00A0.dtbo
 ```
 We also disable video and audio because they have some conflicting pins
