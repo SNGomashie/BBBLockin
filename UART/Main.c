@@ -19,8 +19,8 @@ void main(void){
   initUART();
 
   while(1){
-    printUART("TEST\n");
-    __delay_cycles(500000000/5);
+    printUART("512 65536\n");
+    __delay_cycles(200000);
   }
   __halt();
 }
