@@ -33,7 +33,7 @@ void main(void)
     // Reset cycle counter, cycle is on the right side to force the compiler
     // to put it in it's own register
     PRU0_CTRL.CYCLE = cycle;
-    norm_period = 65536 / 2 ;
+    norm_period = 4294967296 / 2 ;
     cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
     pru0_mem[0] = norm_period;
     __halt();
