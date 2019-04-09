@@ -21,7 +21,7 @@ void main(void){
 
   while(1){
 
-    sprintf(data, "%d %d %d %d\n", 0x0000, 0xFFFF, 0x0FF0, 0xF00F);
+    sprintf(data, "%04X, %04X, %04X, %04X\n", 0x0000, 0xFFFF, 0x0FF0, 0xF00F);
     printUART(data);
     __delay_cycles(200000);
   }
