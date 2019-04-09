@@ -5,8 +5,6 @@
 #include <pru_ctrl.h>
 #include "resource_table.h"
 
-#define out 1       // Bit number to output on
-
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
@@ -31,11 +29,11 @@ void main(void)
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
     PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
-    
+
     // Reset cycle counter, cycle is on the right side to force the compiler
     // to put it in it's own register
     PRU0_CTRL.CYCLE = cycle;
-    norm_period = samp_period / period;
+    norm_period = 5 + 5;
     cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
     pru0_mem[0] = norm_period;
     __halt();
