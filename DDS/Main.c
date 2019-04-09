@@ -9,6 +9,12 @@
 #include <pru_ctrl.h>
 #include "resource_table.h"
 
+/* The FIFO size on the PRU UART is 16 bytes; however, we are (arbitrarily)
+ * only going to send 8 at a time */
+#define FIFO_SIZE	16
+#define MAX_CHARS	16
+#define BUFFER		40
+
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
@@ -16,19 +22,19 @@ void initIEP(uint32_t comp);
 void initECAP(void);
 void initUART(void);
 void serialPRINT(volatile char* Message);
-char serialREAD(void);
 
 void main(void){
   /* Initialize variables */
   uint32_t period = 0;
-  uint32_t samp_period = 0;
+  uint32_t samp_period = 0x01312D00;
   uint32_t incrementor = 0;
   uint32_t accumulator = 0;
-  volatile char* data;
+  uint32_t pow2_32 = 0xFFFFFFFF;
+  char data[] = "";
 
   /*  Initialization  */
   initECAP();
-  initIEP(0x4E20);
+  initIEP((0x4E20));
   initUART();
 
   /* Main loop */
@@ -37,7 +43,8 @@ void main(void){
     period = CT_ECAP.CAP1;
 
     /* Calculate optimal phase increment for the corresponding period */
-    incrementor = (uint64_t)(samp_period * 4294967296) / period;
+    incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
+    incrementor /= period;
 
     /* Timer interrupt polling */
     while(){
@@ -94,9 +101,6 @@ void initECAP(void){
 /*    defines sample frequency    */
 /* comp is sample period in cycles*/
 void initIEP (uint32_t comp){
-  /* sample period = timer period*/
-  samp_period = comp;
-
   /* Disable counter */
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
 
@@ -125,7 +129,6 @@ void initIEP (uint32_t comp){
 /*   Initialize UART module  */
 /* For ARDUINO-ish debugging */
 void initUART(void){
-  void initUART(void){
 
     /* Set up UART to function at 115200 baud - DLL divisor is 104 at 16x oversample
      * 192MHz / 104 / 16 = ~115200 */
@@ -160,8 +163,6 @@ void initUART(void){
 
   }
 
-}
-
 /* Send message over UART */
 void serialPRINT(volatile char* Message){
   uint8_t cnt, index = 0;
@@ -187,11 +188,4 @@ void serialPRINT(volatile char* Message){
   /* Wait until the TX FIFO and the TX SR are completely empty */
   while (!CT_UART.LSR_bit.TEMT);
 
-}
-
-/* Receive message over UART */
-char serialREAD(void){
-  while (!CT_UART.LSR_bit.DR);
-
-  return CT_UART.RBR_bit.DATA;
 }

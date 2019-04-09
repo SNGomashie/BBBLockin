@@ -27,9 +27,6 @@ void main(void)
   uint32_t pow2_32 = 0xFFFFFFFF;
   uint32_t period = 0x0BEBC200;
 
-  buf.op1 = samp_period;
-  buf.op2 = pow2_32;
-
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 

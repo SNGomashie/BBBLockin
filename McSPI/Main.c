@@ -20,7 +20,7 @@
 /* Define pin locations */
 #define CS      7
 #define _RD     1
-#define _BUSY   16
+#define _BUSY   0
 #define CONVST  5
 
 /* Input and output registers */
