@@ -24,8 +24,9 @@ void main(void)
     volatile uint64_t storeValue = 0;
 
     /* Generate 32-bit numbers */
-    uint32_t a = 0xBEBC200;
+    uint32_t a = 0x01312D00;
     uint32_t b = 0xFFFFFFFF;
+		uint32_t c = 0x0BEBC200;
 
     /* Load operands into R28/R29 */
     buf.op1 = a;
@@ -37,6 +38,10 @@ void main(void)
     /* Since the result is 32-bits wide we have to save it into 2 registers */
     pru0_mem[0] = result >> 32;
     pru0_mem[1] = result;
+
+		result /= c;
+
+		pru0_mem[2] = result;
 
     /* stop PRU */
     __halt();
