@@ -6,7 +6,7 @@
 /* The FIFO size on the PRU UART is 16 bytes; however, we are (arbitrarily)
  * only going to send 8 at a time */
 #define FIFO_SIZE	16
-#define MAX_CHARS	8
+#define MAX_CHARS	16
 #define BUFFER		40
 
 void initUART(void);
@@ -23,10 +23,9 @@ void main(void){
 
   while(1){
 
-    sprintf(data, "%d %d ", 0x0000, 0xFFFF);
+    sprintf(data, "%d %d %d", 0x0000, 0xFFFF, 0xF0F0);
     sprintf(data2, "%d %d\n", 0xF0F0, 0x0F0F);
     printUART(data);
-
     printUART(data2);
     __delay_cycles(200000);
   }
