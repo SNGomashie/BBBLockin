@@ -20,7 +20,7 @@ void initIEP(uint32_t comp);
 void main(void){
   __R30 = 0x00000000;
 
-  initIEP(0x4E20);
+  initIEP(0x1312D00);
 
   while(1){
     while(!(CT_IEP.TMR_CMP_STS == 0x00)){
