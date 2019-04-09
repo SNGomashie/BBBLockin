@@ -5,6 +5,7 @@
 #include <pru_ctrl.h>
 #include "resource_table.h"
 
+
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
@@ -20,24 +21,26 @@ operands buf;
 
 void main(void)
 {
-    // These will be kept in registers and never witten to DRAM
-    uint32_t cycle;
-    uint32_t samp_period = 20000000;
-    uint32_t period = 200000000;
-    uint32_t power32 = 0xFFFFFFFF;
-    uint64_t norm_period = 0;
+  uint64_t result = 0;
+
+  uint32_t samp_period = 0x01312D00;
+  uint32_t pow2_32 = 0xFFFFFFFF;
+  uint32_t period = 0x0BEBC200;
+
+  buf.op1 = samp_period;
+  buf.op2 = pow2_32;
+
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
     PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
-
     // Reset cycle counter, cycle is on the right side to force the compiler
     // to put it in it's own register
     PRU0_CTRL.CYCLE = cycle;
-    buf.op1 = samp_period;
-    buf.op2 = power32;
-    norm_period = (uint64_t)samp_period * (uint64_t)4294967296;
+
+    result = (uint64_t)buf.op1 * (uint64_t)buf.op2;
+    result /= c;
     cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
-    pru0_mem[0] = norm_period;
+    pru0_mem[0] = result;
     __halt();
 }
