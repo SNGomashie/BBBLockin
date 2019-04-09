@@ -16,13 +16,18 @@ void printUART(volatile char* Message);
 char readUART(void);
 
 void main(void){
-  char data[] = "";
+  char data[16] = "";
+  char data2[16] = "";
+
   initUART();
 
   while(1){
 
-    sprintf(data, "%d %d %d\n", 0x0000, 0xFFFF, 0xF0F0);
-    printUART("FFFF 0F0F F0F0\n");
+    sprintf(data, "%d %d ", 0x0000, 0xFFFF);
+    sprintf(data2, "%d %d\n", 0xF0F0, 0x0F0F);
+    printUART(data);
+
+    printUART(data2);
     __delay_cycles(200000);
   }
   __halt();
