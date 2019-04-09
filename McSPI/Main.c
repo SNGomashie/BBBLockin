@@ -66,12 +66,7 @@ void main(void){
   __R30 |= (1 << CS);
   __R30 |= (1 << _RD);
 
-  PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
-  PRU0_CTRL.CYCLE = cycle;
-
   pru0_mem[0] = SPItransfer(0);
-
-  cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
 
   __halt();
 }
