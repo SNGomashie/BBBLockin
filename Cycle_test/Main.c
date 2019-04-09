@@ -22,7 +22,7 @@ operands buf;
 void main(void)
 {
   uint64_t result = 0;
-  uint32_t cycle;
+  uint32_t cycle = 0;
   uint32_t samp_period = 0x01312D00;
   uint32_t pow2_32 = 0xFFFFFFFF;
   uint32_t period = 0x0BEBC200;
