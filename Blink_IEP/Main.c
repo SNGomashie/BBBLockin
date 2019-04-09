@@ -25,6 +25,7 @@ void main(void){
   while(1){
     while(!(CT_IEP.TMR_CMP_STS == 0x00)){
       __R30 ^= 1 << LED;
+      CT_IEP.TMR_CMP_STS = 0x0001;
     }
   }
   __halt();
