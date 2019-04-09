@@ -55,10 +55,8 @@ void main(void){
   /* Access PRCM (without CT) to initialize McSPI0 clock */
   ptr_cm = CM_PER_BASE;
   ptr_cm[SPI0_CLKCTRL] = ON;
-  __R30 |= (1 << CS);
   /* Initialize the McSPI module */
   initSPImod();
-  __R30 &= ~(1 << CS);
   /* Initialize channel 0 of the McSPI module */
   initSPIchan();
   /* Set pins */
