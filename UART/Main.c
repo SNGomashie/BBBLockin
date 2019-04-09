@@ -15,6 +15,10 @@ void printUART(volatile char* Message);
 
 char readUART(void);
 
+/* Input and output registers */
+volatile register uint32_t __R30;
+volatile register uint32_t __R31;
+
 void main(void){
   char data[16] = "";
   char data2[16] = "";
@@ -22,10 +26,10 @@ void main(void){
   initUART();
 
   while(1){
-
+  __R30 |= (1 << 7);
     sprintf(data, "%d %d %d %d\n", 0x0000, 0xFFFF, 0xF0F0, 0x0F0F);
     printUART(data);
-
+  __R30 &= ~(1 << 7); 
     __delay_cycles(200000);
   }
   __halt();
