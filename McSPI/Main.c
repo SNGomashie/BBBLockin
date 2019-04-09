@@ -18,10 +18,10 @@
 #include "resource_table.h"
 
 /* Define pin locations */
-#define CS      5
-#define _RD     7
+#define CS      7
+#define _RD     1
 #define _BUSY   16
-#define CONVST  0
+#define CONVST  5
 
 /* Input and output registers */
 volatile register uint32_t __R30;
