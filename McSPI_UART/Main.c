@@ -28,6 +28,12 @@
 #define _BUSY   16
 #define CONVST  0
 
+/* The FIFO size on the PRU UART is 16 bytes; however, we are (arbitrarily)
+ * only going to send 8 at a time */
+#define FIFO_SIZE	16
+#define MAX_CHARS	8
+#define BUFFER		40
+
 /* Input and output registers */
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
@@ -78,6 +84,7 @@ void main(void){
   /* Set pins */
   __R30 |= (1 << CS);
   __R30 |= (1 << _RD);
+  
   while(1){
     sprintf(data, "%d", SPItransfer(0));
     printUART(data);
