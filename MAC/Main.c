@@ -24,8 +24,8 @@ void main(void)
     volatile uint64_t storeValue = 0;
 
     /* Generate 32-bit numbers */
-    uint32_t a = 0xFFFFFFFF;
-    uint32_t b = 0xF0F0F0F0;
+    uint32_t a = 0xBEBC200;
+    uint32_t b = 0xFFFFFFFF;
 
     /* Load operands into R28/R29 */
     buf.op1 = a;
