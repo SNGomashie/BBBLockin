@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdint.h>
 #include <pru_uart.h>
 #include "resource_table.h"
@@ -15,11 +16,13 @@ void printUART(volatile char* Message);
 char readUART(void);
 
 void main(void){
-
+char *data;
   initUART();
 
   while(1){
-    printUART("512 65536\n");
+
+    sprintf(data, %x %x %x %x\n, 0x00, 0xFF, 0xF0, 0x0F);
+    printUART(data);
     __delay_cycles(200000);
   }
   __halt();
