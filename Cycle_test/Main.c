@@ -10,23 +10,33 @@
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
+#define PRU0_MEM 0x00000000
+volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
+
+typedef struct {
+	uint32_t op1;
+	uint32_t op2;
+} operands;
+
+operands buf;
+
 void main(void)
 {
     // These will be kept in registers and never witten to DRAM
     uint32_t cycle;
-
+    uint32_t samp_period = 20000000;
+    uint32_t period = 200000000;
+    uint32_t norm_period = 0;
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
     PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
-
-    uint8_t a = 10;
-    uint8_t b = 5;
-    uint8_t c = 0;
+    
     // Reset cycle counter, cycle is on the right side to force the compiler
     // to put it in it's own register
     PRU0_CTRL.CYCLE = cycle;
-    c = a * b
+    norm_period = samp_period / period;
     cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
+    pru0_mem[0] = norm_period;
     __halt();
 }

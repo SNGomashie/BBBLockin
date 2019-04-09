@@ -63,8 +63,8 @@ void main(void){
   /* Initialize channel 0 of the McSPI module */
   initSPIchan();
   /* Set pins */
-  // __R30 |= (1 << CS);
-  // __R30 |= (1 << _RD);
+  __R30 |= (1 << CS);
+  __R30 |= (1 << _RD);
 
   pru0_mem[0] = SPItransfer(0);
 
