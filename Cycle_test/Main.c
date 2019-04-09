@@ -24,6 +24,7 @@ void main(void)
     uint32_t cycle;
     uint32_t samp_period = 20000000;
     uint32_t period = 200000000;
+    uint32_t power32 = 0xFFFFFFFF;
     uint64_t norm_period = 0;
     // Clear SYSCFG[STANDBY_INIT] to enable OCP master port
     CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
@@ -34,7 +35,7 @@ void main(void)
     // to put it in it's own register
     PRU0_CTRL.CYCLE = cycle;
     buf.op1 = samp_period;
-    buf.op2 = 4294967296;
+    buf.op2 = power32;
     norm_period = (uint64_t)samp_period * (uint64_t)4294967296;
     cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
     pru0_mem[0] = norm_period;
