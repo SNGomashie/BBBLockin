@@ -30,6 +30,7 @@ volatile register uint32_t __R31;
 /* PRCM (Power Reset Clock Module) Registers */
 /* Base adress for the clock control module */
 #define CM_PER_BASE	((volatile uint8_t *)(0x44E00000))
+
 /* Adress for the SPI clk control register */
 #define SPI0_CLKCTRL  (0x4C)
 #define ON (0x2)
@@ -55,13 +56,15 @@ void main(void){
   /* Access PRCM (without CT) to initialize McSPI0 clock */
   ptr_cm = CM_PER_BASE;
   ptr_cm[SPI0_CLKCTRL] = ON;
+
   /* Initialize the McSPI module */
   initSPImod();
+
   /* Initialize channel 0 of the McSPI module */
   initSPIchan();
   /* Set pins */
-  __R30 |= (1 << CS);
-  __R30 |= (1 << _RD);
+  // __R30 |= (1 << CS);
+  // __R30 |= (1 << _RD);
 
   pru0_mem[0] = SPItransfer(0);
 
