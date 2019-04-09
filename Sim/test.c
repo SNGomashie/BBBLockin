@@ -4,7 +4,6 @@
 
 
 void main(void){
-  char data[] = "";
-sprintf(data, "%d %d %d\n", 0x0000, 0xFFFF, 0xF0F0);
-  printf(data);
+  uint32_t a = 0x80 | 0x8 | 0x4 | 0x2| 0x01;
+  printf(a);
 }

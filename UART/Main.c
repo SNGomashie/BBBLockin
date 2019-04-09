@@ -22,7 +22,7 @@ void main(void){
   while(1){
 
     sprintf(data, "%d %d %d\n", 0x0000, 0xFFFF, 0xF0F0);
-    printUART(data);
+    printUART("FFFF 0F0F F0F0\n");
     __delay_cycles(200000);
   }
   __halt();
