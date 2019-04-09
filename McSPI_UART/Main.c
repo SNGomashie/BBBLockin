@@ -58,7 +58,6 @@ void printUART(volatile char* Message);
 
 
 void main(void){
-  uint32_t cycle;
   uint16_t adc_out;
   char data[] = "";
   volatile uint8_t *ptr_cm;
@@ -87,7 +86,7 @@ void main(void){
   __R30 |= (1 << _RD);
 
   while(1){
-    adc_out = SPItransfer(0)
+    adc_out = SPItransfer(0);
     sprintf(data, "%d\n", adc_out);
     printUART(data);
     __delay_cycles(200000);
