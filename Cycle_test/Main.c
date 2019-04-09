@@ -40,7 +40,8 @@ void main(void)
 
     result = (uint64_t)buf.op1 * (uint64_t)buf.op2;
     result /= c;
-    cycle = PRU0_CTRL.CYCLE;    // Read cycle and store in a register
+    cycle = PRU0_CTRL.CYCLE;
+    pru0_mem[1] = cycle;    // Read cycle and store in a register
     pru0_mem[0] = result;
     __halt();
 }
