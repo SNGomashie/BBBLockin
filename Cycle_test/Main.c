@@ -22,7 +22,7 @@ operands buf;
 void main(void)
 {
   uint64_t result = 0;
-
+  uint32_t cycle;
   uint32_t samp_period = 0x01312D00;
   uint32_t pow2_32 = 0xFFFFFFFF;
   uint32_t period = 0x0BEBC200;
@@ -39,7 +39,7 @@ void main(void)
     PRU0_CTRL.CYCLE = cycle;
 
     result = (uint64_t)buf.op1 * (uint64_t)buf.op2;
-    result /= c;
+    result /= period;
     cycle = PRU0_CTRL.CYCLE;
     pru0_mem[1] = cycle;    // Read cycle and store in a register
     pru0_mem[0] = result;
