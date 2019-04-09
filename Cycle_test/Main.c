@@ -37,8 +37,7 @@ void main(void)
     // Reset cycle counter, cycle is on the right side to force the compiler
     // to put it in it's own register
     PRU0_CTRL.CYCLE = cycle;
-
-    result = (uint64_t)buf.op1 * (uint64_t)buf.op2;
+    result = (uint64_t)samp_period * (uint64_t)pow2_32;
     result /= period;
     cycle = PRU0_CTRL.CYCLE;
     pru0_mem[1] = cycle;    // Read cycle and store in a register
