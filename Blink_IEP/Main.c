@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <pru_cfg.h>
+#include <pru_iep.h>
 #include <pru_ctrl.h>
 #include "resource_table.h"
 
@@ -18,6 +19,9 @@ void initIEP(uint32_t comp);
 
 void main(void){
   __R30 = 0x00000000;
+
+  initIEP(0x01312D00);
+
   while(1){
     while(!(CT_IEP.TMR_CMP_STS == 0x00)){
       __R30 ^= 1 << LED;
@@ -33,7 +37,6 @@ void main(void){
 /* comp is sample period in cycles*/
 void initIEP (uint32_t comp){
   /* sample period = timer period*/
-  samp_period = comp;
 
   /* Disable counter */
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
