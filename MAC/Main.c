@@ -41,7 +41,7 @@ void main(void)
 
 		result /= c;
 
-		pru0_mem[2] = result
+		pru0_mem[2] = result;
 
     /* stop PRU */
     __halt();
