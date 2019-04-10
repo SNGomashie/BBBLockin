@@ -72,15 +72,15 @@ void main(void){
 
       __R30 ^= 1 << PIN;
 
-      /* Format string to be send */
-      // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
-      sprintf(data, "%x %x\n", accumulator, period);
-
-      /* Print to serial port */
-      serialPRINT(data);
-
-      /* add incrementor to phase */
-      accumulator += incrementor;
+      // /* Format string to be send */
+      // // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
+      // sprintf(data, "%x %x\n", accumulator, period);
+      //
+      // /* Print to serial port */
+      // serialPRINT(data);
+      //
+      // /* add incrementor to phase */
+      // accumulator += incrementor;
     }
 
   }
