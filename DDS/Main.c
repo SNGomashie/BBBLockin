@@ -64,7 +64,7 @@ void main(void){
 
       /* Format string to be send */
       // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
-      sprintf(data, "%x\n", period);
+      sprintf(data, "%d\n", period);
 
       /* Print to serial port */
       serialPRINT(data);
