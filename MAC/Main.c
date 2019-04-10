@@ -34,15 +34,17 @@ void main(void)
 
     /* Multiply 2 32-bit numbers */
     result = (uint64_t)buf.op1 * (uint64_t)buf.op2;
-
+		result2 = (uint64_t)a * (uint64_t)b;
     /* Since the result is 32-bits wide we have to save it into 2 registers */
     pru0_mem[0] = result >> 32;
-    pru0_mem[1] = result;
+    pru0_mem[1] = result2 >> 32;
+		pru0_mem[2] = result;
+		pru0_mem[3] = result2;
 
 		result /= c;
-
-		pru0_mem[2] = result;
-
+		result2 /= c;
+		pru0_mem[4] = result;
+		pru0_mem[5] = result2;
     /* stop PRU */
     __halt();
 }
