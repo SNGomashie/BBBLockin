@@ -55,17 +55,17 @@ void main(void){
   initUART();
   initINTC();
 
-  /* Capture period and calculate phase incrementor */
-  period = CT_ECAP.CAP1;
-
-  /* Calculate optimal phase increment for the corresponding period */
-  incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
-  incrementor /= period;
-
-  pru0_mem[0] = incrementor;
-
   /* Main loop */
   while(1){
+
+    /* Capture period and calculate phase incrementor */
+    period = CT_ECAP.CAP1;
+
+    /* Calculate optimal phase increment for the corresponding period */
+    incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
+    incrementor /= period;
+
+    pru0_mem[0] = incrementor;
 
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
@@ -75,7 +75,7 @@ void main(void){
       __R30 ^= 1 << PIN;
 
       /* Format string to be send */
-      sprintf(data,"%d, %d, %x\n", sinLUT64[accumulator >> 26], (accumulator >> 26), period);
+      sprintf(data,"%d, %d, %x, %x\n", sinLUT64[accumulator >> 26], (accumulator >> 26), period, incrementor);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
