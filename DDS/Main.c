@@ -22,7 +22,7 @@
 #define MAX_CHARS	8
 #define BUFFER		40
 
-#define SAMP_FREQ 10000
+#define SAMP_FREQ 100
 
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
@@ -66,12 +66,12 @@ void main(void){
       /* Toggle pin */
       __R30 ^= 1 << PIN;
 
-      // /* Format string to be send */
-      // // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
-      // sprintf(data, "%x %x\n", accumulator, period);
-      //
-      // /* Print to serial port */
-      // serialPRINT(data);
+      /* Format string to be send */
+      // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
+      sprintf(data, "%x %x\n", accumulator, period);
+
+      /* Print to serial port */
+      serialPRINT(data);
 
       /* add incrementor to phase */
       accumulator += incrementor;
