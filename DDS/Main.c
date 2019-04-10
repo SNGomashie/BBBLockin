@@ -22,6 +22,8 @@
 #define MAX_CHARS	16
 #define BUFFER		40
 
+#define SAMP_FREQ 100
+
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
@@ -34,14 +36,16 @@ void initINTC(void);
 void main(void){
   /* Initialize variables */
   uint32_t period = 0;
-  uint32_t samp_period = 0x01312D00;
+  uint32_t samp_period = 0;
   uint32_t incrementor = 0;
   uint32_t accumulator = 0;
   uint32_t pow2_32 = 0xFFFFFFFF;
   char data[] = "";
 
+  samp_period = (1000000000 / SAMP_FREQ) / 5;
+
   /*  Initialization  */
-  initIEP(0xBEBC200);
+  initIEP(samp_period);
   initECAP();
   initUART();
   initINTC();
@@ -57,6 +61,14 @@ void main(void){
 
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
+      /* Clear the status of the interrupt */
+      CT_INTC.SICR = 7;
+
+      /* delay for 4 cycles */
+      __delay_cycles(5);
+
+      /* Clear Compare status */
+      CT_IEP.TMR_CMP_STS |= (1 << 0);
 
       /* Format string to be send */
       // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
@@ -69,15 +81,6 @@ void main(void){
 
       /* add incrementor to phase */
       accumulator += incrementor;
-
-      /* Clear the status of the interrupt */
-      CT_INTC.SICR = 7;
-
-      /* delay for 4 cycles */
-      __delay_cycles(4);
-
-      /* Clear Compare status */
-      CT_IEP.TMR_CMP_STS |= (1 << 0);
     }
 
   }
