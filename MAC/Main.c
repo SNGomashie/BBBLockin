@@ -21,6 +21,7 @@ operands buf;
 void main(void)
 {
     uint64_t result = 0;
+		uint64_t result2 = 0;
     volatile uint64_t storeValue = 0;
 
     /* Generate 32-bit numbers */
