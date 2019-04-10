@@ -11,8 +11,7 @@
 #include <pru_ctrl.h>
 #include "resource_table.h"
 
-#define LED 7
-#define TEST 5
+#define PIN25 7
 #define HOST_INT (1 <<30)
 
 volatile register unsigned int __R30;
@@ -29,8 +28,9 @@ void main(void){
 
   while(1){
     while(__R31 & HOST_INT){
-      __R30 ^= 1 << LED;
-      CT_INTC.SICR |= (1 << 7);
+      /* Toggle pin */
+      __R30 ^= 1 << PIN25;
+      CT_INTC.SICR = 0x7;
     }
   }
   __halt();
