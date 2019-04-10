@@ -9,6 +9,8 @@
 #include <pru_ctrl.h>
 #include <pru_intc.h>
 #include <pru_iep.h>
+#include <pru_uart.h>
+#include <pru_ecap.h>
 #include "resource_table.h"
 
 #define HOST_INT (1 << 31)
@@ -60,7 +62,7 @@ void main(void){
 
       /* Format string to be send */
       // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
-      sprintf(data, "%x\n", period)
+      sprintf(data, "%x\n", period);
       /* Print sine amplitude to serial port */
       serialPRINT(data);
 
@@ -69,41 +71,6 @@ void main(void){
     }
   }
   __halt();
-}
-
-/*     Initialize IEP module      */
-/*    defines sample frequency    */
-/* comp is sample period in cycles*/
-void initIEP (uint32_t comp){
-  /* sample period = timer period*/
-
-  /* Disable counter */
-  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
-
-  /* Clear CNT register */
-  CT_IEP.TMR_CNT = 0x0;
-
-  /* Clear overflow register */
-  CT_IEP.TMR_GLB_STS_bit.CNT_OVF = 0x1;
-
-  /* Set compare values */
-  CT_IEP.TMR_CMP0 = comp;
-
-  /* Clear compare status */
-  CT_IEP.TMR_CMP_STS_bit.CMP_HIT = 0xFF;
-
-  /* Disable compensation */
-  CT_IEP.TMR_COMPEN_bit.COMPEN_CNT = 0x0;
-
-  /* Enable CMP0 and reset on event */
-  CT_IEP.TMR_CMP_CFG_bit.CMP0_RST_CNT_EN = 0x1;
-  CT_IEP.TMR_CMP_CFG_bit.CMP_EN = 0x1;
-
-  /* Set increment to 1 (default = 5)*/
-  CT_IEP.TMR_GLB_CFG_bit.DEFAULT_INC = 0x0001;
-
-  /* Enable counter */
-  CT_IEP.TMR_GLB_CFG = 0x11;
 }
 
 /*     Initialize IEP module      */
