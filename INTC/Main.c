@@ -77,7 +77,6 @@ void initINTC(void){
   CT_INTC.SICR = 7;
   CT_INTC.EISR = 7;
   CT_INTC.HIEISR |= (1 << 0);
-  CT_INTC.GER = 1;
 
   // /* Enable sys_event */
   // CT_INTC.EISR_bit.EN_SET_IDX = 0x7;
