@@ -19,7 +19,7 @@
 /* The FIFO size on the PRU UART is 16 bytes; however, we are (arbitrarily)
  * only going to send 8 at a time */
 #define FIFO_SIZE	16
-#define MAX_CHARS	8
+#define MAX_CHARS	16
 #define BUFFER		40
 
 #define SAMP_FREQ 100
@@ -69,7 +69,7 @@ void main(void){
       __R30 ^= 1 << PIN;
 
       /* Format string to be send */
-      sprintf(data,"%x, %d\n", sinLUT64[accumulator >> 26], accumulator);
+      sprintf(data,"%d, %d, %d\n", sinLUT64[accumulator >> 26], (accumulator >> 26), incrementor);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
