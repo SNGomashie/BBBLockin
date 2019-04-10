@@ -12,7 +12,7 @@
 #include "resource_table.h"
 
 #define PIN25 7
-#define HOST_INT (1 << 30)
+#define HOST_INT (1 << 31)
 
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
