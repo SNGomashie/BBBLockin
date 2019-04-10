@@ -24,7 +24,7 @@ void main(void){
   __R30 = 0x00000000;
 
   initINTC();
-  initIEP(0xFFFFFFFF);
+  initIEP(0x1312D00);
 
   while(1){
     if(__R31 & HOST_INT){
