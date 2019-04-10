@@ -41,7 +41,7 @@ void main(void){
   char data[] = "";
 
   /*  Initialization  */
-  initIEP(0x30D3B);
+  initIEP(0xBEBC200);
   initECAP();
   initUART();
   initINTC();
@@ -54,27 +54,30 @@ void main(void){
     /* Calculate optimal phase increment for the corresponding period */
     incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
     incrementor /= period;
-    //
-    // /* Timer interrupt polling */
-    // while(__R31 & HOST_INT){
-    //   /* Clear the status of the interrupt */
-    //   CT_INTC.SICR = 7;
-    //   __delay_cycles(4);
-    //   /* Clear compare status */
-    //   CT_IEP.TMR_CMP_STS_bit.CMP_HIT = 0xFF;
-    //
-    //   /* Format string to be send */
-    //   // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
+
+    /* Timer interrupt polling */
+    while(__R31 & HOST_INT){
+      /* Clear the status of the interrupt */
+      CT_INTC.SICR = 7;
+
+      /* delay for 4 cycles */
+      __delay_cycles(4);
+
+      /* Clear Compare status */
+      CT_IEP.TMR_CMP_STS |= (1 << 0);
+
+      /* Format string to be send */
+      // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
       sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
       serialPRINT(data);
 
-    //   __R30 ^= 1 << PIN;
-    //
-    //   /* add incrementor to phase */
-    //   accumulator += incrementor;
-    // }
+      __R30 ^= 1 << PIN;
+
+      /* add incrementor to phase */
+      accumulator += incrementor;
+    }
 
   }
   __halt();
