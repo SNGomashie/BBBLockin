@@ -30,14 +30,12 @@ void main(void){
 
   while(1){
     while (__R31 & HOST_INT){
-      /* Clear Compare status */
-      CT_IEP.TMR_CMP_STS |= (1 << 0);
-
-      /* delay */
-      __delay_cycles(4);
-
       /* Clear the status of the interrupt */
       CT_INTC.SICR = 7;
+      /* delay */
+      __delay_cycles(4);
+      /* Clear Compare status */
+      CT_IEP.TMR_CMP_STS |= (1 << 0);
 
       /* Toggle pin */
       __R30 ^= 1 << PIN25;
