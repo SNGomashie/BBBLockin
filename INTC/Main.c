@@ -12,7 +12,7 @@
 #include "resource_table.h"
 
 #define PIN25 7
-#define HOST_INT (1 <<30)
+#define HOST_INT (1 << 30)
 
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
@@ -23,8 +23,8 @@ void initINTC(void);
 void main(void){
   __R30 = 0x00000000;
 
-  initIEP(0x1312D00);
   initINTC();
+  initIEP(0xFFFFFFFF);
 
   while(1){
     while(__R31 & HOST_INT){
