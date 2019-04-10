@@ -75,7 +75,7 @@ void main(void){
       __R30 ^= 1 << PIN;
 
       /* Format string to be send */
-      sprintf(data,"%d, %d, %x, %x\n", sinLUT64[accumulator >> 26], (accumulator >> 26), period, incrementor);
+      sprintf(data,"%d, %d\n",   period, incrementor);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
