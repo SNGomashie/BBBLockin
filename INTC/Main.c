@@ -80,7 +80,7 @@ void initINTC(void){
 
   /* Set type and polarity of system events (SIPRx / SITRx) */
   CT_INTC.SIPR0 |= (1 << 7);
-  CT_INTC.SITR0 &= ~(1 << 7)
+  CT_INTC.SITR0 &= ~(1 << 7);
 
   /* Map sys_event to INTC channel (CHANMAP) */
   CT_INTC.CMR1_bit.CH_MAP_7 = 0x0;
