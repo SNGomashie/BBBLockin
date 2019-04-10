@@ -58,13 +58,13 @@ void main(void){
     while(__R31 & HOST_INT){
       /* Clear the status of the interrupt */
       CT_INTC.SICR = 7;
-
+      __delay_cycles(4);
       /* Clear compare status */
       CT_IEP.TMR_CMP_STS_bit.CMP_HIT = 0xFF;
 
       /* Format string to be send */
       // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
-      sprintf(data, "%d\n", period);
+      sprintf(data, "%d\n", accumulator);
 
       /* Print to serial port */
       serialPRINT(data);
@@ -72,6 +72,7 @@ void main(void){
       /* add incrementor to phase */
       accumulator += incrementor;
     }
+
   }
   __halt();
 }
