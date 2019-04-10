@@ -12,6 +12,7 @@
 #include "resource_table.h"
 
 #define LED 7
+#define TEST 5
 #define HOST_INT (1 << 30)
 
 volatile register unsigned int __R30;
@@ -23,6 +24,8 @@ void main(void){
   __R30 = 0x00000000;
 
   initIEP(0x4E20);
+
+  __R30 ^= 1 << TEST;
 
   while(1){
     while(__R31 & HOST_INT){
@@ -69,8 +72,15 @@ void initIEP (uint32_t comp){
 /*               Initialize interrupts               */
 /* Interrupt from sys_event 7 to channel 0 to host 0 */
 void initINTC(void){
+  /* Enable sys_event */
+  CT_INTC.EISR_bit.EN_SET_IDX = 0x7;
+
+  /* Enable host int */
+  CT_INTC.HIEISR_bit.HINT_EN_SET_IDX = 0x0;
+
   /* Set type and polarity of system events (SIPRx / SITRx) */
   CT_INTC.SIPR0 |= (1 << 7);
+  CT_INTC.SITR0 &= ~(1 << 7)
 
   /* Map sys_event to INTC channel (CHANMAP) */
   CT_INTC.CMR1_bit.CH_MAP_7 = 0x0;
@@ -83,6 +93,7 @@ void initINTC(void){
 
   /* Enable host interrupt (HIER) */
   CT_INTC.HIER |= (1 << 0);
+
   /* Globally enable all interrupts (GER) */
   CT_INTC.GER = 0x1;
 }
