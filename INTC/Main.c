@@ -13,7 +13,7 @@
 
 #define LED 7
 #define TEST 5
-#define HOST_INT (1 << 30)
+#define HOST_INT 30
 
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
@@ -28,7 +28,7 @@ void main(void){
   __R30 ^= 1 << TEST;
 
   while(1){
-    while(__R31 & HOST_INT){
+    if(__R31 & (1 << HOST_INT)){
       __R30 ^= 1 << LED;
       CT_INTC.SICR |= (1 << 7);
     }
