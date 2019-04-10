@@ -22,7 +22,7 @@
 #define MAX_CHARS	16
 #define BUFFER		40
 
-#define SAMP_FREQ 100
+#define SAMP_FREQ 10
 
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
