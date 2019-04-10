@@ -26,7 +26,7 @@ void main(void){
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   initINTC();
-  initIEP(0x30D40);
+  initIEP(0x30D3B);
 
   while(1){
     while (__R31 & HOST_INT){
