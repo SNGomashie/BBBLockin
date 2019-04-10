@@ -7,7 +7,11 @@
 #include <stdio.h>
 #include <pru_cfg.h>
 #include <pru_ctrl.h>
+#include <pru_intc.h>
+#include <pru_iep.h>
 #include "resource_table.h"
+
+#define HOST_INT (1 << 31)
 
 /* The FIFO size on the PRU UART is 16 bytes; however, we are (arbitrarily)
  * only going to send 8 at a time */
@@ -34,7 +38,7 @@ void main(void){
 
   /*  Initialization  */
   initECAP();
-  initIEP((0x4E20));
+  initIEP(0x30D3B);
   initUART();
 
   /* Main loop */
@@ -47,11 +51,16 @@ void main(void){
     incrementor /= period;
 
     /* Timer interrupt polling */
-    while(){
+    while(__R31 & HOST_INT){
+      /* Clear the status of the interrupt */
+      CT_INTC.SICR = 7;
+
+      /* Clear compare status */
+      CT_IEP.TMR_CMP_STS_bit.CMP_HIT = 0xFF;
 
       /* Format string to be send */
-      sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
-
+      // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
+      sprintf(data, "%x\n", period)
       /* Print sine amplitude to serial port */
       serialPRINT(data);
 
@@ -62,39 +71,39 @@ void main(void){
   __halt();
 }
 
-/*  Initialize eCAP module  */
-/* captures period from SYNC */
-void initECAP(void){
-	/* Soft reset */
-	CT_ECAP.ECCTL1 |= (0x01 << FREE_SOFT);
+/*     Initialize IEP module      */
+/*    defines sample frequency    */
+/* comp is sample period in cycles*/
+void initIEP (uint32_t comp){
+  /* sample period = timer period*/
 
-	/* Capture polarity & Capture reset */
-	CT_ECAP.ECCTL1 &= ~(1 << CAP1POL);
-	CT_ECAP.ECCTL1 |= (1 << CTRRST1);
+  /* Disable counter */
+  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
 
-	/* Enable loading of CAP registers */
-	CT_ECAP.ECCTL1 |= (1 << CAPLDEN);
+  /* Clear CNT register */
+  CT_IEP.TMR_CNT = 0x0;
 
-	/* Select prescaler */
-	CT_ECAP.ECCTL1 &= ~(0x1111 << PRESCALE);
+  /* Clear overflow register */
+  CT_IEP.TMR_GLB_STS_bit.CNT_OVF = 0x1;
 
-	/* Continuous or oneshot mdoe */
-	CT_ECAP.ECCTL2 &= ~(1 << CONT_ONESHT);
+  /* Set compare values */
+  CT_IEP.TMR_CMP0 = comp;
 
-	/* Wrap after CAP2 */
-	CT_ECAP.ECCTL2 &= ~(1 << STOP_WRAP);
+  /* Clear compare status */
+  CT_IEP.TMR_CMP_STS_bit.CMP_HIT = 0xFF;
 
-	/* Time Stamp (TSCTR) Counter Stop (freeze) Control */
-	CT_ECAP.ECCTL2 |= (1 << TSCTRSTOP);
+  /* Disable compensation */
+  CT_IEP.TMR_COMPEN_bit.COMPEN_CNT = 0x0;
 
-	/* Disable SYNC-in option */
-	CT_ECAP.ECCTL2 &= ~(1 << SYNCI_EN);
+  /* Enable CMP0 and reset on event */
+  CT_IEP.TMR_CMP_CFG_bit.CMP0_RST_CNT_EN = 0x1;
+  CT_IEP.TMR_CMP_CFG_bit.CMP_EN = 0x1;
 
-	/* Disable SYNC-out signal */
-	CT_ECAP.ECCTL2 |= (0x11 << SYNCO_SEL);
+  /* Set increment to 1 (default = 5)*/
+  CT_IEP.TMR_GLB_CFG_bit.DEFAULT_INC = 0x0001;
 
-	/* Enable capture mode */
-	CT_ECAP.ECCTL2 &= ~(1 << CAP_APWM);
+  /* Enable counter */
+  CT_IEP.TMR_GLB_CFG = 0x11;
 }
 
 /*     Initialize IEP module      */
@@ -188,4 +197,30 @@ void serialPRINT(volatile char* Message){
   /* Wait until the TX FIFO and the TX SR are completely empty */
   while (!CT_UART.LSR_bit.TEMT);
 
+}
+
+/*               Initialize interrupts               */
+/* Interrupt from sys_event 7 to channel 0 to host 0 */
+void initINTC(void){
+  /* Clear all host interrupts */
+  __R31 = 0x00000000;
+
+  /* Connect sys_evt 7 to channel 1 */
+  CT_INTC.CMR1_bit.CH_MAP_7 = 1;
+
+  /* Connect channel 1 to host interrupt 1 */
+  CT_INTC.HMR0_bit.HINT_MAP_1 = 1;
+
+  /* Clear sys_evt 7 */
+  CT_INTC.SICR = 7;
+
+  /* Enable sys_evt 7 */
+  CT_INTC.EISR = 7;
+
+  /* Enable host interrupt */
+  CT_INTC.HIEISR = 1;
+
+  /* Clear all sys_evt */
+  CT_INTC.SECR0 = 0xFFFFFFFF;
+  CT_INTC.SECR1 = 0xFFFFFFFF;
 }
