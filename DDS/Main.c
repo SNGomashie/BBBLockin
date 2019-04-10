@@ -51,8 +51,8 @@ void main(void){
     period = CT_ECAP.CAP1;
 
     /* Calculate optimal phase increment for the corresponding period */
-    incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
-    incrementor /= period;
+    // incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
+    // incrementor /= period;
 
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
