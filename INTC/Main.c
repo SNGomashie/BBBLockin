@@ -27,7 +27,7 @@ void main(void){
   // initIEP(0x1312D00);
 
   while(1){
-    while((__R31 & (0x1 << 31)) == 0);
+    while(__R31 & (0x1 << 31));
       CT_INTC.SICR = 7;
       __R30 ^= 1 << PIN25;
 
@@ -71,13 +71,14 @@ void initIEP (uint32_t comp){
 /*               Initialize interrupts               */
 /* Interrupt from sys_event 7 to channel 0 to host 0 */
 void initINTC(void){
+  __R31 = 0x00000000;
   CT_INTC.CMR1_bit.CH_MAP_7 = 1;
   CT_INTC.HMR0_bit.HINT_MAP_1 = 1;
   CT_INTC.SICR = 7;
   CT_INTC.EISR = 7;
   CT_INTC.HIEISR |= (1 << 0);
   CT_INTC.GER = 1;
-  __R31 = 0x00000000;
+
   // /* Enable sys_event */
   // CT_INTC.EISR_bit.EN_SET_IDX = 0x7;
   //
