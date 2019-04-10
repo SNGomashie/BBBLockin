@@ -24,20 +24,21 @@ void main(void){
   __R30 = 0x00000000;
 
 
-	CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
+  CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   initINTC();
   initIEP(0x1312D00);
 
   while(1){
-    while ((__R31 & 0x80000000) == 0);
+    while ((__R31 & 0x80000000) == 0){
       /* Clear Compare status */
-    	CT_IEP.TMR_CMP_STS = 0xFF;
+      CT_IEP.TMR_CMP_STS = 0xFF;
 
       /* Clear the status of the interrupt */
-    	CT_INTC.SECR0 = (1 << 7);
-      
+      CT_INTC.SECR0 = (1 << 7);
+
       __R30 ^= 1 << PIN25;
+    }
   }
   __halt();
 }
@@ -63,7 +64,7 @@ void initIEP (uint32_t comp){
   CT_IEP.TMR_CMP0 = comp;
 
   /* Clear compare status */
-	CT_IEP.TMR_CMP_STS_bit.CMP_HIT = 0xFF;
+  CT_IEP.TMR_CMP_STS_bit.CMP_HIT = 0xFF;
 
   /* Disable compensation */
   CT_IEP.TMR_COMPEN_bit.COMPEN_CNT = 0x0;
@@ -76,7 +77,7 @@ void initIEP (uint32_t comp){
   CT_IEP.TMR_GLB_CFG_bit.DEFAULT_INC = 0x0001;
 
   /* Enable counter */
-	CT_IEP.TMR_GLB_CFG = 0x11;
+  CT_IEP.TMR_GLB_CFG = 0x11;
 }
 
 /*               Initialize interrupts               */
@@ -89,7 +90,7 @@ void initINTC(void){
   CT_INTC.EISR = 7;
   CT_INTC.HIEISR |= (1 << 0);
   CT_INTC.SECR0 = 0xFFFFFFFF;
-	CT_INTC.SECR1 = 0xFFFFFFFF;
+  CT_INTC.SECR1 = 0xFFFFFFFF;
   // /* Enable sys_event */
   // CT_INTC.EISR_bit.EN_SET_IDX = 0x7;
   //
