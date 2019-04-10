@@ -70,7 +70,7 @@ void main(void){
       /* Print to serial port */
       serialPRINT(data);
 
-      __R30 |= (1 << PIN);
+      __R30 ^= 1 << PIN;
 
       /* add incrementor to phase */
       accumulator += incrementor;
