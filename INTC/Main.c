@@ -30,7 +30,7 @@ void main(void){
   initIEP(0x1312D00);
 
   while(1){
-    while ((__R31 & 0x80000000) == 0){
+    while ((__R31 & HOST_INT)){
       /* Clear Compare status */
       CT_IEP.TMR_CMP_STS = 0xFF;
 
