@@ -70,14 +70,14 @@ void main(void){
       /* Clear Compare status */
       CT_IEP.TMR_CMP_STS |= (1 << 0);
 
+      __R30 ^= 1 << PIN;
+
       /* Format string to be send */
       // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
       sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
       serialPRINT(data);
-
-      __R30 ^= 1 << PIN;
 
       /* add incrementor to phase */
       accumulator += incrementor;
