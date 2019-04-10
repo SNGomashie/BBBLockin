@@ -19,7 +19,7 @@
 /* The FIFO size on the PRU UART is 16 bytes; however, we are (arbitrarily)
  * only going to send 8 at a time */
 #define FIFO_SIZE	16
-#define MAX_CHARS	16
+#define MAX_CHARS	8
 #define BUFFER		40
 
 #define SAMP_FREQ 10000
@@ -52,24 +52,26 @@ void main(void){
 
   /* Main loop */
   while(1){
-    /* Capture period and calculate phase incrementor */
-    period = CT_ECAP.CAP1;
 
-    /* Calculate optimal phase increment for the corresponding period */
-    incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
-    incrementor /= period;
 
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
+      /* Capture period and calculate phase incrementor */
+      period = CT_ECAP.CAP1;
+
+      /* Calculate optimal phase increment for the corresponding period */
+      incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
+      incrementor /= period;
+
       /* Toggle pin */
       __R30 ^= 1 << PIN;
 
       /* Format string to be send */
       // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
-      // sprintf(data, "%x %x\n", accumulator, period);
-      //
-      // /* Print to serial port */
-      // serialPRINT(data);
+      sprintf(data, "%x %x\n", accumulator, period);
+
+      /* Print to serial port */
+      serialPRINT(data);
 
       /* add incrementor to phase */
       accumulator += incrementor;
