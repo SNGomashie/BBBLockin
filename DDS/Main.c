@@ -28,6 +28,7 @@ void initIEP(uint32_t comp);
 void initECAP(void);
 void initUART(void);
 void serialPRINT(volatile char* Message);
+void initINTC(void);
 
 void main(void){
   /* Initialize variables */
@@ -39,9 +40,10 @@ void main(void){
   char data[] = "";
 
   /*  Initialization  */
-  initECAP();
   initIEP(0x30D3B);
+  initECAP();
   initUART();
+  initINTC();
 
   /* Main loop */
   while(1){
@@ -63,7 +65,8 @@ void main(void){
       /* Format string to be send */
       // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
       sprintf(data, "%x\n", period);
-      /* Print sine amplitude to serial port */
+
+      /* Print to serial port */
       serialPRINT(data);
 
       /* add incrementor to phase */
@@ -100,6 +103,41 @@ void initIEP (uint32_t comp){
 
   /* Enable counter */
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0001;
+}
+
+/*    Initialize eCAP module   */
+/* Tracks the reference period */
+void initECAP(void){
+	/* Soft reset */
+	CT_ECAP.ECCTL1 |= (0x01 << 14);
+
+	/* Capture polarity & Capture reset */
+	CT_ECAP.ECCTL1 &= ~(1 << 0);
+	CT_ECAP.ECCTL1 |= (1 << 1);
+
+	/* Enable loading of CAP registers */
+	CT_ECAP.ECCTL1 |= (1 << 8);
+
+	/* Select prescaler */
+	CT_ECAP.ECCTL1 &= ~(0x1111 << 9);
+
+	/* Continuous or oneshot mdoe */
+	CT_ECAP.ECCTL2 &= ~(1 << 0);
+
+	/* Wrap after CAP2 */
+	CT_ECAP.ECCTL2 &= ~(1 << 1);
+
+	/* Time Stamp (TSCTR) Counter Stop (freeze) Control */
+	CT_ECAP.ECCTL2 |= (1 << 4);
+
+	/* Disable SYNC-in option */
+	CT_ECAP.ECCTL2 &= ~(1 << 5);
+
+	/* Disable SYNC-out signal */
+	CT_ECAP.ECCTL2 |= (0x11 << 6);
+
+	/* Enable capture mode */
+	CT_ECAP.ECCTL2 &= ~(1 << 9);
 }
 
 /*   Initialize UART module  */
