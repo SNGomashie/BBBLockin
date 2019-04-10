@@ -26,13 +26,13 @@ void main(void){
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   initINTC();
-  initIEP(0x1E8480);
+  initIEP(0x30D40);
 
   while(1){
     while (__R31 & HOST_INT){
       /* Clear the status of the interrupt */
       CT_INTC.SICR = 7;
-      
+
       /* delay */
       __delay_cycles(5);
 

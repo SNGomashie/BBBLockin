@@ -4,6 +4,13 @@
 
 
 void main(void){
-  uint32_t a = 0x80 | 0x8 | 0x4 | 0x2| 0x01;
-  printf(a);
+  uint32_t R_1 = 0x80000000;
+  uint32_t R_2 = (1 << 31);
+  uint32_t R_3 = 0;
+
+
+  if(R_1 & R_2){
+    printf("Y1\n");
+  }
+
 }
