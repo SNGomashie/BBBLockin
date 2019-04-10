@@ -33,11 +33,11 @@ void main(void){
       /* Clear the status of the interrupt */
       CT_INTC.SICR = 7;
 
-      /* delay */
-      __delay_cycles(5);
-
       /* Clear Compare status */
       CT_IEP.TMR_CMP_STS = 0xFF;
+
+      /* delay */
+      __delay_cycles(5);
 
       /* Toggle pin */
       __R30 ^= 1 << PIN25;
