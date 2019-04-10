@@ -36,6 +36,7 @@ void main(void){
       CT_INTC.SECR0 = (1 << 7);
       /* Toggle pin */
       __R30 ^= 1 << PIN25;
+      __delay_cycles(10);
     }
   }
   __halt();
