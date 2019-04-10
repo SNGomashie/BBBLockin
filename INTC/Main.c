@@ -30,10 +30,9 @@ void main(void){
   initIEP(0x1312D00);
 
   while(1){
-    while ((__R31 & HOST_INT)){
+    while (__R31 & HOST_INT){
       /* Clear Compare status */
       CT_IEP.TMR_CMP_STS = 0xFF;
-
       /* Clear the status of the interrupt */
       CT_INTC.SECR0 = (1 << 7);
 
