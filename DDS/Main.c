@@ -35,6 +35,9 @@ void initUART(void);
 void serialPRINT(volatile char* Message);
 void initINTC(void);
 
+#define PRU0_MEM 0x00000000
+volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
+
 void main(void){
   /* Initialize variables */
   uint32_t period = 0;
@@ -52,18 +55,21 @@ void main(void){
   initUART();
   initINTC();
 
+  /* Capture period and calculate phase incrementor */
+  period = CT_ECAP.CAP1;
+
+  /* Calculate optimal phase increment for the corresponding period */
+  incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
+  incrementor /= period;
+
+  pru0_mem[0] = incrementor;
+
   /* Main loop */
   while(1){
 
-
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
-      /* Capture period and calculate phase incrementor */
-      period = CT_ECAP.CAP1;
 
-      /* Calculate optimal phase increment for the corresponding period */
-      incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
-      incrementor /= period;
 
       /* Toggle pin */
       __R30 ^= 1 << PIN;
