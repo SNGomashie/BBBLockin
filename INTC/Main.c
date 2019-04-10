@@ -86,36 +86,25 @@ void initIEP (uint32_t comp){
 /*               Initialize interrupts               */
 /* Interrupt from sys_event 7 to channel 0 to host 0 */
 void initINTC(void){
-  // __R31 = 0x00000000;
-  // CT_INTC.CMR1_bit.CH_MAP_7 = 1;
-  // CT_INTC.HMR0_bit.HINT_MAP_1 = 1;
-  // CT_INTC.SICR = 7;
-  // CT_INTC.EISR = 7;
-  // CT_INTC.HIEISR |= (1 << 0);
-  // CT_INTC.SECR0 = 0xFFFFFFFF;
-  // CT_INTC.SECR1 = 0xFFFFFFFF;
-  /* Enable sys_event */
-  CT_INTC.EISR_bit.EN_SET_IDX = 0x7;
+  /* Clear all host interrupts */
+  __R31 = 0x00000000;
 
-  /* Enable host int */
-  CT_INTC.HIEISR_bit.HINT_EN_SET_IDX = 0x0;
+  /* Connect sys_evt 7 to channel 1 */
+  CT_INTC.CMR1_bit.CH_MAP_7 = 1;
 
-  /* Set type and polarity of system events (SIPRx / SITRx) */
-  CT_INTC.SIPR0 |= (1 << 7);
-  CT_INTC.SITR0 &= ~(1 << 7);
+  /* Connect channel 1 to host interrupt 1 */
+  CT_INTC.HMR0_bit.HINT_MAP_1 = 1;
 
-  /* Map sys_event to INTC channel (CHANMAP) */
-  CT_INTC.CMR1_bit.CH_MAP_7 = 0x0;
+  /* Clear sys_evt 7 */
+  CT_INTC.SICR = 7;
 
-  /* Map channel to host interrupt (HOSTMAP) */
-  CT_INTC.HMR0_bit.HINT_MAP_0 = 0x0;
+  /* Enable sys_evt 7 */
+  CT_INTC.EISR = 7;
 
-  /* Clear all sys_events (SECR) */
-  CT_INTC.SECR0 |= (1 << 7);
+  /* Enable host interrupt */
+  CT_INTC.HIEISR = 1;
 
-  /* Enable host interrupt (HIER) */
-  CT_INTC.HIER |= (1 << 0);
-
-  /* Globally enable all interrupts (GER) */
-  CT_INTC.GER = 0x1;
+  /* Clear all sys_evt */
+  CT_INTC.SECR0 = 0xFFFFFFFF;
+  CT_INTC.SECR1 = 0xFFFFFFFF;
 }
