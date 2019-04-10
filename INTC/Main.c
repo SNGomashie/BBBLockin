@@ -19,13 +19,14 @@ volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
 void initIEP(uint32_t comp);
+void initINTC(void);
 
 void main(void){
   __R30 = 0x00000000;
 
   initIEP(0x4E20);
   initINTC();
-  
+
   __R30 ^= 1 << TEST;
 
   while(1){
