@@ -24,11 +24,11 @@ void main(void){
   __R30 = 0x00000000;
 
   initINTC();
-  initIEP(0x1312D00);
+  // initIEP(0x1312D00);
 
   while(1){
     while((__R31 & (0x1<<31)) == 0);
-      CT_INTC.SICR = 0x7;
+      CT_INTC.SICR = 7;
       __R30 ^= 1 << PIN25;
 
   }
