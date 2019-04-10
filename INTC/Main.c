@@ -23,11 +23,10 @@ void initINTC(void);
 void main(void){
   __R30 = 0x00000000;
 
-
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   initINTC();
-  initIEP(0x1312D00);
+  initIEP(0x1E8480);
 
   while(1){
     while (__R31 & HOST_INT){
@@ -35,7 +34,7 @@ void main(void){
       CT_IEP.TMR_CMP_STS = 0xFF;
       /* Clear the status of the interrupt */
       CT_INTC.SECR0 = (1 << 7);
-
+      /* Toggle pin */
       __R30 ^= 1 << PIN25;
     }
   }
