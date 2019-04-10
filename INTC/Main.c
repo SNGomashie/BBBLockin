@@ -27,11 +27,10 @@ void main(void){
   initIEP(0x1312D00);
 
   while(1){
-    if(__R31 & HOST_INT){
-      /* Toggle pin */
-      __R30 ^= 1 << PIN25;
+    while((__R31 & (0x1<<31)) == 0);
       CT_INTC.SICR = 0x7;
-    }
+      __R30 ^= 1 << PIN25;
+
   }
   __halt();
 }
@@ -72,28 +71,35 @@ void initIEP (uint32_t comp){
 /*               Initialize interrupts               */
 /* Interrupt from sys_event 7 to channel 0 to host 0 */
 void initINTC(void){
-  /* Enable sys_event */
-  CT_INTC.EISR_bit.EN_SET_IDX = 0x7;
-
-  /* Enable host int */
-  CT_INTC.HIEISR_bit.HINT_EN_SET_IDX = 0x0;
-
-  /* Set type and polarity of system events (SIPRx / SITRx) */
-  CT_INTC.SIPR0 |= (1 << 7);
-  CT_INTC.SITR0 &= ~(1 << 7);
-
-  /* Map sys_event to INTC channel (CHANMAP) */
-  CT_INTC.CMR1_bit.CH_MAP_7 = 0x0;
-
-  /* Map channel to host interrupt (HOSTMAP) */
-  CT_INTC.HMR0_bit.HINT_MAP_0 = 0x0;
-
-  /* Clear all sys_events (SECR) */
-  CT_INTC.SECR0 |= (1 << 7);
-
-  /* Enable host interrupt (HIER) */
-  CT_INTC.HIER |= (1 << 0);
-
-  /* Globally enable all interrupts (GER) */
-  CT_INTC.GER = 0x1;
+  __R31 = 0x00000000;
+  CT_INTC.CMR1_bit.CH_MAP_7 = 1;
+  CT_INTC.HMR0_bit.HINT_MAP_1 = 1;
+  CT_INTC.SICR = 7;
+  CT_INTC.EISR = 7;
+  CT_INTC.HIEISR |= (1 << 0);
+  CT_INTC.GER = 1;
+  // /* Enable sys_event */
+  // CT_INTC.EISR_bit.EN_SET_IDX = 0x7;
+  //
+  // /* Enable host int */
+  // CT_INTC.HIEISR_bit.HINT_EN_SET_IDX = 0x0;
+  //
+  // /* Set type and polarity of system events (SIPRx / SITRx) */
+  // CT_INTC.SIPR0 |= (1 << 7);
+  // CT_INTC.SITR0 &= ~(1 << 7);
+  //
+  // /* Map sys_event to INTC channel (CHANMAP) */
+  // CT_INTC.CMR1_bit.CH_MAP_7 = 0x0;
+  //
+  // /* Map channel to host interrupt (HOSTMAP) */
+  // CT_INTC.HMR0_bit.HINT_MAP_0 = 0x0;
+  //
+  // /* Clear all sys_events (SECR) */
+  // CT_INTC.SECR0 |= (1 << 7);
+  //
+  // /* Enable host interrupt (HIER) */
+  // CT_INTC.HIER |= (1 << 0);
+  //
+  // /* Globally enable all interrupts (GER) */
+  // CT_INTC.GER = 0x1;
 }
