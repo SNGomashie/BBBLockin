@@ -22,7 +22,7 @@
 #define MAX_CHARS	16
 #define BUFFER		40
 
-#define SAMP_FREQ 10
+#define SAMP_FREQ 1000
 
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
@@ -61,25 +61,30 @@ void main(void){
 
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
+      /* Toggle pin */
       __R30 ^= 1 << PIN;
-      // /* Format string to be send */
-      // // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
+
+      /* Format string to be send */
+      // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
       sprintf(data, "%x %x\n", accumulator, period);
-      //
-      // /* Print to serial port */
+
+      /* Print to serial port */
       serialPRINT(data);
-      //
-      // /* add incrementor to phase */
-      // accumulator += incrementor;
+
+      /* add incrementor to phase */
+      accumulator += incrementor;
 
       /* Clear Compare status */
       CT_IEP.TMR_CMP_STS = (1 << 0);
-      /* delay for 4 cycles */
+
+      /* delay for 5 cycles, clearing takes time */
       __delay_cycles(5);
+
       /* Clear the status of the interrupt */
       CT_INTC.SICR = 7;
-      /* delay for 4 cycles */
-      __delay_cycles(5);      
+
+      /* delay for 5 cycles, clearing takes time */
+      __delay_cycles(5);
     }
 
   }
