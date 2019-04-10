@@ -78,13 +78,13 @@ void main(void){
       CT_IEP.TMR_CMP_STS = (1 << 0);
 
       /* delay for 5 cycles, clearing takes time */
-      __delay_cycles(4);
+      __delay_cycles(5);
 
       /* Clear the status of the interrupt */
       CT_INTC.SICR = 7;
 
       /* delay for 5 cycles, clearing takes time */
-      __delay_cycles(4);
+      __delay_cycles(5);
 
     }
 
