@@ -14,6 +14,7 @@
 #include "resource_table.h"
 
 #define HOST_INT (1 << 31)
+#define PIN 7
 
 /* The FIFO size on the PRU UART is 16 bytes; however, we are (arbitrarily)
  * only going to send 8 at a time */
@@ -68,6 +69,8 @@ void main(void){
 
       /* Print to serial port */
       serialPRINT(data);
+
+      __R30 |= (1 << PIN);
 
       /* add incrementor to phase */
       accumulator += incrementor;
