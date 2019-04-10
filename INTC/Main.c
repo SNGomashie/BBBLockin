@@ -27,7 +27,7 @@ void main(void){
   initIEP(0xFFFFFFFF);
 
   while(1){
-    while(__R31 & HOST_INT){
+    if(__R31 & HOST_INT){
       /* Toggle pin */
       __R30 ^= 1 << PIN25;
       CT_INTC.SICR = 0x7;
