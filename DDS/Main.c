@@ -65,7 +65,7 @@ void main(void){
       CT_INTC.SICR = 7;
 
       /* delay for 4 cycles */
-      __delay_cycles(5);
+      // __delay_cycles(5);
 
       /* Clear Compare status */
       CT_IEP.TMR_CMP_STS |= (1 << 0);
@@ -74,10 +74,10 @@ void main(void){
 
       // /* Format string to be send */
       // // sprintf(data,"%x, %d\n", sinLUT[accumulator >> 23], accumulator);
-      // sprintf(data, "%x %x\n", accumulator, period);
+      sprintf(data, "%x %x\n", accumulator, period);
       //
       // /* Print to serial port */
-      // serialPRINT(data);
+      serialPRINT(data);
       //
       // /* add incrementor to phase */
       // accumulator += incrementor;
