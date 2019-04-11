@@ -102,8 +102,6 @@ void main(void){
 /*    defines sample frequency    */
 /* comp is sample period in cycles*/
 void initIEP (uint32_t comp){
-  /* sample period = timer period*/
-
   /* Disable counter */
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
 
