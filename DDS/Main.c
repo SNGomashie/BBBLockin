@@ -139,16 +139,16 @@ void initIEP (uint32_t comp){
 /*    Initialize eCAP module   */
 /* Tracks the reference period */
 void initECAP(void){
-	CT_ECAP.ECCTL2 &= ~(1 << TSCTRSTOP);
+	CT_ECAP.ECCTL2 &= ~(1 << 4);
 	/* Difference mode */
-	CT_ECAP.ECCTL1 |= (1 << CTRRST1);
+	CT_ECAP.ECCTL1 |= (1 << 1);
 
 	/* Enable loading of CAP registers */
-	CT_ECAP.ECCTL1 |= (1 << CAPLDEN);
+	CT_ECAP.ECCTL1 |= (1 << 8);
 
-	CT_ECAP.ECCTL2 |= (0x2 << SYNCO_SEL);
+	CT_ECAP.ECCTL2 |= (0x2 << 6);
 
-	CT_ECAP.ECCTL2 |= (1 << TSCTRSTOP);
+	CT_ECAP.ECCTL2 |= (1 << 4);
 }
 
 /*   Initialize UART module  */
