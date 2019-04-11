@@ -1,5 +1,6 @@
 // Access the MAC
 #include <stdint.h>
+#include <stdio.h>
 #include <pru_cfg.h>
 #include <pru_ctrl.h>
 #include <pru_ecap.h>
