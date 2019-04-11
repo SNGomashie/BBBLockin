@@ -52,6 +52,7 @@ void main(void)
 	uint32_t period;
 	char data[] = "";
 	initECAP();
+	initUART();
 
 	while(1){
 		period = CT_ECAP.CAP1;
