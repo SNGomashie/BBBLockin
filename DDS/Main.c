@@ -70,7 +70,6 @@ void main(void){
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
 
-
       /* Toggle pin */
       __R30 ^= 1 << PIN;
 
