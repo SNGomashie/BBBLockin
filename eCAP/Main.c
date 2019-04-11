@@ -55,7 +55,10 @@ void main(void)
 	initUART();
 
 	while(1){
-		pru0_mem[0] = CT_ECAP.CAP1;
+		period = CT_ECAP.CAP1;
+		sprintf(data, "%d\n", period);
+		serialPRINT(data);
+		__delay_cycles(200000000);
 	}
 }
 
