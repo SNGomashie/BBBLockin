@@ -62,36 +62,16 @@ void main(void)
 /*    Initialize eCAP module   */
 /* Tracks the reference period */
 void initECAP(void){
-	/* Soft reset */
-	CT_ECAP.ECCTL1 |= (0x01 << FREE_SOFT);
-
-	/* Capture polarity & Capture reset */
-	CT_ECAP.ECCTL1 &= ~(1 << CAP1POL);
+	CT_ECAP.ECCTL2 &= ~(1 << TSCTRSTOP);
+	/* Difference mode */
 	CT_ECAP.ECCTL1 |= (1 << CTRRST1);
 
 	/* Enable loading of CAP registers */
 	CT_ECAP.ECCTL1 |= (1 << CAPLDEN);
 
-	/* Select prescaler */
-	CT_ECAP.ECCTL1 = (0x00000 << PRESCALE);
+	CT_ECAP.ECCTL2 |= (0x2 << SYNCO_SEL);
 
-	/* Continuous or oneshot mdoe */
-	CT_ECAP.ECCTL2 &= ~(1 << CONT_ONESHT);
-
-	/* Wrap after CAP2 */
-	CT_ECAP.ECCTL2 &= ~(1 << STOP_WRAP);
-
-	/* Time Stamp (TSCTR) Counter Stop (freeze) Control */
 	CT_ECAP.ECCTL2 |= (1 << TSCTRSTOP);
-
-	/* Disable SYNC-in option */
-	CT_ECAP.ECCTL2 &= ~(1 << SYNCI_EN);
-
-	/* Disable SYNC-out signal */
-	CT_ECAP.ECCTL2 |= (0x11 << SYNCO_SEL);
-
-	/* Select capture mode */
-	CT_ECAP.ECCTL2 = (0 << CAP_APWM);
 }
 
 /*   Initialize UART module  */
