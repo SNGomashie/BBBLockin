@@ -56,7 +56,7 @@ void main(void)
 
 	while(1){
 		period = CT_ECAP.CAP1;
-		sprintf(data,"%d\n", period);
+		sprintf(data,"%x\n", period);
 		serialPRINT(data);
 		__delay_cycles(200000000);
 	}
@@ -76,7 +76,7 @@ void initECAP(void){
 	CT_ECAP.ECCTL1 |= (1 << CAPLDEN);
 
 	/* Select prescaler */
-	CT_ECAP.ECCTL1 &= ~(0x1111 << PRESCALE);
+	CT_ECAP.ECCTL1 = (0x00000 << PRESCALE);
 
 	/* Continuous or oneshot mdoe */
 	CT_ECAP.ECCTL2 &= ~(1 << CONT_ONESHT);
@@ -93,8 +93,8 @@ void initECAP(void){
 	/* Disable SYNC-out signal */
 	CT_ECAP.ECCTL2 |= (0x11 << SYNCO_SEL);
 
-	/* Enable capture mode */
-	CT_ECAP.ECCTL2 &= ~(1 << CAP_APWM);
+	/* Select capture mode */
+	CT_ECAP.ECCTL2 = (0 << CAP_APWM);
 }
 
 /*   Initialize UART module  */
