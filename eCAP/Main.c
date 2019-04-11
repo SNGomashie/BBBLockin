@@ -9,6 +9,12 @@
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
+/* The FIFO size on the PRU UART is 16 bytes; however, we are (arbitrarily)
+ * only going to send 8 at a time */
+#define FIFO_SIZE	16
+#define MAX_CHARS	16
+#define BUFFER		40
+
 /* ECCTL1 register */
 #define CAP1POL 0
 #define CTRRST1 1
@@ -43,6 +49,7 @@ void serialPRINT(volatile char* Message);
 void main(void)
 {
 	uint32_t period;
+	char data[] = "";
 	initECAP();
 
 	while(1){
