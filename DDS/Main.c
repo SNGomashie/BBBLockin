@@ -60,12 +60,9 @@ void main(void){
     /* Capture period and calculate phase incrementor */
     period = CT_ECAP.CAP1;
 
-    pru0_mem[0] = period; //debug save in dataram
     /* Calculate optimal phase increment for the corresponding period */
     incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
     incrementor /= period;
-
-    pru0_mem[1] = incrementor;
 
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
@@ -83,17 +80,17 @@ void main(void){
       /* add incrementor to phase */
       accumulator += incrementor;
 
-      // /* Clear Compare status */
-      // CT_IEP.TMR_CMP_STS = (1 << 0);
-      //
-      // /* delay for 5 cycles, clearing takes time */
-      // __delay_cycles(5);
-      //
-      // /* Clear the status of the interrupt */
-      // CT_INTC.SICR = 7;
-      //
-      // /* delay for 5 cycles, clearing takes time */
-      // __delay_cycles(5);
+      /* Clear Compare status */
+      CT_IEP.TMR_CMP_STS = (1 << 0);
+
+      /* delay for 5 cycles, clearing takes time */
+      __delay_cycles(5);
+
+      /* Clear the status of the interrupt */
+      CT_INTC.SICR = 7;
+
+      /* delay for 5 cycles, clearing takes time */
+      __delay_cycles(5);
 
     }
 
