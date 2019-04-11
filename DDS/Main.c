@@ -83,17 +83,17 @@ void main(void){
       /* add incrementor to phase */
       accumulator += incrementor;
 
-      /* Clear Compare status */
-      CT_IEP.TMR_CMP_STS = (1 << 0);
-
-      /* delay for 5 cycles, clearing takes time */
-      __delay_cycles(5);
-
-      /* Clear the status of the interrupt */
-      CT_INTC.SICR = 7;
-
-      /* delay for 5 cycles, clearing takes time */
-      __delay_cycles(5);
+      // /* Clear Compare status */
+      // CT_IEP.TMR_CMP_STS = (1 << 0);
+      //
+      // /* delay for 5 cycles, clearing takes time */
+      // __delay_cycles(5);
+      //
+      // /* Clear the status of the interrupt */
+      // CT_INTC.SICR = 7;
+      //
+      // /* delay for 5 cycles, clearing takes time */
+      // __delay_cycles(5);
 
     }
 
