@@ -50,20 +50,12 @@ void serialPRINT(volatile char* Message);
 void main(void)
 {
 	uint32_t period;
-	uint32_t period2;
-	uint32_t period3;
 	char data[] = "";
 	initECAP();
 	initUART();
 
 	while(1){
-		period = CT_ECAP.CAP1;
 		pru0_mem[0] = CT_ECAP.CAP1;
-		period2 = CT_ECAP.CAP2;
-		period3 = CT_ECAP.CAP3;
-		sprintf(data,"%x %x %x\n", period, period2, period3);
-		serialPRINT(data);
-		__delay_cycles(200000000);
 	}
 }
 
