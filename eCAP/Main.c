@@ -58,6 +58,7 @@ void main(void)
 		period = CT_ECAP.CAP1;
 		sprintf(data,"%d\n", period);
 		serialPRINT(data);
+		__delay_cycles(200000000);
 	}
 }
 
