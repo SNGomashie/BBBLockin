@@ -51,6 +51,7 @@ void main(void)
 {
 	uint32_t period;
 	uint32_t period2;
+	uint32_t period3;
 	char data[] = "";
 	initECAP();
 	initUART();
@@ -58,6 +59,7 @@ void main(void)
 	while(1){
 		period = CT_ECAP.CAP1;
 		period2 = CT_ECAP.CAP2;
+		period3 = CT_ECAP.CAP3;
 		sprintf(data,"%x %x\n", period, period2);
 		serialPRINT(data);
 		__delay_cycles(200000000);
