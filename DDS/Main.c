@@ -42,7 +42,7 @@ void main(void){
   /* Initialize variables */
   uint32_t period = 0;
   uint32_t samp_period = 0;
-  uint32_t incrementor = 0;
+  uint64_t incrementor = 0;
   uint32_t accumulator = 0;
   uint32_t pow2_32 = 0xFFFFFFFF;
   char data[] = "";
