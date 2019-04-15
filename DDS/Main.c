@@ -54,9 +54,9 @@ void main(void){
   uint64_t temp_out = 0;
   uint32_t output = 0;
   uint32_t fraction = 0;
-  int16_t diff = 0;
+  int32_t diff = 0;
   uint32_t index = 0;
-  
+
   /* constants */
   uint32_t pow2_16 = 0xFFFF;
   uint32_t pow2_24 = 0x01000000;
@@ -104,14 +104,14 @@ void main(void){
       out2 = sinLUT256[index+1];
 
       /* Mask fractional part */
-      // fraction = 0xFFFF & accumulator;
-      // diff = out2-out1;
+      fraction = 0xFFFF & accumulator;
+      diff = out2-out1;
       // temp_out = (uint64_t)diff * (uint64_t)fraction;
       // temp_out /= pow2_24;
       // output = out1 + temp_out;
 
       /* Format string to be send */
-      sprintf(data,"%d, %d\n", out1, accumulator);
+      sprintf(data,"%d, %x\n", out1, (uint32_t)dif);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
@@ -120,6 +120,11 @@ void main(void){
       /* add incrementor to phase */
       accumulator += incrementor;
 
+      /* Limit the phase accumulator to 24 bits */
+      /*       Q00000000.0000000000000000       */
+      /*        --------.----------------       */
+      /*       int part . fractional part       */
+      /*        0 - 256 .    0 - 65336          */
       accumulator &= (pow2_24) - 1;
     }
 
