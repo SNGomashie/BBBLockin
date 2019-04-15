@@ -89,7 +89,7 @@ void initIEP (uint32_t comp){
 /*               Initialize interrupts               */
 /* Interrupt from sys_event 7 to channel 0 to host 0 */
 void initINTC(void){
-  /* Clear all host interrupts */
+  /* Clear any pending PRU-generated events */
   __R31 = 0x00000000;
 
   /* Connect sys_evt 7 to channel 1 */
@@ -104,10 +104,9 @@ void initINTC(void){
   /* Enable sys_evt 7 */
   CT_INTC.EISR = 7;
 
-  /* Enable host interrupt */
-  CT_INTC.HIEISR = 1;
+  /* Enable Host interrupt 1 */
+	CT_INTC.HIEISR |= (1 << 0); /*TODO: Enable proper event */;
 
-  /* Clear all sys_evt */
-  CT_INTC.SECR0 = 0xFFFFFFFF;
-  CT_INTC.SECR1 = 0xFFFFFFFF;
+	// Globally enable host interrupts
+	CT_INTC.GER = 1; /*TODO: Enable global events */;
 }
