@@ -44,7 +44,12 @@ void main(void){
   uint32_t samp_period = 0;
   uint64_t incrementor = 0;
   uint32_t accumulator = 0;
+  uint32_t index1, index2 = 0;
+  uint32_t out1, out2 = 0;
+  uint64_t temp_out = 0;
+  uint32_t fraction = 0;
   uint32_t pow2_32 = 0xFFFFFFFF;
+  uint32_t pow2_24 = 0x01000000;
   char data[] = "";
 
   samp_period = (1000000000 / SAMP_FREQ) / 5;
@@ -65,9 +70,6 @@ void main(void){
     incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
     incrementor /= period;
 
-    pru0_mem[0] = period;
-    pru0_mem[1] = incrementor;
-
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
       /* Clear Compare status */
@@ -85,8 +87,22 @@ void main(void){
       /* Toggle pin */
       __R30 ^= 1 << PIN;
 
+      /* Interpolation */
+      /* Find closest outputs */
+      index1 = accumulator >> 24;
+      index2 = (accumulator + (1 << 24)) >> 24;
+      out1 = sinLUT256[index1];
+      out2 = sinLUT256[index2];
+
+      /* Mask fractional part */
+      fraction = 0x0fffffff & accumulator;
+
+      temp_out = (uint64_t)(out2-out1) * (uint64_t)fraction;
+      temp_out /= pow2_24;
+      output = out1 + temp_out;
+
       /* Format string to be send */
-      sprintf(data,"%d, %d\n", sinLUT256[accumulator >> 24], accumulator);
+      sprintf(data,"%d, %d\n", output, accumulator);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
@@ -94,7 +110,6 @@ void main(void){
 
       /* add incrementor to phase */
       accumulator += incrementor;
-      pru0_mem[2] = accumulator;
     }
 
   }
