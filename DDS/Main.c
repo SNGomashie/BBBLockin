@@ -111,7 +111,7 @@ void main(void){
       // output = out1 + temp_out;
 
       /* Format string to be send */
-      sprintf(data,"%d, %x\n", out1, (uint32_t)dif);
+      sprintf(data,"%d, %x\n", out1, (uint32_t)diff);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
