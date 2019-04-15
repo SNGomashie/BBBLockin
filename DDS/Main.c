@@ -110,7 +110,7 @@ void main(void){
       output = out1 + temp_out;
 
       /* Format string to be send */
-      sprintf(data,"%d, %d\n", output, accumulator);
+      sprintf(data,"%d, %d\n", index1, index2);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
