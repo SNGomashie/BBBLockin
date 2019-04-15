@@ -42,15 +42,23 @@ void main(void){
   /* Initialize variables */
   uint32_t period = 0;
   uint32_t samp_period = 0;
+  char data[] = "";
+
+  /* NCO */
   uint64_t incrementor = 0;
   uint32_t accumulator = 0;
+
+  /* Interpolation */
   uint32_t index1, index2 = 0;
   uint32_t out1, out2 = 0;
   uint64_t temp_out = 0;
+  uint32_t output = ;
   uint32_t fraction = 0;
+
+  /* constants */
   uint32_t pow2_32 = 0xFFFFFFFF;
   uint32_t pow2_24 = 0x01000000;
-  char data[] = "";
+
 
   samp_period = (1000000000 / SAMP_FREQ) / 5;
 
