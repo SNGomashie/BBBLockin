@@ -38,7 +38,8 @@ void serialPRINT(volatile char* Message);
 void initINTC(void);
 
 /* Function prototypes */
-uint32_t interpolate(uint32_t acc);
+uint32_t interpolate(uint32_t pos);
+void clearINT(void);
 
 /* data RAM definition for debugging */
 #define PRU0_MEM 0x00000000
@@ -58,6 +59,7 @@ void main(void){
   uint32_t accumulator = 0;
   uint32_t output = 0;
 
+  /* Calculate sample period */
   samp_period = (1000000000 / SAMP_FREQ) / 5;
 
   /*  Initialization  */
@@ -65,7 +67,6 @@ void main(void){
   initECAP();
   initIEP(samp_period);
   initUART();
-
 
   /* Main loop */
   while(1){
@@ -78,21 +79,13 @@ void main(void){
 
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
-      /* Clear Compare status */
-      CT_IEP.TMR_CMP_STS = (1 << 0);
+      /* Clear interrupt*/
+      clearINT();
 
-      /* delay for 5 cycles, clearing takes time */
-      __delay_cycles(5);
-
-      /* Clear the status of the interrupt */
-      CT_INTC.SICR = 7;
-
-      /* delay for 5 cycles, clearing takes time */
-      __delay_cycles(5);
-
-      /* Toggle pin */
+      /* Toggle pin (debugging)*/
       __R30 ^= 1 << PIN;
 
+      /* interpolate to get accurate output */
       output = interpolate(accumulator);
 
       /* Format string to be send */
@@ -117,8 +110,13 @@ void main(void){
   __halt();
 }
 
-
-uint32_t interpolate(uint32_t acc){
+/*          Interpolation function            */
+/*         Interpolate between two            */
+/*         values from the sine LUT           */
+/*          interpolation formula:            */
+/*  out1 + (out2 - out1) / 2^16 * accumulator */
+uint32_t interpolate(uint32_t pos){
+  /* Variable initialization */
   uint32_t index = 0;
   uint32_t out1, out2 = 0;
   uint32_t fraction = 0;
@@ -126,16 +124,29 @@ uint32_t interpolate(uint32_t acc){
   uint32_t temp_out = 0;
   int32_t diff = 0;
 
-  index = acc >> 16;
+  /* Extract int part of accumulator */
+  index = pos >> 16;
+  /* Find LUT output and next output */
   out1 = sinLUT256[index];
   out2 = sinLUT256[index+1];
 
-  fraction = 0xFFFF & acc;
+  /* Ectract frac part of accumulator */
+  fraction = 0xFFFF & pos;
+
+  /* Calculate the difference between the 2 samples */
   diff = out2-out1;
+
+  /* Multiply by frac part of accumulator */
   diff_x_frac = (int32_t)diff * (uint32_t)fraction;
 
+  /*      Mask least significant 32-bits      */
+  /* because we multiply unsigned with signed */
   temp_out = temp_out & 0xFFFFFFFF;
 
+  /*           division by 2^16             */
+  /* if temp_out signed convert to unsigned */
+  /* after division convert back to signed  */
+  /*    if temp_out unsigned just divide    */
   if(temp_out & (1 << 31)){
     temp_out = ~temp_out + 1;
     temp_out /= P2_16;
@@ -143,7 +154,6 @@ uint32_t interpolate(uint32_t acc){
   } else {
     temp_out /= P2_16;
   }
-
   return (out1 + temp_out);
 }
 
@@ -278,4 +288,21 @@ void initINTC(void){
 
 	// Globally enable host interrupts
 	CT_INTC.GER = 1; /*TODO: Enable global events */;
+}
+
+/*       Clear interrupt       */
+/* Clear comp reg and sys_evt7 */
+/*     delay after clearing    */
+void clearINT(void){
+  /* Clear Compare status */
+  CT_IEP.TMR_CMP_STS = (1 << 0);
+
+  /* delay for 5 cycles, clearing takes time */
+  __delay_cycles(5);
+
+  /* Clear the status of the interrupt */
+  CT_INTC.SICR = 7;
+
+  /* delay for 5 cycles, clearing takes time */
+  __delay_cycles(5);
 }
