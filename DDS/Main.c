@@ -54,6 +54,7 @@ void main(void){
   uint64_t temp_out = 0;
   uint32_t output = 0;
   uint32_t fraction = 0;
+  uint32_t diff = 0;
 
   /* constants */
   uint32_t pow2_32 = 0xFFFFFFFF;
@@ -104,13 +105,13 @@ void main(void){
 
       /* Mask fractional part */
       fraction = 0x0fffffff & accumulator;
-      temp_out = out2-out1;
-      temp_out *= (uint64_t)fraction;
+      diff = out2-out1;
+      temp_out = (uint64_t)diff * (uint64_t)fraction;
       temp_out /= pow2_24;
       output = out1 + temp_out;
 
       /* Format string to be send */
-      sprintf(data,"%d, %d\n", index1, index2);
+      sprintf(data,"%d, %d, %d\n", out1, fraction, diff);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
