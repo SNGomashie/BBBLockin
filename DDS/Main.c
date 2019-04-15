@@ -104,7 +104,7 @@ void main(void){
       out2 = sinLUT256[index2];
 
       /* Mask fractional part */
-      fraction = 0x0fffffff & accumulator;
+      fraction = 0x00FFFFFF & accumulator;
       diff = out2-out1;
       temp_out = (uint64_t)diff * (uint64_t)fraction;
       temp_out /= pow2_24;

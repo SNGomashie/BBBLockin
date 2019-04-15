@@ -3,18 +3,9 @@
 
 void main(void){
 
-// inputs
-uint64_t out1 = 10;
-uint64_t out2 = 15;
-
-// fixed point number
-uint64_t t = 16777216;
-
-uint64_t temp_out = 0;
-
-temp_out = out2-out1;
-
-temp_out *= t;
-
-printf("%d", temp_out);
+uint32_t a = (5 * (1 << 24) / 4);
+uint32_t b = (10 - 5);
+uint32_t c = (a * b) >> 8;
+uint32_t d = 0x00FFFFFF & a;
+printf("%d, %d, %d, %d", (a >> 24), b, c, d);
 }
