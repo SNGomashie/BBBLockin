@@ -107,11 +107,12 @@ void main(void){
       fraction = 0xFFFF & accumulator;
       diff = out2-out1;
       temp_out = (int32_t)diff * (int32_t)fraction;
+      temp_out &= 0xFFFFFFFF;
       // temp_out /= pow2_24;
       // output = out1 + temp_out;
 
       /* Format string to be send */
-      sprintf(data,"%d, %x\n", out1, (int32_t)fraction);
+      sprintf(data,"%x, %x, %x\n", diff, fraction, temp_out);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
