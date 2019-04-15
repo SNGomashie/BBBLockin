@@ -52,7 +52,7 @@ void main(void){
   uint32_t index1, index2 = 0;
   uint32_t out1, out2 = 0;
   uint64_t temp_out = 0;
-  uint32_t output = ;
+  uint32_t output = 0;
   uint32_t fraction = 0;
 
   /* constants */
