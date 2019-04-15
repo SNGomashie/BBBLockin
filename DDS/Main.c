@@ -136,7 +136,7 @@ uint32_t interpolate(uint32_t acc){
 
   temp_out = temp_out & 0xFFFFFFFF;
 
-  if(inter_out & (1 << 31)){
+  if(temp_out & (1 << 31)){
     temp_out = ~temp_out + 1;
     temp_out /= P2_16;
     temp_out = ~temp_out + 1;
