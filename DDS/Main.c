@@ -40,8 +40,12 @@ void initINTC(void);
 /* Function prototypes */
 uint32_t interpolate(uint32_t acc);
 
+/* data RAM definition for debugging */
 #define PRU0_MEM 0x00000000
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
+
+#define P2_16 0xFFFF
+#define P2_24 0x01000000
 
 void main(void){
   /* Initialize variables */
@@ -53,11 +57,6 @@ void main(void){
   uint64_t incrementor = 0;
   uint32_t accumulator = 0;
   uint32_t output = 0;
-
-  /* constants */
-  uint32_t pow2_16 = 0xFFFF;
-  uint32_t pow2_24 = 0x01000000;
-
 
   samp_period = (1000000000 / SAMP_FREQ) / 5;
 
@@ -74,7 +73,7 @@ void main(void){
     period = CT_ECAP.CAP1;
 
     /* Calculate optimal phase increment for the corresponding period */
-    incrementor = (uint64_t)samp_period * (uint64_t)pow2_24;
+    incrementor = (uint64_t)samp_period * (uint64_t)P2_24;
     incrementor /= period;
 
     /* Timer interrupt polling */
@@ -111,7 +110,7 @@ void main(void){
       /*        --------.----------------       */
       /*       int part . fractional part       */
       /*        0 - 256 .    0 - 65336          */
-      accumulator &= (pow2_24) - 1;
+      accumulator &= (P2_24) - 1;
     }
 
   }
@@ -120,12 +119,12 @@ void main(void){
 
 
 uint32_t interpolate(uint32_t acc){
-  uint32_t index;
-  uint32_t out1, out2;
-  uint32_t fraction;
-  uint64_t diff_x_frac;
-  uint32_t temp_out;
-  int32_t diff;
+  uint32_t index = 0;
+  uint32_t out1, out2 = 0;
+  uint32_t fraction = 0;
+  uint64_t diff_x_frac = 0;
+  uint32_t temp_out = 0;
+  int32_t diff = 0;
 
   index = acc >> 16;
   out1 = sinLUT256[index];
@@ -139,13 +138,13 @@ uint32_t interpolate(uint32_t acc){
 
   if(inter_out & (1 << 31)){
     temp_out = ~temp_out + 1;
-    temp_out /= pow2_16;
+    temp_out /= P2_16;
     temp_out = ~temp_out + 1;
   } else {
-    temp_out /= pow2_16;
+    temp_out /= P2_16;
   }
 
-  return (out1 + inter_out);
+  return (out1 + temp_out);
 }
 
 /*     Initialize IEP module      */
