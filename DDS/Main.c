@@ -50,10 +50,11 @@ void main(void){
   samp_period = (1000000000 / SAMP_FREQ) / 5;
 
   /*  Initialization  */
-  initIEP(samp_period);
-  initECAP();
-  initUART();
   initINTC();
+  initECAP();
+  initIEP(samp_period);
+  initUART();
+
 
   /* Main loop */
   while(1){
@@ -106,29 +107,25 @@ void initIEP (uint32_t comp){
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
 
   /* Clear CNT register */
-  CT_IEP.TMR_CNT = 0x0;
+  CT_IEP.TMR_CNT = 0xFFFFFFFF;
 
   /* Clear overflow register */
-  CT_IEP.TMR_GLB_STS_bit.CNT_OVF = 0x1;
+  CT_IEP.TMR_GLB_STS = 0x0001;
+
+  /* Clear compare status */
+  CT_IEP.TMR_CMP_STS = 0x0001;
 
   /* Set compare values */
   CT_IEP.TMR_CMP0 = comp;
 
-  /* Clear compare status */
-  CT_IEP.TMR_CMP_STS_bit.CMP_HIT = 0xFF;
-
-  /* Disable compensation */
-  CT_IEP.TMR_COMPEN_bit.COMPEN_CNT = 0x0;
-
-  /* Enable CMP0 and reset on event */
-  CT_IEP.TMR_CMP_CFG_bit.CMP0_RST_CNT_EN = 0x1;
-  CT_IEP.TMR_CMP_CFG_bit.CMP_EN = 0x1;
+  /* Enable compare event */
+  CT_IEP.TMR_CMP_CFG = 0x0003;
 
   /* Set increment to 1 (default = 5)*/
   CT_IEP.TMR_GLB_CFG_bit.DEFAULT_INC = 0x0001;
 
   /* Enable counter */
-  CT_IEP.TMR_GLB_CFG = 0x11;
+  CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0001;
 }
 
 /*    Initialize eCAP module   */
@@ -213,7 +210,7 @@ void serialPRINT(volatile char* Message){
 /*               Initialize interrupts               */
 /* Interrupt from sys_event 7 to channel 0 to host 0 */
 void initINTC(void){
-  /* Clear all host interrupts */
+  /* Clear any pending PRU-generated events */
   __R31 = 0x00000000;
 
   /* Connect sys_evt 7 to channel 1 */
@@ -228,10 +225,9 @@ void initINTC(void){
   /* Enable sys_evt 7 */
   CT_INTC.EISR = 7;
 
-  /* Enable host interrupt */
-  CT_INTC.HIEISR = 1;
+  /* Enable Host interrupt 1 */
+	CT_INTC.HIEISR |= (1 << 0); /*TODO: Enable proper event */;
 
-  /* Clear all sys_evt */
-  CT_INTC.SECR0 = 0xFFFFFFFF;
-  CT_INTC.SECR1 = 0xFFFFFFFF;
+	// Globally enable host interrupts
+	CT_INTC.GER = 1; /*TODO: Enable global events */;
 }
