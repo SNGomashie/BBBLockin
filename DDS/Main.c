@@ -52,6 +52,7 @@ void main(void){
   uint32_t index1, index2 = 0;
   uint32_t out1, out2 = 0;
   uint64_t temp_out = 0;
+  uint32_t inter_out = 0;
   uint32_t output = 0;
   int32_t fraction = 0;
   int32_t diff = 0;
@@ -106,13 +107,21 @@ void main(void){
       /* Mask fractional part */
       fraction = 0xFFFF & accumulator;
       diff = out2-out1;
-      temp_out = (int32_t)diff * (int32_t)fraction;
-      temp_out &= 0xFFFFFFFF;
-      // temp_out /= pow2_24;
-      // output = out1 + temp_out;
+      temp_out = (int32_t)diff * (uint32_t)fraction;
+      inter_out = temp_out & 0xFFFFFFFF;
+
+      if(inter_out & (1 << 31)){
+        inter_out = ~inter_out + 1;
+        inter_out /= pow2_16;
+        inter_out = ~inter_out + 1;
+      } else {
+        inter_out /= pow2_16;
+      }
+
+      output = out1 + inter_out;
 
       /* Format string to be send */
-      sprintf(data,"%x, %x, %x\n", diff, fraction, temp_out);
+      sprintf(data,"%d\n", output);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
