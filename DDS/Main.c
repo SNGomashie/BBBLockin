@@ -53,7 +53,7 @@ void main(void){
   uint32_t out1, out2 = 0;
   uint64_t temp_out = 0;
   uint32_t output = 0;
-  uint32_t fraction = 0;
+  int32_t fraction = 0;
   int32_t diff = 0;
   uint32_t index = 0;
 
@@ -111,7 +111,7 @@ void main(void){
       // output = out1 + temp_out;
 
       /* Format string to be send */
-      sprintf(data,"%x, %x\n", (int32_t)diff, (int32_t)fraction);
+      sprintf(data,"%x, %x\n", out1, (int32_t)fraction);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
