@@ -104,8 +104,8 @@ void main(void){
 
       /* Mask fractional part */
       fraction = 0x0fffffff & accumulator;
-
-      temp_out = (uint64_t)(out2-out1) * (uint64_t)fraction;
+      temp_out = out2-out1;
+      temp_out *= (uint64_t)fraction;
       temp_out /= pow2_24;
       output = out1 + temp_out;
 
