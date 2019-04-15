@@ -35,8 +35,8 @@ void initUART(void);
 void serialPRINT(volatile char* Message);
 void initINTC(void);
 
-#define PRU1_MEM 0x00002000
-volatile uint32_t *pru1_mem =  (unsigned int *) PRU1_MEM;
+#define PRU0_MEM 0x00000000
+volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
 void main(void){
   /* Initialize variables */
@@ -65,8 +65,8 @@ void main(void){
     incrementor = (uint64_t)samp_period * (uint64_t)pow2_32;
     incrementor /= period;
 
-    pru1_mem[0] = period;
-    pru1_mem[1] = incrementor;
+    pru0_mem[0] = period;
+    pru0_mem[1] = incrementor;
 
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
@@ -94,7 +94,7 @@ void main(void){
 
       /* add incrementor to phase */
       accumulator += incrementor;
-      pru1_mem[2] = accumulator;
+      pru0_mem[2] = accumulator;
     }
 
   }
