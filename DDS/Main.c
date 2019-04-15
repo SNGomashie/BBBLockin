@@ -55,7 +55,8 @@ void main(void){
   uint32_t output = 0;
   uint32_t fraction = 0;
   int16_t diff = 0;
-
+  uint32_t index = 0;
+  
   /* constants */
   uint32_t pow2_16 = 0xFFFF;
   uint32_t pow2_24 = 0x01000000;
