@@ -106,12 +106,12 @@ void main(void){
       /* Mask fractional part */
       fraction = 0xFFFF & accumulator;
       diff = out2-out1;
-      // temp_out = (uint64_t)diff * (uint64_t)fraction;
+      temp_out = (int32_t)diff * (int32_t)fraction;
       // temp_out /= pow2_24;
       // output = out1 + temp_out;
 
       /* Format string to be send */
-      sprintf(data,"%d, %x\n", out1, (uint32_t)diff);
+      sprintf(data,"%x, %x\n", (int32_t)diff, (int32_t)fraction);
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
