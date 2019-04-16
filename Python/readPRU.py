@@ -1,8 +1,6 @@
 #!/usr/bin/python
 
 import sys
-import os
-from time import sleep
 
 # Character device PRU0
 CHAR_DEV0 = "/dev/rpmsg_pru30"
@@ -21,11 +19,14 @@ def main():
     state = PRUstate.read(7)
     if 'running' in state:
         print("PRU0 is running")
+        PRUstate.close()
+
     elif 'offline' in state:
         print("PRU0 is offline, starting now")
         try:
             PRUstate.write('start')
             print("PRU0 is being started")
+            PRUstate.close()
         except IOError:
             print("PRU0 failed to start")
             PRUstate.close()
@@ -34,9 +35,6 @@ def main():
 
 # Start communication over rpmsg
     try:
-        while not os.path.exists(CHAR_DEV0):
-            print("Waiting for character device")
-            sleep(1)
         PRUdev = open(CHAR_DEV0, "rb+", 0)
         print("Sending message to start communication")
         PRUdev.write(b'S')
@@ -58,14 +56,8 @@ def main():
     while(1):
         readBuf = PRUdev.read(RPMSG_BUF_SIZE)
         print(readBuf)
-        if readBuf == "":
-            break
 
 # Stop PRU
-    print("All samples have been read")
-    print("Turning off PRU")
-    PRUstate.write('stop')
-    PRUstate.close()
 
 # FFT
 
