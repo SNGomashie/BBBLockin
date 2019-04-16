@@ -46,11 +46,15 @@ def main():
         PRUdev.close()
         sys.exit()
 
-# Receive several messages over rpmsg
 
+# Receive several messages over rpmsg
+    while(1):
+        print(PRUdev.read(11))
+    
 # Stop PRU
 
 # FFT
+
 
 # Upload image to imgur
 if __name__ == '__main__':
