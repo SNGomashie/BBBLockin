@@ -107,7 +107,7 @@ void main(void){
         accumulator &= (P2_24) - 1;
         i++;
     }
-    if(i >= 100){
+    if(i >= 40){
       break;
     }
   }
