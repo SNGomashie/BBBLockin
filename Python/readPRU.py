@@ -13,6 +13,7 @@ REMOTEPROC_FIRM0 = "/sys/class/remoteproc/remoteproc1/firmware"
 def main():
     # Initialize PRUs
     PRUstate = open(REMOTEPROC_STATE0, "r+")
+    print(PRUstate.read(7))
     if 'running' in PRUstate.read(7):
         print("PRU0 is running")
         PRUstate.close()
@@ -29,9 +30,10 @@ def main():
             print("Sample rate & number of samples is set")
         except:
             print("Could not open device: 'rpmsg_pru30'")
+            PRUdev.close()
             sys.exit()
 
-    if 'offline' in PRUstate.read(7):
+    elif 'offline' in PRUstate.read(7):
         print("PRU0 is offline, starting now")
         try:
             PRUstate.write(b'start')
