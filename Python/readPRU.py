@@ -9,6 +9,9 @@ CHAR_DEV0 = "/dev/rpmsg_pru30"
 REMOTEPROC_STATE0 = "/sys/class/remoteproc/remoteproc1/state"
 REMOTEPROC_FIRM0 = "/sys/class/remoteproc/remoteproc1/firmware"
 
+RPMSG_BUF_SIZE = 512
+readBuf = "\0" * 512
+
 
 def main():
     # Initialize PRUs
@@ -51,7 +54,8 @@ def main():
 
 # Receive several messages over rpmsg
     while(1):
-        print(PRUdev.read(11).decode())
+        readBuf = PRUdev.read(RPMSG_BUF_SIZE)
+        print(readBuf)
 
 # Stop PRU
 
