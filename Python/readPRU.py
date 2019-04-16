@@ -56,6 +56,8 @@ def main():
     while(1):
         readBuf = PRUdev.read(RPMSG_BUF_SIZE)
         print(readBuf)
+        if readBuf == "":
+            break
 
 # Stop PRU
 
