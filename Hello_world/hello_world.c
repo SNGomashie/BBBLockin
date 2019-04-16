@@ -41,7 +41,7 @@ void main (void) {
 
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
 
-  for(i = 0; i < 20; i++){
+  for(i = 0; i < 200; i++){
   /* Send chars to the ARM, buf = payload, 11 is length of payload. */
     char *buf = "hallo world";
     pru_rpmsg_send(&transport, dst, src, rec_payload, &len);
