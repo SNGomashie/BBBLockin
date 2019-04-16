@@ -20,6 +20,7 @@ uint16_t src, dst, len;
 
 void main (void) {
   volatile uint8_t *status;
+  uint8_t i = 0;
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
@@ -36,10 +37,10 @@ void main (void) {
   /* Receive all available messages, multiple messages can be sent per kick. A message has to be received to set the destination adress before you send. */
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
 
-  while(1) {
+  for(i = 0; i < 20; i++){
   /* Send chars to the ARM, buf = payload, 11 is length of payload. */
     char *buf = "hallo world";
     pru_rpmsg_send(&transport, dst, src, buf, 11);
-    __delay_cycles(200000000);    // Wait 1/2 second
+    __delay_cycles(20000);    // Wait 1/2 second
   }
 }
