@@ -53,6 +53,7 @@ void main(void){
   uint32_t period = 0;
   uint32_t samp_period = 0;
   char data[] = "";
+  uint16_t i = 0;
 
   /* NCO */
   uint64_t incrementor = 0;
@@ -79,31 +80,34 @@ void main(void){
 
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
-      /* Clear interrupt*/
-      clearINT();
+      if(i < 20){
+        /* Clear interrupt*/
+        clearINT();
 
-      /* Toggle pin (debugging)*/
-      __R30 ^= 1 << PIN;
+        /* Toggle pin (debugging)*/
+        __R30 ^= 1 << PIN;
 
-      /* interpolate to get accurate output */
-      output = interpolate(accumulator);
+        /* interpolate to get accurate output */
+        output = interpolate(accumulator);
 
-      /* Format string to be send */
-      sprintf(data,"%d, %d\n", output, accumulator);
-      // sprintf(data, "%x %x\n", accumulator, period);
+        /* Format string to be send */
+        sprintf(data,"%d, %d\n", output, accumulator);
+        // sprintf(data, "%x %x\n", accumulator, period);
 
-      /* Print to serial port */
-      serialPRINT(data);
+        /* Print to serial port */
+        serialPRINT(data);
 
-      /* add incrementor to phase */
-      accumulator += incrementor;
+        /* add incrementor to phase */
+        accumulator += incrementor;
 
-      /* Limit the phase accumulator to 24 bits */
-      /*       Q00000000.0000000000000000       */
-      /*        --------.----------------       */
-      /*       int part . fractional part       */
-      /*        0 - 256 .    0 - 65336          */
-      accumulator &= (P2_24) - 1;
+        /* Limit the phase accumulator to 24 bits */
+        /*       Q00000000.0000000000000000       */
+        /*        --------.----------------       */
+        /*       int part . fractional part       */
+        /*        0 - 256 .    0 - 65336          */
+        accumulator &= (P2_24) - 1;
+      }
+    i++;
     }
 
   }
@@ -126,6 +130,7 @@ uint32_t interpolate(uint32_t pos){
 
   /* Extract int part of accumulator */
   index = pos >> 16;
+
   /* Find LUT output and next output */
   out1 = sinLUT256[index];
   out2 = sinLUT256[index+1];
