@@ -33,7 +33,7 @@ def main():
 
 # Start communication over rpmsg
     try:
-        sleep(1)
+        sleep(5)
         PRUdev = open(CHAR_DEV0, "rb+", 0)
         print("Sending message to start communication")
         PRUdev.write(b'S')
