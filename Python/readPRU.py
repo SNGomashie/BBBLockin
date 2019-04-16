@@ -29,13 +29,20 @@ if 'offline' in PRUstate.read(7):
 # Start communication over rpmsg
 try:
     PRUdev = open(CHAR_DEV0, "r+", 0)
-    PRUdev.write(b'S')
+    print("Sending message to start communication")
+    PRUdev.write('S')
+    print("Communication established")
+    samp_rate = input("Set sample rate: ")
+    PRUdev.write(samp_rate)
+    num_samp = input("Set number of samples: ")
+    PRUdev.write(num_samp)
+    print("Sample rate & number of samples is set")
 except:
     print("Could not open device: 'rpmsg_pru30'")
     sys.exit()
 
 # Receive several messages over rpmsg
-
+PRUdev.read()
 # Stop PRU
 
 # FFT
