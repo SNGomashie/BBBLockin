@@ -13,8 +13,8 @@ REMOTEPROC_FIRM0 = "/sys/class/remoteproc/remoteproc1/firmware"
 def main():
     # Initialize PRUs
     PRUstate = open(REMOTEPROC_STATE0, "r+")
-    print(PRUstate.read(7))
-    if 'running' in PRUstate.read(7):
+    state = PRUstate.read(7)
+    if 'running' in state:
         print("PRU0 is running")
         PRUstate.close()
         # Start communication over rpmsg
@@ -33,7 +33,7 @@ def main():
             PRUdev.close()
             sys.exit()
 
-    elif 'offline' in PRUstate.read(7):
+    elif 'offline' in state:
         print("PRU0 is offline, starting now")
         try:
             PRUstate.write(b'start')
