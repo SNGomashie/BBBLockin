@@ -21,9 +21,10 @@ volatile register uint32_t __R31;
 volatile register uint32_t __R30;
 struct pru_rpmsg_transport transport;
 uint16_t src, dst, len;
+volatile uint8_t *status;
 
 void main (void) {
-  volatile uint8_t *status;
+
   uint8_t i = 0;
   __R30 = 0x00000000;
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
