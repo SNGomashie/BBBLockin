@@ -36,7 +36,7 @@ def main():
     elif 'offline' in state:
         print("PRU0 is offline, starting now")
         try:
-            PRUstate.write(b'start')
+            PRUstate.write('start')
             print("PRU0 is being started")
             PRUstate.close()
         except:
