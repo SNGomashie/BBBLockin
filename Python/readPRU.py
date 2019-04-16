@@ -17,21 +17,6 @@ def main():
     if 'running' in state:
         print("PRU0 is running")
         PRUstate.close()
-        # Start communication over rpmsg
-        try:
-            PRUdev = open(CHAR_DEV0, "r+", 0)
-            print("Sending message to start communication")
-            PRUdev.write('S')
-            print("Communication established")
-            samp_rate = input("Set sample rate: ")
-            PRUdev.write(samp_rate)
-            num_samp = input("Set number of samples: ")
-            PRUdev.write(num_samp)
-            print("Sample rate & number of samples is set")
-        except:
-            print("Could not open device: 'rpmsg_pru30'")
-            PRUdev.close()
-            sys.exit()
 
     elif 'offline' in state:
         print("PRU0 is offline, starting now")
@@ -44,6 +29,22 @@ def main():
             PRUstate.close()
             sys.exit()
 
+
+# Start communication over rpmsg
+try:
+    PRUdev = open(CHAR_DEV0, "r+", 0)
+    print("Sending message to start communication")
+    PRUdev.write('S')
+    print("Communication established")
+    samp_rate = input("Set sample rate: ")
+    PRUdev.write(samp_rate)
+    num_samp = input("Set number of samples: ")
+    PRUdev.write(num_samp)
+    print("Sample rate & number of samples is set")
+except:
+    print("Could not open device: 'rpmsg_pru30'")
+    PRUdev.close()
+    sys.exit()
 
 # Receive several messages over rpmsg
 
