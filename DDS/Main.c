@@ -44,6 +44,8 @@ void clearINT(void);
 /* data RAM definition for debugging */
 #define PRU0_MEM 0x00000000
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
+#define PRU1_MEM 0x00020000
+volatile uint32_t *pru1_mem =  (unsigned int *) PRU1_MEM;
 
 #define P2_16 0xFFFF
 #define P2_24 0x01000000
@@ -77,7 +79,7 @@ void main(void){
     /* Calculate optimal phase increment for the corresponding period */
     incrementor = (uint64_t)samp_period * (uint64_t)P2_24;
     incrementor /= period;
-
+    pru1_mem[0] = incrementor;
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
         /* Clear interrupt*/

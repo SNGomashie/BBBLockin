@@ -10,6 +10,9 @@
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
 
 #define PIN 7
+#define PIN2 5
+#define PIN3 1
+#define PIN4 0
 
 /* Define the size of message to be recieved. */
 #define RPMSG_BUF_HEADER_SIZE           16
@@ -31,20 +34,29 @@ void main (void) {
   /* Make sure the Linux drivers are ready for RPMsg communication. */
   status = &resourceTable.rpmsg_vdev.status;
   while (!(*status & VIRTIO_CONFIG_S_DRIVER_OK));
-  __R30 ^= 1 << PIN;
+  __R30 ^= 1 << PIN; // Hoog
   /* Initialize the RPMsg transport structure */
   while (pru_rpmsg_init(&transport, &resourceTable.rpmsg_vring0, &resourceTable.rpmsg_vring1, TO_ARM_HOST, FROM_ARM_HOST) != PRU_RPMSG_SUCCESS);
-  __R30 ^= 1 << PIN;
+  __R30 ^= 1 << PIN; // Laag
   /* Create the RPMsg channel between the PRU and ARM user space using the transport structure. */
-  while (pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) != PRU_RPMSG_SUCCESS);
-  __R30 ^= 1 << PIN;
+  if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_SUCCESS){
+    __R30 ^= 1 << PIN; // Hoog
+  }else if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_NO_BUF_AVAILABLE){
+    __R30 ^= 1 << PIN2; // Hoog
+  }else if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_BUF_TOO_SMALL){
+    __R30 ^= 1 << PIN3; // Hoog
+  }else if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_INVALID_HEAD){
+    __R30 ^= 1 << PIN4; // Hoog
+  }
+
   /* Receive all available messages, multiple messages can be sent per kick. A message has to be received to set the destination adress before you send. */
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
-  __R30 ^= 1 << PIN;
+  __R30 ^= 1 << PIN; // Laag
+
   for(i = 0; i < 200; i++){
   /* Send chars to the ARM, buf = payload, 11 is length of payload. */
     char *buf = "hallo world";
-    pru_rpmsg_send(&transport, dst, src, rec_payload, &len);
+    pru_rpmsg_send(&transport, dst, src, buf, 11);
     __delay_cycles(20000);    // Wait 1/2 second
   }
 }
