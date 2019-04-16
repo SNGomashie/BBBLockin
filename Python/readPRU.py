@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys
+from time import sleep
 
 # Character device PRU0
 CHAR_DEV0 = "/dev/rpmsg_pru30"
@@ -32,6 +33,7 @@ def main():
 
 # Start communication over rpmsg
     try:
+        sleep(1)
         PRUdev = open(CHAR_DEV0, "rb+", 0)
         print("Sending message to start communication")
         PRUdev.write(b'S')
@@ -61,7 +63,7 @@ def main():
     print("Turning off PRU")
     PRUstate.write('stop')
     PRUstate.close()
-    
+
 # FFT
 
 
