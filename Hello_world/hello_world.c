@@ -11,8 +11,7 @@
 
 #define PIN 7
 #define PIN2 5
-#define PIN3 1
-#define PIN4 0
+
 
 /* Define the size of message to be recieved. */
 #define RPMSG_BUF_HEADER_SIZE           16
@@ -44,9 +43,11 @@ void main (void) {
   }else if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_NO_BUF_AVAILABLE){
     __R30 ^= 1 << PIN2; // Hoog
   }else if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_BUF_TOO_SMALL){
-    __R30 ^= 1 << PIN3; // Hoog
+    __R30 ^= 1 << PIN; // Hoog
+    __R30 ^= 1 << PIN; // Laag
   }else if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_INVALID_HEAD){
-    __R30 ^= 1 << PIN4; // Hoog
+    __R30 ^= 1 << PIN2; // Hoog
+    __R30 ^= 1 << PIN2; // Laag
   }
 
   /* Receive all available messages, multiple messages can be sent per kick. A message has to be received to set the destination adress before you send. */
