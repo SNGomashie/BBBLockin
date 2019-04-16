@@ -34,12 +34,12 @@ def main():
     try:
         PRUdev = open(CHAR_DEV0, "rb+", 0)
         print("Sending message to start communication")
-        PRUdev.write('S')
+        PRUdev.write(b'S')
         print("Communication established")
         samp_rate = input("Set sample rate: ")
-        PRUdev.write(samp_rate)
+        PRUdev.write(samp_rate.encode())
         num_samp = input("Set number of samples: ")
-        PRUdev.write(num_samp)
+        PRUdev.write(num_samp.encode())
         print("Sample rate & number of samples is set")
     except IOError:
         print("Could not open device: 'rpmsg_pru30'")
