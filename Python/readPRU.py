@@ -36,11 +36,11 @@ def main():
         print("Sending message to start communication")
         PRUdev.write(b'S')
         print("Communication established")
-        samp_rate = input("Set sample rate: ")
-        PRUdev.write(samp_rate.encode())
-        num_samp = input("Set number of samples: ")
-        PRUdev.write(num_samp.encode())
-        print("Sample rate & number of samples is set")
+        # samp_rate = input("Set sample rate: ")
+        # PRUdev.write(samp_rate.encode())
+        # num_samp = input("Set number of samples: ")
+        # PRUdev.write(num_samp.encode())
+        # print("Sample rate & number of samples is set")
     except IOError:
         print("Could not open device: 'rpmsg_pru30'")
         PRUdev.close()
@@ -50,7 +50,7 @@ def main():
 # Receive several messages over rpmsg
     while(1):
         print(PRUdev.read(11))
-    
+
 # Stop PRU
 
 # FFT
