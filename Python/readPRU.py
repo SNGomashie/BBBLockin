@@ -24,7 +24,7 @@ def main():
             PRUstate.write('start')
             print("PRU0 is being started")
             PRUstate.close()
-        except:
+        except IOError:
             print("PRU0 failed to start")
             PRUstate.close()
             sys.exit()
@@ -32,7 +32,7 @@ def main():
 
 # Start communication over rpmsg
     try:
-        PRUdev = open(CHAR_DEV0, "r+", 0)
+        PRUdev = open(CHAR_DEV0, "r+")
         print("Sending message to start communication")
         PRUdev.write('S')
         print("Communication established")
@@ -41,7 +41,7 @@ def main():
         num_samp = input("Set number of samples: ")
         PRUdev.write(num_samp)
         print("Sample rate & number of samples is set")
-    except:
+    except IOError:
         print("Could not open device: 'rpmsg_pru30'")
         PRUdev.close()
         sys.exit()
