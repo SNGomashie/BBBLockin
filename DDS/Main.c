@@ -146,7 +146,7 @@ uint32_t interpolate(uint32_t pos){
 
   /*      Mask least significant 32-bits      */
   /* because we multiply unsigned with signed */
-  temp_out = temp_out & 0xFFFFFFFF;
+  temp_out = diff_x_frac & 0xFFFFFFFF;
 
   /*           division by 2^16             */
   /* if temp_out signed convert to unsigned */
