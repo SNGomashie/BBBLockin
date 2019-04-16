@@ -36,6 +36,8 @@ def main():
         print("Sending message to start communication")
         PRUdev.write(b'S')
         print("Communication established")
+        PRUdev.close()
+        sys.exit()
         # samp_rate = input("Set sample rate: ")
         # PRUdev.write(samp_rate.encode())
         # num_samp = input("Set number of samples: ")
