@@ -32,7 +32,7 @@ def main():
 
 # Start communication over rpmsg
     try:
-        PRUdev = open(CHAR_DEV0, "r+", 0)
+        PRUdev = open(CHAR_DEV0, "rb+", 0)
         print("Sending message to start communication")
         PRUdev.write(b'S')
         print("Communication established")
@@ -49,7 +49,7 @@ def main():
 
 # Receive several messages over rpmsg
     while(1):
-        print(PRUdev.read(11))
+        print(PRUdev.read(11).decode())
 
 # Stop PRU
 
