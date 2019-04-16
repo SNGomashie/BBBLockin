@@ -19,14 +19,11 @@ def main():
     state = PRUstate.read(7)
     if 'running' in state:
         print("PRU0 is running")
-        PRUstate.close()
-
     elif 'offline' in state:
         print("PRU0 is offline, starting now")
         try:
             PRUstate.write('start')
             print("PRU0 is being started")
-            PRUstate.close()
         except IOError:
             print("PRU0 failed to start")
             PRUstate.close()
@@ -60,7 +57,9 @@ def main():
             break
 
 # Stop PRU
-
+    PRUstate.write('stop')
+    PRUstate.close()
+    
 # FFT
 
 
