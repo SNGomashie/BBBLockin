@@ -2,6 +2,7 @@
 
 import sys
 import os
+from time import sleep
 
 # Character device PRU0
 CHAR_DEV0 = "/dev/rpmsg_pru30"
@@ -35,6 +36,7 @@ def main():
     try:
         while not os.path.exists(CHAR_DEV0):
             print("Waiting for character device")
+            sleep(1)
         PRUdev = open(CHAR_DEV0, "rb+", 0)
         print("Sending message to start communication")
         PRUdev.write(b'S')
