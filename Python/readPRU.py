@@ -57,6 +57,8 @@ def main():
             break
 
 # Stop PRU
+    print("All samples have been read")
+    print("Turning off PRU")
     PRUstate.write('stop')
     PRUstate.close()
     
