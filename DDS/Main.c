@@ -105,11 +105,11 @@ void main(void){
         /*       int part . fractional part       */
         /*        0 - 256 .    0 - 65336          */
         accumulator &= (P2_24) - 1;
+        i++;
     }
     if(i >= 20){
       break;
     }
-    i++;
   }
   __halt();
 }
