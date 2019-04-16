@@ -40,7 +40,7 @@ void main (void) {
   while(1){
   /* Send chars to the ARM, buf = payload, 11 is length of payload. */
     char *buf = "hallo world";
-    pru_rpmsg_send(&transport, dst, src, rec_payload, &len);
+    pru_rpmsg_send(&transport, dst, src, buf, 11);
     __delay_cycles(20000);    // Wait 1/2 second
   }
 }
