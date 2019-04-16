@@ -54,14 +54,14 @@ def main():
     while(1):
         readBuf = PRUdev.read(RPMSG_BUF_SIZE)
         print(readBuf)
-        # if readBuf == "":
-        #     break
+        if readBuf == "":
+            break
 
 # Stop PRU
-    # print("All samples have been read")
-    # print("Turning off PRU")
-    # PRUstate.write('stop')
-    # PRUstate.close()
+    print("All samples have been read")
+    print("Turning off PRU")
+    PRUstate.write('stop')
+    PRUstate.close()
 
 # FFT
 
