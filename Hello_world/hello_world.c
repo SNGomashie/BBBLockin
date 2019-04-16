@@ -12,7 +12,6 @@
 #define PIN 7
 #define PIN2 5
 
-
 /* Define the size of message to be recieved. */
 #define RPMSG_BUF_HEADER_SIZE           16
 uint8_t rec_payload[RPMSG_BUF_SIZE - RPMSG_BUF_HEADER_SIZE];
@@ -38,17 +37,7 @@ void main (void) {
   while (pru_rpmsg_init(&transport, &resourceTable.rpmsg_vring0, &resourceTable.rpmsg_vring1, TO_ARM_HOST, FROM_ARM_HOST) != PRU_RPMSG_SUCCESS);
   __R30 ^= 1 << PIN; // Laag
   /* Create the RPMsg channel between the PRU and ARM user space using the transport structure. */
-  if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_SUCCESS){
-    __R30 ^= 1 << PIN; // Hoog
-  }else if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_NO_BUF_AVAILABLE){
-    __R30 ^= 1 << PIN2; // Hoog
-  }else if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_BUF_TOO_SMALL){
-    __R30 ^= 1 << PIN; // Hoog
-    __R30 ^= 1 << PIN; // Laag
-  }else if(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) == PRU_RPMSG_INVALID_HEAD){
-    __R30 ^= 1 << PIN2; // Hoog
-    __R30 ^= 1 << PIN2; // Laag
-  }
+  while(pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT) != PRU_RPMSG_SUCCESS);
 
   /* Receive all available messages, multiple messages can be sent per kick. A message has to be received to set the destination adress before you send. */
   while (pru_rpmsg_receive(&transport, &src, &dst, rec_payload, &len) != PRU_RPMSG_SUCCESS);  //Initialize the RPMsg framework
