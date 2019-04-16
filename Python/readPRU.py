@@ -25,6 +25,7 @@ def main():
         try:
             PRUstate.write('start')
             print("PRU0 is being started")
+            sleep(5)
         except IOError:
             print("PRU0 failed to start")
             PRUstate.close()
@@ -33,7 +34,6 @@ def main():
 
 # Start communication over rpmsg
     try:
-        sleep(5)
         PRUdev = open(CHAR_DEV0, "rb+", 0)
         print("Sending message to start communication")
         PRUdev.write(b'S')
