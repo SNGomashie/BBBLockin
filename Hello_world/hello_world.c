@@ -18,8 +18,11 @@ volatile register uint32_t __R31;
 struct pru_rpmsg_transport transport;
 uint16_t src, dst, len;
 volatile uint8_t *status;
+<<<<<<< HEAD
 
 char initRPMSG(void);
+=======
+>>>>>>> 9d83c0713b64b46a7b55f0246d6435f1cc5eeded
 
 void main (void) {
 
