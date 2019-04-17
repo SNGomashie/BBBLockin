@@ -78,7 +78,8 @@ install: $(GEN_DIR)/$(PROJ_NAME).out
 
 $(GEN_DIR)/$(PROJ_NAME).out: $(OBJECTS) $(LINKER_COMMAND_FILE)
 	@echo '-	Invoking: PRU Linker: $^'
-  $(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
+	$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
+
 
 $(GEN_DIR)/%.obj: %.c
 	@mkdir -p $(GEN_DIR)
