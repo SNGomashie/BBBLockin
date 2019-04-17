@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <pru_cfg.h>
 #include <pru_ctrl.h>
+#include "resource_table.h"
 #include "pru_peripheral.h"
 
 #define PIN25 7

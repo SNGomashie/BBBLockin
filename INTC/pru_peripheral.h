@@ -12,7 +12,7 @@
 #include <pru_ecap.h>
 #include <sys_mcspi.h>
 #include <pru_uart.h>
-#include "resource_table.h"
+
 
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
