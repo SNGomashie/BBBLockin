@@ -81,7 +81,7 @@ $(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
 	$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
 
-$(GEN_DIR)/%.obj: %.c
+$(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
 	@echo '-	Invoking: PRU Compiler: $<'
 	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU$(PRUN)
