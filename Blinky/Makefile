@@ -1,7 +1,6 @@
 
 ifdef PRU
 	PRUN := PRU
-	@echo "PRU$(PRUN) selected"
 else
  	PRUN := 0
 endif
