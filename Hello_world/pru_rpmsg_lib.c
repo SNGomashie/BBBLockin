@@ -88,12 +88,12 @@ message RPMSGreceive(void){
 }
 
 /* Send mesasge to ARM */
-void RPMSGsend(unsigned char *output){
+void RPMSGsend(char* output){
   /* Status variable */
   uint8_t send_status;
 
   /* Send message to ARM using the virtqeues in pru_rpmsg_transport structure */
-  send_status = pru_rpmsg_send(&transport, dst, src, output, (sizeof(output) / sizeof(unsigned char)));
+  send_status = pru_rpmsg_send(&transport, dst, src, &output, (sizeof(output) / sizeof(unsigned char)));
 
   /* See if transmission went correct */
   while(send_status != PRU_RPMSG_SUCCESS){
