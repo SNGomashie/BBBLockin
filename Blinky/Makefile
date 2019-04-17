@@ -57,7 +57,7 @@ start:
 	@echo "-    Starting PRU $(PRUN)"
 	@echo start | sudo tee $(PRU_DIR)/state
 
-install:
+install: $(TARGET)
 	@echo '-	copying firmware file $(GEN_DIR)/$(TARGET).out to /lib/firmware/am335x-pru$(PRUN)-fw'
 	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
