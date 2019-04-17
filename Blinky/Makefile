@@ -1,4 +1,4 @@
-PRUN := 0
+PRUN = 0
 # System paths for compiler and support package
 PRU_CGT:= /usr/share/ti/cgt-pru
 PRU_SUPPORT:= /usr/lib/ti/pru-software-support-package
@@ -42,14 +42,14 @@ OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(SOURCES:.c=.object))
 
 # Lookup PRU by address
 ifeq ($(PRUN),0)
-PRU_ADDR=4a334000
+PRU_ADDR=remoteproc1
 endif
 ifeq ($(PRUN),1)
-PRU_ADDR=4a338000
+PRU_ADDR=remoteproc2
 endif
 
 # PRU sysfs interface directory
-PRU_DIR=$(wildcard /sys/devices/platform/ocp/4a32600*.pruss-soc-bus/4a300000.pruss/$(PRU_ADDR).*/remoteproc/remoteproc*)
+PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR)/*)
 
 .PHONY: all clean
 
