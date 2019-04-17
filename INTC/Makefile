@@ -72,11 +72,11 @@ start:
 	@echo "-	Starting PRU $(PRUN)"
 	@echo 'start' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot start $(PRUN)'
 
-install: $(GEN_DIR)/$(PROJ_NAME).out
+install: $(TARGET)
 	@echo '-	Copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
 	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
-$(GEN_DIR)/$(PROJ_NAME).out: $(OBJECTS) $(LINKER_COMMAND_FILE)
+$(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
 	@echo '-	Invoking: PRU Linker: $^'
 	$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
