@@ -66,7 +66,7 @@ stop:
 
 git:
 	@echo '-	Updating reposetory'
-	GIT := $(shell sudo git pull)
+	GIT = $(shell sudo git pull)
 	@echo '-	Git: $(GIT)'
 
 start:
