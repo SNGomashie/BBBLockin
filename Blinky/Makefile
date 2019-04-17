@@ -40,6 +40,14 @@ SOURCES=$(wildcard *.c)
 #Using .object instead of .obj in order to not conflict with the CCS build process
 OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(SOURCES:.c=.object))
 
+# Lookup PRU by address
+ifeq ($(PRUN),0)
+PRU_ADDR=4a334000
+endif
+ifeq ($(PRUN),1)
+PRU_ADDR=4a338000
+endif
+
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/devices/platform/ocp/4a32600*.pruss-soc-bus/4a300000.pruss/$(PRU_ADDR).*/remoteproc/remoteproc*)
 
@@ -62,23 +70,23 @@ install: $(TARGET)
 	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
 
-# Invokes the linker (-z flag) to make the .out file
-$(TARGET): $(OBJECTS)	$(LINKER_COMMAND_FILE)
-	@echo ''
-	@echo 'Building target: $@'
-	@echo 'Invoking: PRU Linker'
-	$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
-	@echo 'Finished building target: $@'
-	@echo ''
-	@echo 'Output files can be found in the "$(GEN_DIR)" directory'
+	# Invokes the linker (-z flag) to make the .out file
+	$(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
+		@echo ''
+		@echo 'Building target: $@'
+		@echo 'Invoking: PRU Linker'
+		$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
+		@echo 'Finished building target: $@'
+		@echo ''
+		@echo 'Output files can be found in the "$(GEN_DIR)" directory'
 
-# Invokes the compiler on all c files in the directory to create the object files
-$(GEN_DIR)/%.object: %.c
-	@mkdir -p $(GEN_DIR)
-	@echo ''
-	@echo 'Building file: $<'
-	@echo 'Invoking: PRU Compiler'
-	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -fe $@ $<
+	# Invokes the compiler on all c files in the directory to create the object files
+	$(GEN_DIR)/%.object: %.c
+		@mkdir -p $(GEN_DIR)
+		@echo ''
+		@echo 'Building file: $<'
+		@echo 'Invoking: PRU Compiler'
+		$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -fe $@ $
 
 clean:
 	@echo 'CLEAN	.    PRU $(PRUN)'
