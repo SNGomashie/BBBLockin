@@ -56,7 +56,7 @@ PRU_ADDR=remoteproc2
 endif
 
 # PRU sysfs interface directory
-PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR).*)
+PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR))
 
 all: stop clean git install start
 
