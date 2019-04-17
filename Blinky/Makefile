@@ -62,18 +62,20 @@ all: stop clean git install start
 
 stop:
 	@echo "-	Stopping PRU $(PRUN)"
-	@echo 'stop' > $(PRU_DIR)/state || echo Cannot stop $(PRUN)
+	# @echo 'stop' > $(PRU_DIR)/state || echo Cannot stop $(PRUN)
+	@echo 'stop' | sudo tee -a $(PRU_DIR)/state || echo Cannot stop $(PRUN)
 
 git:
-	@echo 'Updating reposetory'
+	@echo '-	Updating reposetory'
 	@sudo git pull
 
 start:
 	@echo "-	Starting PRU $(PRUN)"
-	@echo 'start' > $(PRU_DIR)/state || echo Cannot start $(PRUN)
+	# @echo 'start' > $(PRU_DIR)/state || echo Cannot start $(PRUN)
+	@echo 'start' | sudo tee -a $(PRU_DIR)/state || echo Cannot start $(PRUN)
 
 install: $(GEN_DIR)/$(PROJ_NAME).out
-	@echo '-	copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
+	@echo '-	Copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
 	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
 $(GEN_DIR)/$(PROJ_NAME).out: $(GEN_DIR)/$(PROJ_NAME).obj
@@ -86,7 +88,7 @@ $(GEN_DIR)/$(PROJ_NAME).obj: $(FILE_NAME).c
 	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=PRU$(PRUN) -fe $@ $<
 
 clean:
-	@echo 'CLEAN	.    PRU $(PRUN)'
+	@echo '-	Clean'
 	@rm -rf $(GEN_DIR)
 
 # Includes the dependencies that the compiler creates (-ppd and -ppa flags)
