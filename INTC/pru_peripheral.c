@@ -4,6 +4,8 @@
 /*          By: Sena Gomashie         */
 /**************************************/
 
+#include <stdint.h>
+#include <stdio.h>
 #include "pru_peripheral.h"
 
 
