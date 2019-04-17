@@ -66,7 +66,7 @@ stop:
 	@echo 'stop' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot stop $(PRUN)'
 
 git:
-	@echo '-	Updating reposetory'
+	@echo '-	Updating repository'
 	@sudo git pull
 
 start:
