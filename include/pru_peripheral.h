@@ -7,7 +7,6 @@
 #ifndef __PERIPHERAL_LIB_H_
 #define __PERIPHERAL_LIB_H_
 
-#include <stdint.h>
 #include <pru_intc.h>
 #include <pru_iep.h>
 #include <pru_ecap.h>

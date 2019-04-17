@@ -60,7 +60,7 @@ void INTCclear(uint8_t sys_evt){
 /**********************************/
 /* Industrial Ethernet Peripheral */
 /**********************************/
-void IEPinitialize(uint32_t period, uint32_t increment, config mode){
+void IEPinitialize(uint32_t period, uint32_t increment, iep_config mode){
 
   /* Disable counter */
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
@@ -114,7 +114,7 @@ void eCAPinitialize(void){
 /*********************************************/
 /* Multi-channel Serial Peripheral Interface */
 /*********************************************/
-void McSPIinitialze((uint8_t divider, uint8_t word_length, uint8_t ints){
+void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   /* Reset McSPI0 module */
   CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 0x0001;
 
@@ -147,9 +147,9 @@ void McSPIinitialze((uint8_t divider, uint8_t word_length, uint8_t ints){
 void UARTinitialize(uint32_t baud_rate){
   /* Verify acceptable input */
   while(!((baud_rate == 1200) || (baud_rate == 2400) || (baud_rate == 4800) || (baud_rate == 19200) || (baud_rate == 38400) || (baud_rate == 57600) || !(baud_rate == 115200)));
-  baudrate /= 100;
-  baudrate = 1920000/ baudrate
-  baudrate /= 16;
+  baud_rate /= 100;
+  baud_rate = 1920000/ baud_rate;
+  baud_rate /= 16;
 
   /* Configure baudrate */
   CT_UART.DLL = (0xFF) & baudrate;
