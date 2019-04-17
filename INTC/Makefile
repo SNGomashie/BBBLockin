@@ -24,7 +24,7 @@ LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 
 # Paths to libraries
 LIBS=--library=$(PRU_SUPPORT)/lib/rpmsg_lib.lib
-INCLUDE=--include_path=$(PRU_CGT)/include --include_path=$(PRU_SUPPORT)/include/ --include_path=$(PRU_SUPPORT)/include/am335x/ --include_path=$(PRU_BBB)/include/
+INCLUDE=--include_path=$(PRU_BBB)/include --include_path=$(PRU_CGT)/include --include_path=$(PRU_SUPPORT)/include/ --include_path=$(PRU_SUPPORT)/include/am335x/
 
 # Stack & Heap size
 STACK_SIZE=0x100

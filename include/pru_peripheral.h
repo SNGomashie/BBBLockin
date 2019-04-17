@@ -22,6 +22,7 @@ volatile register unsigned int __R31;
 //TODO: Add more ass needed
 
 void PRCMinitialize(void);
+
 /* Interrupt controller addresses */
 #define CMR_ADDRESS (0x3FC)
 #define HMR_ADDRESS (0x7FC)
