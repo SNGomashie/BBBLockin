@@ -4,7 +4,9 @@
 /*          By: Sena Gomashie         */
 /**************************************/
 
-#include <pru_peripheral.h>
+#include <stdint.h>
+#include <stdio.h>
+#include "pru_peripheral.h"
 
 
 /****************************/
@@ -26,39 +28,72 @@ void PRCMinitialize(void){
 /*      Interrupt controller      */
 /**********************************/
 void INTCinitialize(uint8_t sys_evt, uint8_t chan, uint8_t host_int){
-  // INT variables
-  uint8_t cmr, hmr;
-
   // Disable global interrupts
-  CT_INT.GER = 0;
+  CT_INTC.GER = 0;
 
   // Clear current interrupts
   __R31 = 0x00000000;
 
-  // Calculate addresses
-  cmr = sys_evt * 0x8;
-  hmr = chan * 0x8;
-
   // Configure INTC
-  CT_INT |= (chan << (cmr + CMR_ADDRESS));
-  CT_INT |= (host_int << (hmr + HMR_ADDRESS));
-  CT_INT.SICR = sys_evt;
-  CT_INT.EISR = sys_evt;
-  CT_INT.HIEISR = host_int;
+  if (sys_evt < 4) {
+    CT_INTC.CMR0 = (chan << (sys_evt * 8));
+  } else if (sys_evt < 8) {
+    CT_INTC.CMR1 = (chan << ((sys_evt * 8) - 32));
+  } else if (sys_evt < 12) {
+    CT_INTC.CMR2 = (chan << ((sys_evt * 8) - 64));
+  } else if (sys_evt < 16) {
+    CT_INTC.CMR3 = (chan << ((sys_evt * 8) - 96));
+  } else if (sys_evt < 20) {
+    CT_INTC.CMR4 = (chan << ((sys_evt * 8) - 128));
+  } else if (sys_evt < 24) {
+    CT_INTC.CMR5 = (chan << ((sys_evt * 8) - 160));
+  } else if (sys_evt < 28) {
+    CT_INTC.CMR6 = (chan << ((sys_evt * 8) - 192));
+  } else if (sys_evt < 32) {
+    CT_INTC.CMR7 = (chan << ((sys_evt * 8) - 224));
+  } else if (sys_evt < 36) {
+    CT_INTC.CMR8 = (chan << ((sys_evt * 8) - 256));
+  } else if (sys_evt < 40) {
+    CT_INTC.CMR9 = (chan << ((sys_evt * 8) - 288));
+  } else if (sys_evt < 44) {
+    CT_INTC.CMR10 = (chan << ((sys_evt * 8) - 320));
+  } else if (sys_evt < 48) {
+    CT_INTC.CMR11 = (chan << ((sys_evt * 8) - 352));
+  } else if (sys_evt < 52) {
+    CT_INTC.CMR12 = (chan << ((sys_evt * 8) - 384));
+  } else if (sys_evt < 56) {
+    CT_INTC.CMR13 = (chan << ((sys_evt * 8) - 416));
+  } else if (sys_evt < 60) {
+    CT_INTC.CMR14 = (chan << ((sys_evt * 8) - 448));
+  } else if (sys_evt < 64) {
+    CT_INTC.CMR15 = (chan << ((sys_evt * 8) - 480));
+  }
+
+  if (chan < 4) {
+    CT_INTC.HMR0 = (host_int << (chan * 8));
+  } else if (chan < 8) {
+    CT_INTC.HMR1 = (host_int << ((chan * 8) - 32));
+  } else if (chan < 12) {
+    CT_INTC.HMR2 = (host_int << ((chan * 8) - 64));
+  }
+
+  CT_INTC.SICR = sys_evt;
+  CT_INTC.EISR = sys_evt;
+  CT_INTC.HIEISR = host_int;
 
   // Enable global interrupts
-  CT_INT.GER = 1;
+  CT_INTC.GER = 1;
 }
 
 void INTCclear(uint8_t sys_evt){
-  CT_INT.SICR = sys_evt;
+  CT_INTC.SICR = sys_evt;
   __delay_cycles(5);
 }
 
 /**********************************/
 /* Industrial Ethernet Peripheral */
 /**********************************/
-void IEPinitialize(uint32_t period, uint32_t increment, config mode){
+void IEPinitialize(uint32_t period, uint32_t increment, iep_config mode){
 
   /* Disable counter */
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
@@ -112,7 +147,7 @@ void eCAPinitialize(void){
 /*********************************************/
 /* Multi-channel Serial Peripheral Interface */
 /*********************************************/
-void McSPIinitialze((uint8_t divider, uint8_t word_length, uint8_t ints){
+void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   /* Reset McSPI0 module */
   CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 0x0001;
 
@@ -145,20 +180,20 @@ void McSPIinitialze((uint8_t divider, uint8_t word_length, uint8_t ints){
 void UARTinitialize(uint32_t baud_rate){
   /* Verify acceptable input */
   while(!((baud_rate == 1200) || (baud_rate == 2400) || (baud_rate == 4800) || (baud_rate == 19200) || (baud_rate == 38400) || (baud_rate == 57600) || !(baud_rate == 115200)));
-  baudrate /= 100;
-  baudrate = 1920000/ baudrate
-  baudrate /= 16;
+  baud_rate /= 100;
+  baud_rate = 1920000 / baud_rate;
+  baud_rate /= 16;
 
   /* Configure baudrate */
-  CT_UART.DLL = (0xFF) & baudrate;
-  CT_UART.DLH = (0xFF00) & baudrate;
+  CT_UART.DLL = (0xFF) & baud_rate;
+  CT_UART.DLH = (0xFF00) & baud_rate;
   CT_UART.MDR_bit.OSM_SEL = 0x0;
 
   /* Set up UART to function at 115200 baud - DLL divisor is 104 at 16x oversample
   * 192MHz / 104 / 16 = ~115200 */
-  CT_UART.DLL = 104;
-  CT_UART.DLH = 0;
-  CT_UART.MDR_bit.OSM_SEL = 0x0;
+  // CT_UART.DLL = 104;
+  // CT_UART.DLH = 0;
+  // CT_UART.MDR_bit.OSM_SEL = 0x0;
 
   /* If FIFOs are to be used, select desired trigger level and enable
   * FIFOs by writing to FCR. FIFOEN bit in FCR must be set first before
