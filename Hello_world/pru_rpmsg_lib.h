@@ -18,9 +18,9 @@
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
 
 /* Create array type for messaging */
-typedef struct message{
+typedef struct{
   unsigned char x[RPMSG_BUF_SIZE - RPMSG_HEADER_SIZE];
-};
+} message;
 
 /* Prototype functions */
 void RPMSGinitialize(void);
