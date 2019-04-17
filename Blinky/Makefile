@@ -1,7 +1,6 @@
 
 ifdef PRU
 	PRUN := PRU
-	@echo "PRU$(PRUN) selected"
 	PRU_ADDR := $(PRUN)+1
 else
  	PRUN := 0
