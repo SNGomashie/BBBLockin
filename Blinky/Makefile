@@ -51,12 +51,10 @@ endif
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR).*)
 
-.PHONY: all clean
-
 all: stop install start
 
 stop:
-	@echo "-		Stopping PRU $(PRUN)"
+	@echo "-	Stopping PRU $(PRUN)"
 	@echo stop | sudo tee $(PRU_DIR)/state || echo Cannot stop $(PRUN)
 
 # git:
@@ -64,7 +62,7 @@ stop:
 # 	@sudo git pull
 
 start:
-	@echo "-    Starting PRU $(PRUN)"
+	@echo "-	Starting PRU $(PRUN)"
 	@echo start | sudo tee $(PRU_DIR)/state
 
 install: $(GEN_DIR)/$(PROJ_NAME).out
@@ -72,13 +70,13 @@ install: $(GEN_DIR)/$(PROJ_NAME).out
 	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
 $(GEN_DIR)/$(PROJ_NAME).out: $(GEN_DIR)/$(PROJ_NAME).obj
-	@echo 'LD	$^'
+	@echo 'Invoking: PRU Linker: $^'
 	@lnkpru -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $@ $^ $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS) $^
 
 $(GEN_DIR)/$(PROJ_NAME).obj: $(FILE_NAME).c
 	@mkdir -p $(GEN_DIR)
-	@echo 'CC	$<'
-	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=$(PRUN) -fe $@ $< -D PRU0
+	@echo 'Invoking: PRU Compiler: $<'
+	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=PRU$(PRUN) -fe $@ $<
 
 clean:
 	@echo 'CLEAN	.    PRU $(PRUN)'
