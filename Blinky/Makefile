@@ -66,8 +66,7 @@ stop:
 
 git:
 	@echo '-	Updating reposetory'
-	GIT = $(shell sudo git pull)
-	@echo '-	Git: $(GIT)'
+	@sudo git pull
 
 start:
 	@echo "-	Starting PRU $(PRUN)"
