@@ -9,6 +9,7 @@ endif
 # System paths for compiler and support package
 PRU_CGT:= /usr/share/ti/cgt-pru
 PRU_SUPPORT:= /usr/lib/ti/pru-software-support-package
+PRU_BBB := /home/debian/BBBLockin
 
 # Define current directory
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
@@ -23,7 +24,7 @@ LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 
 # Paths to libraries
 LIBS=--library=$(PRU_SUPPORT)/lib/rpmsg_lib.lib
-INCLUDE=--include_path=$(PRU_CGT)/include --include_path=$(PRU_SUPPORT)/include/ --include_path=$(PRU_SUPPORT)/include/am335x/ --include_path=../include/
+INCLUDE=--include_path=$(PRU_CGT)/include --include_path=$(PRU_SUPPORT)/include/ --include_path=$(PRU_SUPPORT)/include/am335x/ --include_path=$(PRU_BBB)/include/
 
 # Stack & Heap size
 STACK_SIZE=0x100
@@ -78,13 +79,13 @@ install: $(TARGET)
 
 $(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
 	@echo '-	Invoking: PRU Linker: $^'
-	$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
+	@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
 
 $(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
 	@echo '-	Invoking: PRU Compiler: $<'
-	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU$(PRUN)
+	@$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU$(PRUN)
 
 .PHONY: all clean
 
