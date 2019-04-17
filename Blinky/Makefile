@@ -49,14 +49,6 @@ SOURCES=$(wildcard *.c)
 #Using .object instead of .obj in order to not conflict with the CCS build process
 OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(SOURCES:.c=.object))
 
-# Lookup PRU by address
-ifeq ($(PRUN),0)
-PRU_ADDR=remoteproc1
-endif
-ifeq ($(PRUN),1)
-PRU_ADDR=remoteproc2
-endif
-
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/class/remoteproc/remoteproc$(PRU_ADDR))
 
@@ -65,7 +57,11 @@ all: stop git install start
 stop:
 	@echo "-		Stopping PRU $(PRUN)"
 	@echo "$(PRU_DIR)"
+<<<<<<< HEAD
 	@echo 'stop' > $(PRU_DIR)/state || echo Cannot stop $(PRUN)
+=======
+	@echo stop | sudo tee $(PRU_DIR)/state || echo Cannot stop $(PRUN)
+>>>>>>> 83617a67e99dbca34c3e683f8aa17fd3cb1bb677
 
 git:
 	@echo 'Updating reposetory'
@@ -79,6 +75,13 @@ install:
 	@echo '-	copying firmware file $(GEN_DIR)/$(TARGET).out to /lib/firmware/am335x-pru$(PRUN)-fw'
 	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
+<<<<<<< HEAD
+=======
+install:
+	@echo '-	copying firmware file $(GEN_DIR)/$(TARGET).out to /lib/firmware/am335x-pru$(PRUN)-fw'
+	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
+
+>>>>>>> 83617a67e99dbca34c3e683f8aa17fd3cb1bb677
 
 # Invokes the linker (-z flag) to make the .out file
 $(TARGET): $(OBJECTS)	$(LINKER_COMMAND_FILE)
