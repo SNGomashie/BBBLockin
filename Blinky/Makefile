@@ -1,6 +1,6 @@
 
 ifdef PRU
-	PRUN := PRU
+	PRUN := $(PRU)
 else
  	PRUN := 0
 endif
