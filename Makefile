@@ -9,6 +9,7 @@ endif
 # System paths for compiler and support package
 PRU_CGT:= /usr/share/ti/cgt-pru
 PRU_SUPPORT:= /usr/lib/ti/pru-software-support-package
+PRU_BBB := /home/debian/BBBLockin
 
 # Define current directory
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
@@ -23,7 +24,7 @@ LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 
 # Paths to libraries
 LIBS=--library=$(PRU_SUPPORT)/lib/rpmsg_lib.lib
-INCLUDE=--include_path=$(PRU_CGT)/include --include_path=$(PRU_SUPPORT)/include/ --include_path=$(PRU_SUPPORT)/include/am335x/ --include_path=../include/
+INCLUDE=--include_path=$(PRU_CGT)/include --include_path=$(PRU_SUPPORT)/include/ --include_path=$(PRU_SUPPORT)/include/am335x/
 
 # Stack & Heap size
 STACK_SIZE=0x100
@@ -56,37 +57,40 @@ PRU_ADDR=remoteproc2
 endif
 
 # PRU sysfs interface directory
-PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR).*)
+PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR))
 
 all: stop clean git install start
 
 stop:
 	@echo "-	Stopping PRU $(PRUN)"
-	@sudo echo 'stop' > $(PRU_DIR)/state || echo Cannot stop $(PRUN)
+	@echo 'stop' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot stop $(PRUN)'
 
 git:
-	@echo 'Updating reposetory'
+	@echo '-	Updating repository'
 	@sudo git pull
 
 start:
 	@echo "-	Starting PRU $(PRUN)"
-	@sudo echo 'start' > $(PRU_DIR)/state || echo Cannot start $(PRUN)
+	@echo 'start' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot start $(PRUN)'
 
-install: $(GEN_DIR)/$(PROJ_NAME).out
-	@echo '-	copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
+install: $(TARGET)
+	@echo '-	Copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
 	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
-$(GEN_DIR)/$(PROJ_NAME).out: $(GEN_DIR)/$(PROJ_NAME).obj
-	@echo 'Invoking: PRU Linker: $^'
-	@lnkpru -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $@ $^ $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS) $^
+$(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
+	@echo '-	Invoking: PRU Linker: $^'
+	@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-$(GEN_DIR)/$(PROJ_NAME).obj: $(FILE_NAME).c
+
+$(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
-	@echo 'Invoking: PRU Compiler: $<'
-	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=PRU$(PRUN) -fe $@ $<
+	@echo '-	Invoking: PRU Compiler: $<'
+	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU$(PRUN)
+
+.PHONY: all clean
 
 clean:
-	@echo 'CLEAN	.    PRU $(PRUN)'
+	@echo '-	Clean'
 	@rm -rf $(GEN_DIR)
 
 # Includes the dependencies that the compiler creates (-ppd and -ppa flags)
