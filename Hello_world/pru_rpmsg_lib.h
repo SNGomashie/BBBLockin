@@ -11,7 +11,7 @@
 #include <pru_virtqueue.h>
 #include <rsc_types.h>
 #include "pru_virtio_ids.h"
-#include "resource_table.h"
+
 
 #ifndef __R31
   volatile register uint32_t __R31;

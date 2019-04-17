@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <pru_cfg.h>
+#include "resource_table.h"
 #include "pru_peripheral.h"
 #include "pru_rpmsg_lib.h"
 
