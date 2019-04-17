@@ -4,7 +4,7 @@
 /*          By: Sena Gomashie         */
 /**************************************/
 
-#include <pru_peripheral.h>
+#include "pru_peripheral.h"
 
 
 /****************************/
