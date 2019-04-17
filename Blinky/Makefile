@@ -62,7 +62,6 @@ all: stop clean git install start
 
 stop:
 	@echo "-	Stopping PRU $(PRUN)"
-
 	@echo 'stop' | sudo tee -a $(PRU_DIR)/state || echo Cannot stop $(PRUN)
 
 git:
@@ -71,7 +70,6 @@ git:
 
 start:
 	@echo "-	Starting PRU $(PRUN)"
-
 	@echo 'start' | sudo tee -a $(PRU_DIR)/state || echo Cannot start $(PRUN)
 
 install: $(GEN_DIR)/$(PROJ_NAME).out
