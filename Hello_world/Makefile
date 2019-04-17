@@ -85,7 +85,7 @@ $(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
 $(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
 	@echo '-	Invoking: PRU Compiler: $<'
-	$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU$(PRUN)
+	$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRU$(PRUN)
 
 .PHONY: all clean
 
