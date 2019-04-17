@@ -5,7 +5,7 @@ ifdef pru
 	PRU_ADDR := $(PRUN)+1
 else
  	PRUN := 0
-	PRU_ADDR := 0
+	PRU_ADDR := 1
 endif
 
 # System paths for compiler and support package
