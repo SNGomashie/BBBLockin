@@ -19,6 +19,7 @@ void main(void){
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
   INTCinitialize(7, 1, 1);
   IEPinitialize(0x30D3B, 1, cmp);
+  IEPstart();
 
   while(1){
     while (__R31 & HOST_INT){
