@@ -6,11 +6,6 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include <pru_intc.h>
-#include <pru_iep.h>
-#include <pru_ecap.h>
-#include <sys_mcspi.h>
-#include <pru_uart.h>
 #include "pru_peripheral.h"
 
 
@@ -33,22 +28,78 @@ void PRCMinitialize(void){
 /*      Interrupt controller      */
 /**********************************/
 void INTCinitialize(uint8_t sys_evt, uint8_t chan, uint8_t host_int){
-  // INT variables
-  uint8_t cmr, hmr;
-
   // Disable global interrupts
   CT_INT.GER = 0;
 
   // Clear current interrupts
   __R31 = 0x00000000;
 
-  // Calculate addresses
-  cmr = sys_evt * 0x8;
-  hmr = chan * 0x8;
-
   // Configure INTC
-  CT_INT |= (chan << (cmr + CMR_ADDRESS));
-  CT_INT |= (host_int << (hmr + HMR_ADDRESS));
+  switch(sys_evt){
+    case (sys_evt < 4):
+      CT_INT.CMR0 = (chan << (sys_evt * 8));
+      break;
+    case (sys_evt < 8);
+      CT_INT.CMR1 = (chan << ((sys_evt * 8) - 32));
+      break;
+    case (sys_evt < 12):
+      CT_INT.CMR2 = (chan << ((sys_evt * 8) - 64));
+      break;
+    case (sys_evt < 16):
+      CT_INT.CMR3 = (chan << ((sys_evt * 8) - 96));
+      break;
+    case (sys_evt < 20):
+      CT_INT.CMR4 = (chan << ((sys_evt * 8) - 128));
+      break;
+    case (sys_evt < 24):
+      CT_INT.CMR5 = (chan << ((sys_evt * 8) - 160));
+      break;
+    case (sys_evt < 28):
+      CT_INT.CMR6 = (chan << ((sys_evt * 8) - 192));
+      break;
+    case (sys_evt < 32):
+      CT_INT.CMR7 = (chan << ((sys_evt * 8) - 224));
+      break;
+    case (sys_evt < 36):
+      CT_INT.CMR8 = (chan << ((sys_evt * 8) - 256));
+      break;
+    case (sys_evt < 40):
+      CT_INT.CMR9 = (chan << ((sys_evt * 8) - 288));
+      break;
+    case (sys_evt < 44):
+      CT_INT.CMR10 = (chan << ((sys_evt * 8) - 320));
+      break;
+    case (sys_evt < 48):
+      CT_INT.CMR11 = (chan << ((sys_evt * 8) - 352));
+      break;
+    case (sys_evt < 52):
+      CT_INT.CMR12 = (chan << ((sys_evt * 8) - 384));
+      break;
+    case (sys_evt < 56):
+      CT_INT.CMR13 = (chan << ((sys_evt * 8) - 416));
+      break;
+    case (sys_evt < 60):
+      CT_INT.CMR14 = (chan << ((sys_evt * 8) - 448));
+      break;
+    case (sys_evt < 64):
+      CT_INT.CMR15 = (chan << ((sys_evt * 8) - 480));
+      break;
+    default:
+      break;
+  }
+  switch(chan){
+    case (chan < 4):
+      CT_INT.HMR0 = (host_int << (chan * 8));
+      break;
+    case (chan < 8):
+      CT_INT.HMR1 = (host_int << ((chan * 8) - 32);
+      break;
+    case (chan < 12):
+      CT_INT.HMR2 = (host_int << ((chan * 8) - 64));
+      break;
+    default:
+      break;
+  }
   CT_INT.SICR = sys_evt;
   CT_INT.EISR = sys_evt;
   CT_INT.HIEISR = host_int;

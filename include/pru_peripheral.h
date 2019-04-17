@@ -24,9 +24,6 @@ volatile register unsigned int __R31;
 void PRCMinitialize(void);
 
 /* Interrupt controller addresses */
-#define CMR_ADDRESS (0x3FC)
-#define HMR_ADDRESS (0x7FC)
-
 void INTCinitialize(uint8_t sys_evt, uint8_t chan, uint8_t host_int);
 void INTCclear(uint8_t sys_evt);
 
