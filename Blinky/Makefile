@@ -62,7 +62,7 @@ all: stop clean git install start
 
 stop:
 	@echo "-	Stopping PRU $(PRUN)"
-	@echo 'stop' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo Cannot stop $(PRUN)
+	@echo 'stop' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot stop $(PRUN)
 
 git:
 	@echo '-	Updating reposetory'
