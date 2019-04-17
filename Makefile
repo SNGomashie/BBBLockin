@@ -1,4 +1,11 @@
-PRUN := 0
+
+ifdef pru
+	PRUN := pru
+	@echo PRU$(PRUN) selected
+else
+ 	PRUN := 0
+endif
+
 # System paths for compiler and support package
 PRU_CGT:= /usr/share/ti/cgt-pru
 PRU_SUPPORT:= /usr/lib/ti/pru-software-support-package
