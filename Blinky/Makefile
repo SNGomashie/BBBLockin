@@ -51,22 +51,22 @@ endif
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/devices/platform/ocp/4a32600*.pruss-soc-bus/4a300000.pruss/$(PRU_ADDR).*/remoteproc/remoteproc*)
 
-all: stop git install start
+all: stop install start
 
 stop:
 	@echo "-		Stopping PRU $(PRUN)"
 	@echo stop | sudo tee $(PRU_DIR)/state || echo Cannot stop $(PRUN)
 
-git:
-	@echo 'Updating reposetory'
-	@sudo git pull
+# git:
+# 	@echo 'Updating reposetory'
+# 	@sudo git pull
 
 start:
 	@echo "-    Starting PRU $(PRUN)"
 	@echo start | sudo tee $(PRU_DIR)/state
 
 install: $(TARGET)
-	@echo '-	copying firmware file $(GEN_DIR)/$(TARGET).out to /lib/firmware/am335x-pru$(PRUN)-fw'
+	@echo '-	copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
 	@sudo cp $(GEN_DIR)/$(TARGET).out /lib/firmware/am335x-pru$(PRUN)-fw
 
 $(TARGET): $(OBJECTS)
