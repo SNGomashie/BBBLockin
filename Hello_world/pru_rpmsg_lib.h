@@ -19,7 +19,7 @@
 
 /* Create array type for messaging */
 typedef struct{
-  unsigned char x[RPMSG_BUF_SIZE - RPMSG_HEADER_SIZE];
+  unsigned char x[RPMSG_MESSAGE_SIZE];
 } message;
 
 /* Prototype functions */
