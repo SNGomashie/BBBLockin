@@ -23,12 +23,7 @@ void main(void){
 
   while(1){
     while (__R31 & HOST_INT){
-      /* Clear Compare status */
-      CT_IEP.TMR_CMP_STS = (1 << 0);
-
-      /* delay for 5 cycles, clearing takes time */
-      __delay_cycles(5);
-
+      IEPclear_int();
       INTCclear(7);
 
       /* Toggle pin */

@@ -131,6 +131,14 @@ void IEPstop(void){
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
 }
 
+void IEPclear_int(void){
+  /* Clear Compare status */
+  CT_IEP.TMR_CMP_STS = (1 << 0);
+
+  /* delay for 5 cycles, clearing takes time */
+  __delay_cycles(5);
+}
+
 /****************************/
 /* Enchanced Capture Module */
 /****************************/
