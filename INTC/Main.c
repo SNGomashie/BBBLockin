@@ -10,8 +10,7 @@
 #include "resource_table.h"
 #include "pru_peripheral.h"
 
-#define PIN25 7
-#define HOST_INT (1 << 31)
+#define DEBUG_PIN 7
 
 void main(void){
   __R30 = 0x00000000;
@@ -22,12 +21,12 @@ void main(void){
   IEPstart();
 
   while(1){
-    while (__R31 & HOST_INT){
+    while (__R31 & (1 << 31)){
       IEPclear_int();
       INTCclear(7);
 
       /* Toggle pin */
-      __R30 ^= 1 << PIN25;
+      __R30 ^= 1 << DEBUG_PIN;
     }
   }
   __halt();
