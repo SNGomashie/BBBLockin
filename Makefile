@@ -1,4 +1,13 @@
-PRUN := 0
+
+ifdef pru
+	PRUN := pru
+	@echo PRU$(PRUN) selected
+	PRU_ADDR := $(PRUN)+1
+else
+ 	PRUN := 0
+	PRU_ADDR := 0
+endif
+
 # System paths for compiler and support package
 PRU_CGT:= /usr/share/ti/cgt-pru
 PRU_SUPPORT:= /usr/lib/ti/pru-software-support-package
@@ -41,12 +50,13 @@ SOURCES=$(wildcard *.c)
 OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(SOURCES:.c=.object))
 
 # PRU sysfs interface directory
-PRU_DIR=$(wildcard /sys/devices/platform/ocp/4a32600*.pruss-soc-bus/4a300000.pruss/$(PRU_ADDR).*/remoteproc/remoteproc*)
+PRU_DIR=$(wildcard /sys/class/remoteproc/remoteproc$(PRU_ADDR))
 
 all: stop git install start
 
 stop:
 	@echo "-		Stopping PRU $(PRUN)"
+	@echo "$(PRU_DIR)"
 	@echo stop | sudo tee $(PRU_DIR)/state || echo Cannot stop $(PRUN)
 
 git:

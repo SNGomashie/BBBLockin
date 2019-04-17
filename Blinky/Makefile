@@ -1,4 +1,13 @@
-PRUN = 0
+
+ifdef pru
+	PRUN := pru
+	@echo PRU$(PRUN) selected
+	PRU_ADDR := $(PRUN)+1
+else
+ 	PRUN := 0
+	PRU_ADDR := 1
+endif
+
 # System paths for compiler and support package
 PRU_CGT:= /usr/share/ti/cgt-pru
 PRU_SUPPORT:= /usr/lib/ti/pru-software-support-package
@@ -40,45 +49,46 @@ SOURCES=$(wildcard *.c)
 #Using .object instead of .obj in order to not conflict with the CCS build process
 OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(SOURCES:.c=.object))
 
-# Lookup PRU by address
-ifeq ($(PRUN),0)
-PRU_ADDR=remoteproc1
-endif
-ifeq ($(PRUN),1)
-PRU_ADDR=remoteproc2
-endif
-
 # PRU sysfs interface directory
-PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR).*)
+PRU_DIR=$(wildcard /sys/class/remoteproc/remoteproc$(PRU_ADDR))
 
-.PHONY: all clean
-
-all: stop install start
+all: stop git install start
 
 stop:
 	@echo "-		Stopping PRU $(PRUN)"
+	@echo "$(PRU_DIR)"
 	@echo stop | sudo tee $(PRU_DIR)/state || echo Cannot stop $(PRUN)
 
-# git:
-# 	@echo 'Updating reposetory'
-# 	@sudo git pull
+git:
+	@echo 'Updating reposetory'
+	@sudo git pull
 
 start:
 	@echo "-    Starting PRU $(PRUN)"
 	@echo start | sudo tee $(PRU_DIR)/state
 
-install: $(GEN_DIR)/$(PROJ_NAME).out
-	@echo '-	copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
-	@sudo cp $(GEN_DIR)/$(TARGET).out /lib/firmware/am335x-pru$(PRUN)-fw
+install:
+	@echo '-	copying firmware file $(GEN_DIR)/$(TARGET).out to /lib/firmware/am335x-pru$(PRUN)-fw'
+	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
-$(GEN_DIR)/$(PROJ_NAME).out: $(GEN_DIR)/%.obj
-	@echo 'LD	$^'
-	@lnkpru -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $@ $^ $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS) $^
 
-$(GEN_DIR)/%.obj: %.c
+# Invokes the linker (-z flag) to make the .out file
+$(TARGET): $(OBJECTS)	$(LINKER_COMMAND_FILE)
+	@echo ''
+	@echo 'Building target: $@'
+	@echo 'Invoking: PRU Linker'
+	$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
+	@echo 'Finished building target: $@'
+	@echo ''
+	@echo 'Output files can be found in the "$(GEN_DIR)" directory'
+
+# Invokes the compiler on all c files in the directory to create the object files
+$(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
-	@echo 'CC	$<'
-	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=$(PRUN) -fe $@ $< -D PRU0
+	@echo ''
+	@echo 'Building file: $<'
+	@echo 'Invoking: PRU Compiler'
+	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -fe $@ $<
 
 clean:
 	@echo 'CLEAN	.    PRU $(PRUN)'
