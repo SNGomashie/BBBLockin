@@ -34,11 +34,11 @@ message input;
 
 /* Status of rpmsg. */
 volatile uint8_t *status;
-
+uint8_t state;
 /* Initialization for rpmsg. */
 uint8_t RPMSGinitialize(void){
   /* Status variables. */
-  uint8_t init_status, channel_status, state;
+  uint8_t init_status, channel_status;
 
   /* Make sure the Linux drivers are ready for RPMsg communication. */
   status = &resourceTable.rpmsg_vdev.status;
