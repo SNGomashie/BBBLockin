@@ -8,7 +8,7 @@
 #define RPMSG_LIB_C
 
 #include "pru_rpmsg_lib.h"
-
+#include "resource_table.h"
 
 // Debugging
 // #define GPIO1 0x4804C000
