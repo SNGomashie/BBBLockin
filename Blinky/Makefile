@@ -1,6 +1,6 @@
 
-ifdef pru
-	PRUN := pru
+ifdef PRU
+	PRUN := PRU
 	@echo PRU$(PRUN) selected
 else
  	PRUN := 0
