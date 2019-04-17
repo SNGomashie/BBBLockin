@@ -51,7 +51,7 @@ endif
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR)*)
 
-all: stop git install start
+all: stop git clean install start
 
 stop:
 	@echo "-	Stopping PRU $(PRUN)"
