@@ -69,7 +69,7 @@ start:
 
 install: $(GEN_DIR)/$(PROJ_NAME).out
 	@echo '-	copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
-	@sudo cp $(GEN_DIR)/$(TARGET).out /lib/firmware/am335x-pru$(PRUN)-fw
+	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
 $(GEN_DIR)/$(PROJ_NAME).out: $(GEN_DIR)/$(PROJ_NAME).obj
 	@echo 'LD	$^'
