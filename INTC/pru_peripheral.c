@@ -4,6 +4,9 @@
 /*          By: Sena Gomashie         */
 /**************************************/
 
+#ifndef __PERIPHERAL_LIB_C_
+#define __PERIPHERAL_LIB_C_
+
 #include <stdint.h>
 #include <stdio.h>
 #include "pru_peripheral.h"
@@ -251,3 +254,5 @@ char UARTreceive(void){
 
   return CT_UART.RBR_bit.DATA;
 }
+
+#endif;
