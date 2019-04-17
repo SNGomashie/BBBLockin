@@ -51,6 +51,8 @@ endif
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/devices/platform/ocp/4a32600*.pruss-soc-bus/4a300000.pruss/$(PRU_ADDR).*/remoteproc/remoteproc*)
 
+.PHONY: all clean
+
 all: stop install start
 
 stop:
@@ -69,14 +71,14 @@ install: $(TARGET)
 	@echo '-	copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
 	@sudo cp $(GEN_DIR)/$(TARGET).out /lib/firmware/am335x-pru$(PRUN)-fw
 
-$(TARGET): $(OBJECTS)
+$(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
 	@echo 'LD	$^'
 	@lnkpru -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $@ $^ $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS) $^
 
 $(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
 	@echo 'CC	$<'
-	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=$(PRUN) -fe $@ $<
+	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=$(PRUN) -fe $@ $< -D PRU0
 
 clean:
 	@echo 'CLEAN	.    PRU $(PRUN)'
