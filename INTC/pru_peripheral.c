@@ -72,7 +72,7 @@ void INTCinitialize(uint8_t sys_evt, uint8_t chan, uint8_t host_int){
   if (chan < 4) {
     CT_INTC.HMR0 = (host_int << (chan * 8));
   } else if (chan < 8) {
-    CT_INTC.HMR1 = (host_int << ((chan * 8) - 32);
+    CT_INTC.HMR1 = (host_int << ((chan * 8) - 32));
   } else if (chan < 12) {
     CT_INTC.HMR2 = (host_int << ((chan * 8) - 64));
   }
