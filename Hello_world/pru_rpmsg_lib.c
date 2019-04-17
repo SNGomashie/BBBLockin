@@ -33,12 +33,12 @@ uint16_t src, dst, len;
 message input;
 
 /* Status of rpmsg. */
-uint8_t status = 0;
+volatile uint8_t *status;
 
 /* Initialization for rpmsg. */
 uint8_t RPMSGinitialize(void){
   /* Status variables. */
-  uint8_t init_status, channel_status, status;
+  uint8_t init_status, channel_status, state;
 
   /* Make sure the Linux drivers are ready for RPMsg communication. */
   status = &resourceTable.rpmsg_vdev.status;
@@ -62,7 +62,7 @@ uint8_t RPMSGinitialize(void){
     //   *GPIO1_SET = USR3;
     // }
   }
-  status = 1;
+  return state = 1;
 }
 
 /* Receive a message from the ARM and return it */
@@ -77,7 +77,7 @@ message RPMSGreceive(void){
     while(!(__R31 & HOST_INT));
 
     /* Receive message if available from ARM */
-    receive_status = pru_rpmsg_receive(&transport, &src, &dst, input, &len);
+    receive_status = pru_rpmsg_receive(&transport, &src, &dst, &input, &len);
 
     /* See if receive went corect */
     while(receive_status != PRU_RPMSG_SUCCESS){
@@ -85,8 +85,9 @@ message RPMSGreceive(void){
       // *GPIO1_SET = USR1;
       // *GPIO1_SET = USR2;
     }
-    return *input;
+    return input;
   }
+  return(0);
 }
 
 /* Send mesasge to ARM */
