@@ -11,15 +11,15 @@
 #include "resource_table.h"
 
 // Debugging
-// #define GPIO1 0x4804C000
-// #define GPIO_CLEARDATAOUT 0x190
-// #define GPIO_SETDATAOUT 0x194
-// #define USR0 (1<<21)
-// #define USR1 (1<<22)
-// #define USR2 (1<<23)
-// #define USR3 (1<<24)
-// unsigned int volatile * const GPIO1_CLEAR = (unsigned int *) (GPIO1 + GPIO_CLEARDATAOUT);
-// unsigned int volatile * const GPIO1_SET   = (unsigned int *) (GPIO1 + GPIO_SETDATAOUT);
+#define GPIO1 0x4804C000
+#define GPIO_CLEARDATAOUT 0x190
+#define GPIO_SETDATAOUT 0x194
+#define USR0 (1<<21)
+#define USR1 (1<<22)
+#define USR2 (1<<23)
+#define USR3 (1<<24)
+unsigned int volatile * const GPIO1_CLEAR = (unsigned int *) (GPIO1 + GPIO_CLEARDATAOUT);
+unsigned int volatile * const GPIO1_SET   = (unsigned int *) (GPIO1 + GPIO_SETDATAOUT);
 
 
 /* pru_rpmsg_transport is a strcture containing */
@@ -83,8 +83,8 @@ message RPMSGreceive(void){
     /* See if receive went corect */
     while(receive_status != PRU_RPMSG_SUCCESS){
       //    Debugging
-      // *GPIO1_SET = USR1;
-      // *GPIO1_SET = USR2;
+      *GPIO1_SET = USR1;
+      *GPIO1_SET = USR2;
     }
   }
   return input;
@@ -101,8 +101,8 @@ void RPMSGsend(unsigned char *output){
   /* See if transmission went correct */
   while(send_status != PRU_RPMSG_SUCCESS){
     //    Debugging
-    // *GPIO1_SET = USR1;
-    // *GPIO1_SET = USR3;
+    *GPIO1_SET = USR1;
+    *GPIO1_SET = USR3;
   }
 }
 
