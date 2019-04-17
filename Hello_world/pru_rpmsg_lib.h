@@ -17,9 +17,11 @@
 /* Used to make sure the Linux drivers are ready for RPMsg communication */
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
 
+#define RPMSG_HEADER_SIZE			16
+
 /* Create array type for messaging */
 typedef struct{
-  unsigned char x[RPMSG_MESSAGE_SIZE];
+  unsigned char x[RPMSG_BUF_SIZE - RPMSG_HEADER_SIZE];
 } message;
 
 /* Prototype functions */
