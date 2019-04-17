@@ -62,7 +62,7 @@ all: stop clean git install start
 
 stop:
 	@echo "-	Stopping PRU $(PRUN)"
-	@echo 'stop' | sudo tee -a $(PRU_DIR)/state || echo Cannot stop $(PRUN)
+	@echo 'stop' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo Cannot stop $(PRUN)
 
 git:
 	@echo '-	Updating reposetory'
@@ -70,7 +70,7 @@ git:
 
 start:
 	@echo "-	Starting PRU $(PRUN)"
-	@echo 'start' | sudo tee -a $(PRU_DIR)/state || echo Cannot start $(PRUN)
+	@echo 'start' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo Cannot start $(PRUN)
 
 install: $(GEN_DIR)/$(PROJ_NAME).out
 	@echo '-	Copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
