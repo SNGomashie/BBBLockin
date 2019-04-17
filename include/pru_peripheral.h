@@ -38,10 +38,10 @@ void IEPstop(void);
 void IEPclear_int(void);
 
 /* enhanced Capture module */
-uint32_t *ecap_period = CT_ECAP.CAP1;
+uint32_t *ecap_period = &CT_ECAP.CAP1;
 
-void eCAPintialize(void)
-void eCAPclear_int(void)
+void eCAPintialize(void);
+void eCAPclear_int(void);
 
 /* Multi-channel Serial Peripheral Interface */
 // TODO: enum voor clock divider
