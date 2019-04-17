@@ -1,6 +1,6 @@
 
 ifdef PRU
-	PRUN := PRU
+	PRUN := $(PRU)
 	PRU_ADDR := $(PRUN)+1
 else
  	PRUN := 0
