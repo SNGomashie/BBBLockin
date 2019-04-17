@@ -7,7 +7,7 @@ PRU_SUPPORT:= /usr/lib/ti/pru-software-support-package
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 PROJ_NAME=$(CURRENT_DIR)
-
+FILE_NAME= Main
 # Path to temporary folder
 GEN_DIR:=gen
 
@@ -75,7 +75,7 @@ $(GEN_DIR)/$(PROJ_NAME).out: $(GEN_DIR)/$(PROJ_NAME).obj
 	@echo 'LD	$^'
 	@lnkpru -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $@ $^ $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS) $^
 
-$(GEN_DIR)/$(PROJ_NAME).obj: Main.c
+$(GEN_DIR)/$(PROJ_NAME).obj: $(FILE_NAME).c
 	@mkdir -p $(GEN_DIR)
 	@echo 'CC	$<'
 	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=$(PRUN) -fe $@ $< -D PRU0
