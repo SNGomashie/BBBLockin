@@ -13,6 +13,9 @@
 #include "pru_virtio_ids.h"
 #include "resource_table.h"
 
+#ifndef __R31
+  volatile register uint32_t __R31;
+#endif
 
 /* Used to make sure the Linux drivers are ready for RPMsg communication */
 #define VIRTIO_CONFIG_S_DRIVER_OK	4
@@ -25,7 +28,7 @@ typedef struct{
 } message;
 
 /* Prototype functions */
-void RPMSGinitialize(void);
+uint8_t RPMSGinitialize(void);
 message RPMSGreceive(void);
 void RPMSGsend(char *output);
 void RPMSGclear_int(void);
