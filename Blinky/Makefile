@@ -66,7 +66,8 @@ stop:
 
 git:
 	@echo '-	Updating reposetory'
-	@sudo git pull
+	GIT := $(shell sudo git pull)
+	@echo '-	Git: $(GIT)'
 
 start:
 	@echo "-	Starting PRU $(PRUN)"
@@ -77,12 +78,12 @@ install: $(GEN_DIR)/$(PROJ_NAME).out
 	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
 $(GEN_DIR)/$(PROJ_NAME).out: $(GEN_DIR)/$(PROJ_NAME).obj
-	@echo 'Invoking: PRU Linker: $^'
+	@echo '-	Invoking: PRU Linker: $^'
 	@lnkpru -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $@ $^ $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS) $^
 
 $(GEN_DIR)/$(PROJ_NAME).obj: $(FILE_NAME).c
 	@mkdir -p $(GEN_DIR)
-	@echo 'Invoking: PRU Compiler: $<'
+	@echo '-	Invoking: PRU Compiler: $<'
 	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=PRU$(PRUN) -fe $@ $<
 
 clean:
