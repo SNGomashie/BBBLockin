@@ -57,11 +57,7 @@ all: stop git install start
 stop:
 	@echo "-		Stopping PRU $(PRUN)"
 	@echo "$(PRU_DIR)"
-<<<<<<< HEAD
-	@echo 'stop' > $(PRU_DIR)/state || echo Cannot stop $(PRUN)
-=======
-	@echo stop | sudo tee $(PRU_DIR)/state || echo Cannot stop $(PRUN)
->>>>>>> 83617a67e99dbca34c3e683f8aa17fd3cb1bb677
+	@sudo echo "stop" > $(PRU_DIR)/state || echo Cannot stop $(PRUN)
 
 git:
 	@echo 'Updating reposetory'
@@ -69,19 +65,12 @@ git:
 
 start:
 	@echo "-    Starting PRU $(PRUN)"
-	@echo 'start' > $(PRU_DIR)/state || echo Cannot stop $(PRUN)
+	@sudo echo 'start' > $(PRU_DIR)/state || echo Cannot stop $(PRUN)
 
 install:
 	@echo '-	copying firmware file $(GEN_DIR)/$(TARGET).out to /lib/firmware/am335x-pru$(PRUN)-fw'
 	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
-<<<<<<< HEAD
-=======
-install:
-	@echo '-	copying firmware file $(GEN_DIR)/$(TARGET).out to /lib/firmware/am335x-pru$(PRUN)-fw'
-	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
-
->>>>>>> 83617a67e99dbca34c3e683f8aa17fd3cb1bb677
 
 # Invokes the linker (-z flag) to make the .out file
 $(TARGET): $(OBJECTS)	$(LINKER_COMMAND_FILE)
