@@ -25,7 +25,7 @@ typedef struct{
 /* Prototype functions */
 void RPMSGinitialize(void);
 message RPMSGreceive(void);
-void RPMSGsend(message *output);
+void RPMSGsend(char *output);
 void RPMSGclear_int(void);
 
 #endif /* RPMSG_LIB_H */
