@@ -77,11 +77,8 @@ message RPMSGreceive(void){
     /* Wait until intterupt from ARM */
     while(!(__R31 & HOST_INT));
 
-    /* Receive message if available from ARM */
-    receive_status = pru_rpmsg_receive(&transport, &src, &dst, &input, &len);
-
     /* See if receive went corect */
-    while(receive_status != PRU_RPMSG_SUCCESS){
+    while(pru_rpmsg_receive(&transport, &src, &dst, &input, &len) != PRU_RPMSG_SUCCESS){
       //    Debugging
       *GPIO1_SET = USR1;
       *GPIO1_SET = USR2;
