@@ -67,25 +67,16 @@ start:
 
 install: $(TARGET)
 	@echo '-	copying firmware file $(GEN_DIR)/$(TARGET).out to /lib/firmware/am335x-pru$(PRUN)-fw'
-	@sudo cp $(GEN_DIR)/$(PROJ_NAME) /lib/firmware/am335x-pru$(PRUN)-fw
+	@sudo cp $(GEN_DIR)/$(TARGET).out /lib/firmware/am335x-pru$(PRUN)-fw
 
-	# Invokes the linker (-z flag) to make the .out file
-$(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
-	@echo ''
-	@echo 'Building target: $@'
-	@echo 'Invoking: PRU Linker'
-	$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
-	@echo 'Finished building target: $@'
-	@echo ''
-	@echo 'Output files can be found in the "$(GEN_DIR)" directory'
+$(TARGET): $(OBJECTS)
+	@echo 'LD	$^'
+	@lnkpru -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $@ $^ $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS) $^
 
-	# Invokes the compiler on all c files in the directory to create the object files
 $(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
-	@echo ''
-	@echo 'Building file: $<'
-	@echo 'Invoking: PRU Compiler'
-	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -fe $@ $
+	@echo 'CC	$<'
+	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=$(PRUN) -fe $@ $<
 
 clean:
 	@echo 'CLEAN	.    PRU $(PRUN)'
