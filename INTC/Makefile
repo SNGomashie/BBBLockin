@@ -83,7 +83,7 @@ $(GEN_DIR)/$(PROJ_NAME).out: $(GEN_DIR)/$(PROJ_NAME).obj
 $(GEN_DIR)/$(PROJ_NAME).obj: $(FILE_NAME).c
 	@mkdir -p $(GEN_DIR)
 	@echo '-	Invoking: PRU Compiler: $<'
-	@clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -D=PRUN=PRU$(PRUN) -fe $@ $<
+	@clpru $(INCLUDE) $(CFLAGS) -D=PRUN=PRU$(PRUN) -fe $@ $<
 
 clean:
 	@echo '-	Clean'
