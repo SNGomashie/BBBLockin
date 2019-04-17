@@ -71,7 +71,7 @@ message RPMSGreceive(void){
   uint8_t receive_status;
 
   /* See if initialization went correct */
-  while(status == 1){
+  if(state == 1){
 
     /* Wait until intterupt from ARM */
     while(!(__R31 & HOST_INT));
@@ -85,9 +85,8 @@ message RPMSGreceive(void){
       // *GPIO1_SET = USR1;
       // *GPIO1_SET = USR2;
     }
-    return input;
   }
-  return(0);
+  return input;
 }
 
 /* Send mesasge to ARM */
