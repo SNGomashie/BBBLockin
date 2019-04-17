@@ -49,6 +49,14 @@ SOURCES=$(wildcard *.c)
 #Using .object instead of .obj in order to not conflict with the CCS build process
 OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(SOURCES:.c=.object))
 
+# Lookup PRU by address
+ifeq ($(PRUN),0)
+PRU_ADDR=remoteproc1
+endif
+ifeq ($(PRUN),1)
+PRU_ADDR=remoteproc2
+endif
+
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/class/remoteproc/remoteproc$(PRU_ADDR))
 
@@ -57,7 +65,7 @@ all: stop git install start
 stop:
 	@echo "-		Stopping PRU $(PRUN)"
 	@echo "$(PRU_DIR)"
-	@echo stop | sudo tee $(PRU_DIR)/state || echo Cannot stop $(PRUN)
+	@echo 'stop' > $(PRU_DIR)/state || echo Cannot stop $(PRUN)
 
 git:
 	@echo 'Updating reposetory'
@@ -65,7 +73,7 @@ git:
 
 start:
 	@echo "-    Starting PRU $(PRUN)"
-	@echo start | sudo tee $(PRU_DIR)/state
+	@echo 'start' > $(PRU_DIR)/state || echo Cannot stop $(PRUN)
 
 install:
 	@echo '-	copying firmware file $(GEN_DIR)/$(TARGET).out to /lib/firmware/am335x-pru$(PRUN)-fw'
