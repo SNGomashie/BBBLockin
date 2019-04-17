@@ -6,6 +6,11 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <pru_intc.h>
+#include <pru_iep.h>
+#include <pru_ecap.h>
+#include <sys_mcspi.h>
+#include <pru_uart.h>
 #include "pru_peripheral.h"
 
 
