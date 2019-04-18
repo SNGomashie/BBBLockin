@@ -5,7 +5,7 @@
 #include "pru_rpmsg_lib.h"
 
 void main (void) {
-  message data;
+  char* data;
   uint8_t i = 0;
   __R30 = 0x00000000;
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
