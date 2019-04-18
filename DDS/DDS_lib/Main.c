@@ -23,6 +23,7 @@ void main(void){
   /* Initialize variables */
   uint32_t samp_period =0;
   uint32_t samp_freq =0;
+  uint16_t i;
   char* RPMsg_in;
   char RPMsg_out[] = "";
   struct DDS32 osc;
@@ -41,7 +42,7 @@ void main(void){
 
   DDSinitialize(&osc, samp_period);
   IEPinitialize(samp_period, 1, cmp);
-
+  IEPstart();
 
   /* Main loop */
   while(1){
@@ -55,7 +56,11 @@ void main(void){
         RPMSGtransmit(RPMsg_out);
         __R30 ^= 1 << PIN;
         DDSstep(&osc);
+        i++
     }
+  if(i >= 20){
+    break;
+  }
   }
   __halt();
 }
