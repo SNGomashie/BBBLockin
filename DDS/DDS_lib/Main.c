@@ -14,13 +14,10 @@
 #define HOST_INT (1 << 31)
 #define PIN 7
 
-#define SAMP_FREQ 10000
-
 /* data RAM definition for debugging */
 #define PRU0_MEM 0x00000000
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
-#define PRU1_MEM 0x00020000
-volatile uint32_t *pru1_mem =  (unsigned int *) PRU1_MEM;
+
 
 void main(void){
   /* Initialize variables */
@@ -29,36 +26,35 @@ void main(void){
   char RPMsg_out[] = "";
   struct DDS32 osc;
   __R30 = 0x00000000;
-
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   /*  Initialization  */
   RPMSGinitialize();
-  INTCinitialize(7, 1, 1);
-  eCAPinitialize();
-
-  RPMsg_in = RPMSGreceive();
-
-  samp_period = (1000000000 / RPMsg_in[0]) / 5;
-
-  DDSinitialize(&osc, samp_period);
-  IEPinitialize(samp_period, 1, cmp);
-
-
-  /* Main loop */
-  while(1){
-    /* Timer interrupt polling */
-    while(__R31 & HOST_INT){
-        INTCclear(7);
-        IEPclear_int();
-        DDSsetfreq(&osc);
-        /* Toggle pin (debugging)*/
-        sprintf(RPMsg_out, "%x\n", osc.value);
-        RPMSGtransmit(RPMsg_out);
-        __R30 ^= 1 << PIN;
-        DDSstep(&osc);
-    }
-  }
+  // INTCinitialize(7, 1, 1);
+  // eCAPinitialize();
+  //
+  // RPMsg_in = RPMSGreceive();
+  //
+  // samp_period = (1000000000 / RPMsg_in[0]) / 5;
+  //
+  // DDSinitialize(&osc, samp_period);
+  // IEPinitialize(samp_period, 1, cmp);
+  //
+  //
+  // /* Main loop */
+  // while(1){
+  //   /* Timer interrupt polling */
+  //   while(__R31 & HOST_INT){
+  //       INTCclear(7);
+  //       IEPclear_int();
+  //       DDSsetfreq(&osc);
+  //       /* Toggle pin (debugging)*/
+  //       sprintf(RPMsg_out, "%x\n", osc.value);
+  //       RPMSGtransmit(RPMsg_out);
+  //       __R30 ^= 1 << PIN;
+  //       DDSstep(&osc);
+  //   }
+  // }
   __halt();
 }
