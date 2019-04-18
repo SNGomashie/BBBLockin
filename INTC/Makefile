@@ -56,7 +56,7 @@ ifeq ($(PRUN),1)
 PRU_ADDR=remoteproc2
 endif
 
-STATE = 'sudo cat $(PRU_DIR)/state'
+STATE := $(shell sudo cat $(PRU_DIR)/state)
 
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR))
