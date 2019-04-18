@@ -271,17 +271,17 @@ void INTERNCOMinitialize(uint8_t sys_evt){
   INTERNCOM_status = 1;
 }
 
-void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint32_t remapping, uint16_t object){
+void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint16_t object){
   if(INTERNCOM_status == 1){
     __R31 |= (1 << 30);
-    __xout(device_id, base_register, remapping, object);
+    __xout(device_id, base_register, 0, object);
   }
 }
 
-void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint32_t remapping, uint16_t object){
+void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint16_t object){
   if(INTERNCOM_status == 1){
     while(!(__R31 & (1 << 30))){
-      __xin(device_id, base_register, remapping, object);
+      __xin(device_id, base_register, 0, object);
       INTCclear(20);
     }
   }
