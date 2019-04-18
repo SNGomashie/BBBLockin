@@ -37,7 +37,7 @@ void main(void){
   samp_period = (1000000000 / RPMsg_in[0]) / 5;
 
   eCAPintialize();
-  IEPinitialize(samp_period);
+  IEPinitialize(samp_period, cmp);
   DDSinitialize(&osc, samp_period);
 
 
@@ -50,8 +50,8 @@ void main(void){
         IEPclear_int();
         DDSsetfreq(&osc);
         /* Toggle pin (debugging)*/
-        sprintf(data, "%x\n", n->value);
-        RPMSGtransmit(data);
+        sprintf(RPMsg_out, "%x\n", osc->value);
+        RPMSGtransmit(RPMsg_out);
         __R30 ^= 1 << PIN;
         DDSstep(&osc);
     }
