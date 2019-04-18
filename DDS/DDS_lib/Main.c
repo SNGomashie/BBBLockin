@@ -63,7 +63,7 @@ void main(void){
         } else {
           RPMSGtransmit_block(data_block);
           data_block[0] = osc.value;
-          i = 1
+          i = 1;
         }
     }
   }
