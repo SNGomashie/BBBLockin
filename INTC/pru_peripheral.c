@@ -274,14 +274,14 @@ void INTERNCOMinitialize(uint8_t sys_evt){
 void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint32_t remapping, uint16_t object){
   if(INTERNCOM_status == 1){
     __R31 |= (1 << 30);
-    __xout(device_id, base_register, 0, remapping, object);
+    __xout(device_id, base_register, remapping, object);
   }
 }
 
 void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint32_t remapping, uint16_t object){
   if(INTERNCOM_status == 1){
     while(!(__R31 & (1 << 30))){
-      __xin(device_id, base_register, 0, remapping, object);
+      __xin(device_id, base_register, remapping, object);
       INTCclear(20);
     }
   }
