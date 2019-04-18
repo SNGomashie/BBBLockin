@@ -38,6 +38,9 @@ void main(void){
 
   samp_period = (1000000000 / RPMsg_in[0]) / 5;
 
+  pru0_mem[0] = samp_period;
+  pru0_mem[1] = RPMsg_in[0];
+
   DDSinitialize(&osc, samp_period);
   IEPinitialize(samp_period, 1, cmp);
 
