@@ -39,7 +39,7 @@ void IEPclear_int(void);
 /* enhanced Capture module */
 // volatile uint32_t *ecap_period = &CT_ECAP.CAP1;
 
-void eCAPintialize(void);
+void eCAPinitialize(void);
 void eCAPclear_int(void);
 
 /* Multi-channel Serial Peripheral Interface */

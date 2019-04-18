@@ -32,7 +32,7 @@ void main(void){
   /*  Initialization  */
   RPMSGinitialize();
   INTCinitialize(7, 1, 1);
-  eCAPintialize();
+  eCAPinitialize();
 
   RPMsg_in = RPMSGreceive();
 
