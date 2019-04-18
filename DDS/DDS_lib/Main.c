@@ -28,6 +28,10 @@ void main(void){
   char* RPMsg_in;
   char RPMsg_out[] = "";
   struct DDS32 osc;
+  __R30 = 0x00000000;
+
+  /*Allow OCP master port access by the PRU so the PRU can read external memories. */
+  CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
 
   /*  Initialization  */
   RPMSGinitialize();
