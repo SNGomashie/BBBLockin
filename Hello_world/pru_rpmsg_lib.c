@@ -85,7 +85,7 @@ message RPMSGreceive(void){
 }
 
 /* Send mesasge to ARM */
-void RPMSGsend(char* output){
+void RPMSGsend(message output){
   /* Status variable */
   uint8_t send_status;
 
