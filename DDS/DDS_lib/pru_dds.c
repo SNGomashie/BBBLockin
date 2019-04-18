@@ -1,4 +1,4 @@
-#ifdef __DDS_LIB_C_
+#ifndef __DDS_LIB_C_
 #define __DDS_LIB_C_
 
 #include "pru_dds.h"
