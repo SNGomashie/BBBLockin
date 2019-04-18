@@ -61,9 +61,9 @@ char* RPMSGreceive(void){
 
     /* See if receive went corect */
     while(pru_rpmsg_receive(&transport, &src, &dst, input, &len) != PRU_RPMSG_SUCCESS){
-      //    Debugging
-      // *GPIO1_SET = USR1;
-      // *GPIO1_SET = USR2;
+         // Debugging
+      *GPIO1_SET = USR1;
+      *GPIO1_SET = USR2;
     }
   }
   return input;
@@ -78,8 +78,8 @@ void RPMSGtransmit(char* output){
   /* See if transmission went correct */
   while(transmit_status != PRU_RPMSG_SUCCESS){
     //    Debugging
-    // *GPIO1_SET = USR1;
-    // *GPIO1_SET = USR3;
+    *GPIO1_SET = USR1;
+    *GPIO1_SET = USR3;
   }
 }
 
