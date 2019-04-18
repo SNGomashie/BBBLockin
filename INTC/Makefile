@@ -62,8 +62,11 @@ PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR))
 all: stop clean git install start
 
 stop:
-	@echo "-	Stopping PRU $(PRUN)"
-	@echo 'stop' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot stop $(PRUN)'
+	STATE = 'sudo cat $(PRU_DIR)/state'
+	ifeq ($(STATE), 'offline')
+		@echo "-	Stopping PRU $(PRUN)"
+		@echo 'stop' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot stop $(PRUN)'
+	endif
 
 git:
 	@echo '-	Updating repository'
