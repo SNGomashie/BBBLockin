@@ -20,10 +20,9 @@ void main (void) {
 
   data = RPMSGreceive();
 
-  // sscanf(data[0], "%X", pru0_mem[0]);
+  sscanf(data, "%d", &j);
 
-  pru0_mem[0] = (uint32_t)data[0];
-
+  pru0_mem[0] = j;
   pru0_mem[1] = (1000000000 / data[0]) / 5;
 
   for(i = 0; i < 10; i++){
