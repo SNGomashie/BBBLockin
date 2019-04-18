@@ -105,7 +105,7 @@ void RPMSGtransmit(char* output){
 
 void RPMSGtransmit_block(uint16_t output[248]){
   uint8_t transmit_status;
-  uint16_t *ptrBLK = ouput;
+  uint16_t *ptrBLK = output;
 
   transmit_status = pru_rpmsg_send(&transport, dst, src, ptrBLK, sizeof(output)/sizeof(uint16_t));
 
