@@ -53,7 +53,7 @@ void main(void){
         DDSsetfreq(&osc);
         if(sample < 248){
           data_block[sample] = osc.value;
-          i++;
+          sample++;
         } else {
           // RPMSGtransmit_block(data_block);
           data_block[0] = osc.value;
