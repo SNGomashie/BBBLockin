@@ -31,7 +31,7 @@ struct pru_rpmsg_transport transport;
 uint16_t src, dst, len;
 
 /* Received message. */
-message *input;
+message input;
 
 /* Status of rpmsg. */
 volatile uint8_t *status;
