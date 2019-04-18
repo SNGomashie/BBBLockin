@@ -1,6 +1,8 @@
 #ifndef __DDS_LIB_C_
 #define __DDS_LIB_C_
 
+#include <stdint.h>
+#include <stdio.h>
 #include "pru_dds.h"
 
 void DDSinitialize(struct DDS32 *n, uint32_t samp_period){
