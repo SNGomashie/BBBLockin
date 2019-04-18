@@ -48,8 +48,8 @@ void main(void){
   while(1){
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
-        IEPclear_int();
-        INTCclear(7);
+        // IEPclear_int();
+        // INTCclear(7);
         DDSsetfreq(&osc);
         if(i < 248){
           data_block[i] = osc.value;
