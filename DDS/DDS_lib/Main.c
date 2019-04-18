@@ -23,7 +23,7 @@ void main(void){
   /* Initialize variables */
   uint32_t samp_period =0;
   uint32_t samp_freq =0;
-  uint16_t i = 0;
+  uint16_t sample = 0;
   char* RPMsg_in;
   uint16_t data_block[248];
   struct DDS32 osc;
@@ -51,13 +51,13 @@ void main(void){
         IEPclear_int();
         INTCclear(7);
         DDSsetfreq(&osc);
-        if(i < 248){
-          data_block[i] = osc.value;
+        if(sample < 248){
+          data_block[sample] = osc.value;
           i++;
         } else {
           // RPMSGtransmit_block(data_block);
           data_block[0] = osc.value;
-          i = 1;
+          sample = 1;
         }
         /* Toggle pin (debugging)*/
         // sprintf(RPMsg_out, "%x\n", osc.value);
