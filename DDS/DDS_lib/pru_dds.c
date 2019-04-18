@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <pru_ecap.h>
 #include "pru_dds.h"
 
 void DDSinitialize(struct DDS32 *n, uint32_t samp_period){
@@ -24,8 +25,7 @@ void DDSsetfreq(struct DDS32 *n){
 }
 
 void DDSstep(struct DDS32 *n){
-  uint8_t index;
-  DDSinterpolate();
+  DDSinterpolate(n);
   n->accumulator += n->incrementor;
 }
 
