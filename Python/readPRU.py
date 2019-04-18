@@ -36,8 +36,8 @@ def main():
 # Start communication over rpmsg
     try:
         PRUdev = open(CHAR_DEV0, "rb+", 0)
-        print("Sending message to start communication")
-        PRUdev.write(b'\x64')
+        samp_rate = input("Set sample rate: ")
+        PRUdev.write(bytes(samp_rate, encoding="ascii"))
         print("Communication established")
         # PRUdev.close()
         # sys.exit()
