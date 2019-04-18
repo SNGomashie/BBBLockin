@@ -58,7 +58,8 @@ void main(void){
         DDSstep(&osc);
         i++;
     }
-  if(i >= 20){
+  if(!(i < 20){
+    __R30 = 0x00000000;
     break;
   }
   }
