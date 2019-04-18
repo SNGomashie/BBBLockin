@@ -41,12 +41,12 @@ uint8_t RPMSGinitialize(void){
   /* See if error occured */
   while((init_status != PRU_RPMSG_SUCCESS) || (channel_status != PRU_RPMSG_SUCCESS)){
     // Debugging
-    // if (init_status != PRU_RPMSG_SUCCESS) {
-    //   *GPIO1_SET = USR2;
-    // }
-    // if (channel_status != PRU_RPMSG_SUCCESS) {
-    //   *GPIO1_SET = USR3;
-    // }
+    if (init_status != PRU_RPMSG_SUCCESS) {
+      *GPIO1_SET = USR2;
+    }
+    if (channel_status != PRU_RPMSG_SUCCESS) {
+      *GPIO1_SET = USR3;
+    }
   }
   return state = 1;
 }
@@ -62,8 +62,8 @@ char* RPMSGreceive(void){
     /* See if receive went corect */
     while(pru_rpmsg_receive(&transport, &src, &dst, input, &len) != PRU_RPMSG_SUCCESS){
       //    Debugging
-      *GPIO1_SET = USR1;
-      *GPIO1_SET = USR2;
+      // *GPIO1_SET = USR1;
+      // *GPIO1_SET = USR2;
     }
   }
   return input;
@@ -80,8 +80,8 @@ void RPMSGsend(char* output){
   /* See if transmission went correct */
   while(send_status != PRU_RPMSG_SUCCESS){
     //    Debugging
-    *GPIO1_SET = USR1;
-    *GPIO1_SET = USR3;
+    // *GPIO1_SET = USR1;
+    // *GPIO1_SET = USR3;
   }
 }
 
