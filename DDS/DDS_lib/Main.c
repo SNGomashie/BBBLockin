@@ -36,10 +36,10 @@ void main(void){
   INTCinitialize(7, 1, 1);
   eCAPinitialize();
 
-  // RPMsg_in = RPMSGreceive();
-  // samp_freq = atoi(RPMsg_in);
-  // samp_period = (1000000000 / samp_freq) / 5;
-  //
+  RPMsg_in = RPMSGreceive();
+  samp_freq = atoi(RPMsg_in);
+  samp_period = (1000000000 / samp_freq) / 5;
+
   // DDSinitialize(&osc, samp_period);
   // IEPinitialize(samp_period, 1, cmp);
   // IEPstart();
