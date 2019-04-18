@@ -4,8 +4,8 @@
 /*          By: Sena Gomashie         */
 /**************************************/
 
-#ifndef RPMSG_LIB_H
-#define RPMSG_LIB_H
+#ifndef __RPMSG_LIB_H
+#define __RPMSG_LIB_H
 
 #include <pru_rpmsg.h>
 #include <pru_virtqueue.h>
@@ -45,7 +45,7 @@ uint8_t state;
 /* Prototype functions */
 uint8_t RPMSGinitialize(void);
 char* RPMSGreceive(void);
-void RPMSGsend(char* output);
+void RPMSGtransmit(char* output);
 void RPMSGclear_int(void);
 
 #endif /* RPMSG_LIB_H */

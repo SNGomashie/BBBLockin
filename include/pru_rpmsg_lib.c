@@ -21,21 +21,6 @@
 unsigned int volatile * const GPIO1_CLEAR = (unsigned int *) (GPIO1 + GPIO_CLEARDATAOUT);
 unsigned int volatile * const GPIO1_SET   = (unsigned int *) (GPIO1 + GPIO_SETDATAOUT);
 
-
-/* pru_rpmsg_transport is a strcture containing */
-/*      vring information for transportation    */
-/*    See 'pru_rpmsg.h' & 'pru_virtio_ring.h'   */
-struct pru_rpmsg_transport transport;
-
-/* Transportatoin parameters. */
-uint16_t src, dst, len;
-
-/* Received message. */
-message input;
-
-/* Status of rpmsg. */
-volatile uint8_t *status;
-uint8_t state;
 /* Initialization for rpmsg. */
 uint8_t RPMSGinitialize(void){
   /* Status variables. */
@@ -56,21 +41,18 @@ uint8_t RPMSGinitialize(void){
   /* See if error occured */
   while((init_status != PRU_RPMSG_SUCCESS) || (channel_status != PRU_RPMSG_SUCCESS)){
     // Debugging
-    // if (init_status != PRU_RPMSG_SUCCESS) {
-    //   *GPIO1_SET = USR2;
-    // }
-    // if (channel_status != PRU_RPMSG_SUCCESS) {
-    //   *GPIO1_SET = USR3;
-    // }
+    if (init_status != PRU_RPMSG_SUCCESS) {
+      *GPIO1_SET = USR2;
+    }
+    if (channel_status != PRU_RPMSG_SUCCESS) {
+      *GPIO1_SET = USR3;
+    }
   }
   return state = 1;
 }
 
 /* Receive a message from the ARM and return it */
-message RPMSGreceive(void){
-  /* Status variables */
-  uint8_t receive_status;
-
+char* RPMSGreceive(void){
   /* See if initialization went correct */
   if(state == 1){
 
@@ -78,28 +60,22 @@ message RPMSGreceive(void){
     while(!(__R31 & HOST_INT));
 
     /* See if receive went corect */
-    while(pru_rpmsg_receive(&transport, &src, &dst, &input, &len) != PRU_RPMSG_SUCCESS){
+    while(pru_rpmsg_receive(&transport, &src, &dst, input, &len) != PRU_RPMSG_SUCCESS){
       //    Debugging
-      *GPIO1_SET = USR1;
-      *GPIO1_SET = USR2;
+      // *GPIO1_SET = USR1;
+      // *GPIO1_SET = USR2;
     }
   }
   return input;
 }
 
 /* Send mesasge to ARM */
-void RPMSGsend(char* output){
-  /* Status variable */
-  uint8_t send_status;
-
-  /* Send message to ARM using the virtqeues in pru_rpmsg_transport structure */
-  send_status = pru_rpmsg_send(&transport, dst, src, &output, (sizeof(output) / sizeof(unsigned char)));
-
+void RPMSGtransmit(char* output){
   /* See if transmission went correct */
-  while(send_status != PRU_RPMSG_SUCCESS){
+  while(pru_rpmsg_send(&transport, dst, src, output, (strlen(output))) != PRU_RPMSG_SUCCESS){
     //    Debugging
-    *GPIO1_SET = USR1;
-    *GPIO1_SET = USR3;
+    // *GPIO1_SET = USR1;
+    // *GPIO1_SET = USR3;
   }
 }
 

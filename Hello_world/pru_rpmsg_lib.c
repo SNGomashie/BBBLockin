@@ -70,7 +70,7 @@ char* RPMSGreceive(void){
 }
 
 /* Send mesasge to ARM */
-void RPMSGsend(char* output){
+void RPMSGtransmit(char* output){
   /* See if transmission went correct */
   while(pru_rpmsg_send(&transport, dst, src, output, (strlen(output))) != PRU_RPMSG_SUCCESS){
     //    Debugging

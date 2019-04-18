@@ -4,8 +4,8 @@
 /*          By: Sena Gomashie         */
 /**************************************/
 
-#ifndef RPMSG_LIB_H
-#define RPMSG_LIB_H
+#ifndef __RPMSG_LIB_H
+#define __RPMSG_LIB_H
 
 #include <pru_rpmsg.h>
 #include <pru_virtqueue.h>
@@ -27,10 +27,25 @@ typedef struct{
   unsigned char x[RPMSG_BUF_SIZE - RPMSG_HEADER_SIZE];
 } message;
 
+/* pru_rpmsg_transport is a strcture containing */
+/*      vring information for transportation    */
+/*    See 'pru_rpmsg.h' & 'pru_virtio_ring.h'   */
+struct pru_rpmsg_transport transport;
+
+/* Transportation parameters. */
+uint16_t src, dst, len;
+
+/* Received message. */
+char* input;
+
+/* Status of rpmsg. */
+volatile uint8_t *status;
+uint8_t state;
+
 /* Prototype functions */
 uint8_t RPMSGinitialize(void);
-message RPMSGreceive(void);
-void RPMSGsend(unsigned char *output);
+char* RPMSGreceive(void);
+void RPMSGtransmit(char* output);
 void RPMSGclear_int(void);
 
 #endif /* RPMSG_LIB_H */
