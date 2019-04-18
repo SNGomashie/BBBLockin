@@ -25,7 +25,6 @@ void main(void){
   uint32_t samp_freq =0;
   uint16_t i = 0;
   char* RPMsg_in;
-  char RPMsg_out[] = "";
   uint16_t data_block[248];
   struct DDS32 osc;
   __R30 = 0x00000000;
@@ -63,7 +62,7 @@ void main(void){
           i++;
         } else {
           RPMSGtransmit_block(data_block);
-          data_block[0] = osc.value
+          data_block[0] = osc.value;
           i = 1
         }
     }
