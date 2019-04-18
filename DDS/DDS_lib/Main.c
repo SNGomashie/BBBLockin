@@ -40,12 +40,12 @@ void main(void){
   samp_freq = atoi(RPMsg_in);
   samp_period = (1000000000 / samp_freq) / 5;
 
-  // DDSinitialize(&osc, samp_period);
-  // IEPinitialize(samp_period, 1, cmp);
-  // IEPstart();
-  //
-  // /* Main loop */
-  // while(1){
+  DDSinitialize(&osc, samp_period);
+  IEPinitialize(samp_period, 1, cmp);
+  IEPstart();
+
+  /* Main loop */
+  while(1){
   //   /* Timer interrupt polling */
   //   while(__R31 & HOST_INT){
   //       IEPclear_int();
@@ -66,6 +66,6 @@ void main(void){
   //       DDSstep(&osc);
   //
   //   }
-  // }
+  }
   __halt();
 }
