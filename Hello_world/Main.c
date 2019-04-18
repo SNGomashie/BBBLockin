@@ -20,7 +20,7 @@ void main (void) {
 
   data = RPMSGreceive();
 
-  sscanf(data[0], "%X ", pru0_mem[0]);
+  sscanf(*data[0], "%X", pru0_mem[0]);
 
   // pru0_mem[0] = (uint32_t)data[0];
 
