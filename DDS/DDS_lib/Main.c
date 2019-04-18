@@ -22,6 +22,7 @@ volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 void main(void){
   /* Initialize variables */
   uint32_t samp_period =0;
+  uint32_t samp_freq =0;
   char* RPMsg_in;
   char RPMsg_out[] = "";
   struct DDS32 osc;
@@ -35,11 +36,8 @@ void main(void){
   eCAPinitialize();
 
   RPMsg_in = RPMSGreceive();
-
-  samp_period = (1000000000 / RPMsg_in[0]) / 5;
-
-  pru0_mem[0] = samp_period;
-  pru0_mem[1] = RPMsg_in[0];
+  samp_freq = atoi(RPMsg_in);
+  samp_period = (1000000000 / samp_freq) / 5;
 
   DDSinitialize(&osc, samp_period);
   IEPinitialize(samp_period, 1, cmp);
