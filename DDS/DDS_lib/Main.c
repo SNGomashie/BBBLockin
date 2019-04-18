@@ -51,7 +51,7 @@ void main(void){
         IEPclear_int();
         DDSsetfreq(&osc);
         /* Toggle pin (debugging)*/
-        sprintf(*RPMsg_out, "%x\n", osc->value);
+        sprintf(RPMsg_out, "%x\n", osc.value);
         RPMSGtransmit(RPMsg_out);
         __R30 ^= 1 << PIN;
         DDSstep(&osc);
