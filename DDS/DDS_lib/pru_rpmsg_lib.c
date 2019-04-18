@@ -104,16 +104,20 @@ void RPMSGtransmit(char* output){
 }
 
 void RPMSGtransmit_block(uint16_t output[248]){
-  uint8_t transmit_status;
+  uint8_t blk_transmit_status;
   uint16_t *ptrBLK = output;
 
-  transmit_status = pru_rpmsg_send(&transport, dst, src, ptrBLK, sizeof(output)/sizeof(uint16_t));
+  blk_transmit_status = pru_rpmsg_send(&transport, dst, src, ptrBLK, sizeof(output)/sizeof(uint16_t));
 
   /* See if transmission went correct */
   while(transmit_status != PRU_RPMSG_SUCCESS){
     //    Debugging
     *GPIO1_SET = USR1;
     *GPIO1_SET = USR3;
+  }
+
+  void RPMSGclear_int(uint16_t sys_evt){
+
   }
 }
 
