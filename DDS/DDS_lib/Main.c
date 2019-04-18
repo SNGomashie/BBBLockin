@@ -23,7 +23,7 @@ void main(void){
   /* Initialize variables */
   uint32_t samp_period =0;
   uint32_t samp_freq =0;
-  uint16_t i;
+  uint16_t i = 0;
   char* RPMsg_in;
   char RPMsg_out[] = "";
   struct DDS32 osc;
