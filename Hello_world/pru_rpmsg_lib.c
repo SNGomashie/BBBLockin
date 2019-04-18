@@ -71,14 +71,8 @@ char* RPMSGreceive(void){
 
 /* Send mesasge to ARM */
 void RPMSGsend(char* output){
-  /* Status variable */
-  uint8_t send_status;
-
-  /* Send message to ARM using the virtqeues in pru_rpmsg_transport structure */
-  send_status = pru_rpmsg_send(&transport, dst, src, output, (sizeof(output) / sizeof(unsigned char)));
-
   /* See if transmission went correct */
-  while(send_status != PRU_RPMSG_SUCCESS){
+  while(pru_rpmsg_send(&transport, dst, src, output, (strlen(output))) != PRU_RPMSG_SUCCESS){
     //    Debugging
     // *GPIO1_SET = USR1;
     // *GPIO1_SET = USR3;

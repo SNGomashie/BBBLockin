@@ -13,7 +13,7 @@ void main (void) {
 
   RPMSGinitialize();
 
-  data = RPMSGreceive();
+  RPMSGreceive();
 
   for(i = 0; i < 10; i++){
   /* Send chars to the ARM, buf = payload, 11 is length of payload. */

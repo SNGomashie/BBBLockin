@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
-#define MASK (1 << 31)
 
 void main(void){
 
-char* c= "hallo world";
+char* c= "hello world";
 
 
-printf("%X\n", sizeof(c));
+printf("%d\n", strlen(c));
 }
