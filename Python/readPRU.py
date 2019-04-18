@@ -31,11 +31,13 @@ def main():
             PRUstate.close()
             sys.exit()
 
-
 # Start communication over rpmsg
+
+    while not os.path.exists(CHAR_DEV0):
+        pass
+
     try:
-        while not os.path.exists(CHAR_DEV0):
-            pass
+
         PRUdev = open(CHAR_DEV0, "rb+", 0)
         samp_rate = input("Set sample rate: ")
         print(":".join("{:02x}".format(ord(c)) for c in samp_rate))
