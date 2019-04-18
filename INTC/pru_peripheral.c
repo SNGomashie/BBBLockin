@@ -274,16 +274,15 @@ void INTERNCOMinitialize(uint8_t sys_evt){
 void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint16_t object){
   if(INTERNCOM_status == 1){
     __R31 |= (1 << 30);
-    __xout(device_id, base_register, 0, object);
+    __xout((int)device_id, base_register, 0, object);
   }
 }
 
 void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint16_t object){
   if(INTERNCOM_status == 1){
-    while(!(__R31 & (1 << 30))){
-      __xin(device_id, base_register, 0, object);
+    while(!(__R31 & (1 << 30)));
+      __xin((int)device_id, base_register, 0, object);
       INTCclear(20);
-    }
   }
 }
 
