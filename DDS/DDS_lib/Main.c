@@ -36,36 +36,36 @@ void main(void){
   INTCinitialize(7, 1, 1);
   eCAPinitialize();
 
-  RPMsg_in = RPMSGreceive();
-  samp_freq = atoi(RPMsg_in);
-  samp_period = (1000000000 / samp_freq) / 5;
-
-  DDSinitialize(&osc, samp_period);
-  IEPinitialize(samp_period, 1, cmp);
-  IEPstart();
-
-  /* Main loop */
-  while(1){
-    /* Timer interrupt polling */
-    while(__R31 & HOST_INT){
-        IEPclear_int();
-        INTCclear(7);
-        DDSsetfreq(&osc);
-
-        /* Toggle pin (debugging)*/
-        // sprintf(RPMsg_out, "%x\n", osc.value);
-        // RPMSGtransmit(RPMsg_out);
-        __R30 ^= 1 << PIN;
-        DDSstep(&osc);
-        if(i < 248){
-          data_block[i] = osc.value;
-          i++;
-        } else {
-          RPMSGtransmit_block(data_block);
-          data_block[0] = osc.value;
-          i = 1;
-        }
-    }
-  }
+  // RPMsg_in = RPMSGreceive();
+  // samp_freq = atoi(RPMsg_in);
+  // samp_period = (1000000000 / samp_freq) / 5;
+  //
+  // DDSinitialize(&osc, samp_period);
+  // IEPinitialize(samp_period, 1, cmp);
+  // IEPstart();
+  //
+  // /* Main loop */
+  // while(1){
+  //   /* Timer interrupt polling */
+  //   while(__R31 & HOST_INT){
+  //       IEPclear_int();
+  //       INTCclear(7);
+  //       DDSsetfreq(&osc);
+  //       if(i < 248){
+  //         data_block[i] = osc.value;
+  //         i++;
+  //       } else {
+  //         RPMSGtransmit_block(data_block);
+  //         data_block[0] = osc.value;
+  //         i = 1;
+  //       }
+  //       /* Toggle pin (debugging)*/
+  //       // sprintf(RPMsg_out, "%x\n", osc.value);
+  //       // RPMSGtransmit(RPMsg_out);
+  //       __R30 ^= 1 << PIN;
+  //       DDSstep(&osc);
+  //
+  //   }
+  // }
   __halt();
 }
