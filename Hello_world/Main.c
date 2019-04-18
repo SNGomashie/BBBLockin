@@ -13,11 +13,11 @@ void main (void) {
 
   RPMSGinitialize();
 
-  RPMSGreceive();
+  data = RPMSGreceive();
 
   for(i = 0; i < 10; i++){
   /* Send chars to the ARM, buf = payload, 11 is length of payload. */
-    RPMSGsend("hallo world");
+    RPMSGsend(data);
     __delay_cycles(20000);    // Wait 1/2 second
   }
 }
