@@ -16,7 +16,7 @@ struct DDS32{
 
 void DDSinitialize(struct DDS32 *n, uint32_t samp_period);
 void DDSsetfreq(struct DDS32 *n);
-void DDSstep(struct DDS32 *n)
+void DDSstep(struct DDS32 *n);
 void DDSinterpolate(struct DDS32 *n);
 
 #endif

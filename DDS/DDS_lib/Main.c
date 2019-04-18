@@ -24,22 +24,21 @@ volatile uint32_t *pru1_mem =  (unsigned int *) PRU1_MEM;
 
 void main(void){
   /* Initialize variables */
-  char* data;
-  uint32_t samp_period;
-  uint16_t samp_freq;
+  uint32_t samp_period =0;
+  char* RPMsg_in, RPMsg_out;
   struct DDS32 osc;
 
   /*  Initialization  */
   RPMSGinitialize();
   INTCinitialize(7, 1, 1);
 
-  samp_freq = RPMSGreceive()
+  RPMsg_in = RPMSGreceive();
 
-  samp_period = (1000000000 / SAMP_FREQ) / 5;
+  samp_period = (1000000000 / RPMsg_in[0]) / 5;
 
   eCAPintialize();
   IEPinitialize(samp_period);
-  DDSinitialize(osc, samp_period);
+  DDSinitialize(&osc, samp_period);
 
 
 
@@ -49,12 +48,12 @@ void main(void){
     while(__R31 & HOST_INT){
         INTCclear(7);
         IEPclear_int();
-        DDSsetfreq(osc);
+        DDSsetfreq(&osc);
         /* Toggle pin (debugging)*/
         sprintf(data, "%x\n", n->value);
         RPMSGtransmit(data);
         __R30 ^= 1 << PIN;
-        DDSstep(osc);
+        DDSstep(&osc);
     }
   }
   __halt();
