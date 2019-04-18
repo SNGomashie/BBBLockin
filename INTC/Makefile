@@ -56,13 +56,14 @@ ifeq ($(PRUN),1)
 PRU_ADDR=remoteproc2
 endif
 
+STATE = 'sudo cat $(PRU_DIR)/state'
+
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR))
 
 all: stop clean git install start
 
 stop:
-	STATE = 'sudo cat $(PRU_DIR)/state'
 	ifeq ($(STATE), 'offline')
 		@echo "-	Stopping PRU $(PRUN)"
 		@echo 'stop' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot stop $(PRUN)'
