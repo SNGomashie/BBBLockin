@@ -17,7 +17,7 @@ void main (void) {
 
   for(i = 0; i < 10; i++){
   /* Send chars to the ARM, buf = payload, 11 is length of payload. */
-    RPMSGsend(data);
+    RPMSGsend("hallo world");
     __delay_cycles(20000);    // Wait 1/2 second
   }
 }
