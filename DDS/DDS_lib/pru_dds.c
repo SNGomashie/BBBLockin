@@ -68,3 +68,5 @@ void DDSinterpolate(struct DDS32 *n){
   }
   n->value = (out1 + temp_out);
 }
+
+#endif
