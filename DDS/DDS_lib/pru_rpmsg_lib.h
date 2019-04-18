@@ -26,6 +26,7 @@
 uint8_t RPMSGinitialize(void);
 char* RPMSGreceive(void);
 void RPMSGtransmit(char* output);
+void RPMSGtransmit_block(uint16_t output[248]);
 void RPMSGclear_int(void);
 
 #endif /* RPMSG_LIB_H */

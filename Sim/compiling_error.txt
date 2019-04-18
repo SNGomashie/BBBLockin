@@ -1,0 +1,4 @@
+C:\Users\senag\Documents\github\Sim\test.c: In function 'main':
+C:\Users\senag\Documents\github\Sim\test.c:21:11: error: invalid operands to binary % (have 'float' and 'float')
+ c = a * e % a;
+     ~~~~~ ^

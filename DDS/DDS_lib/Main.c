@@ -26,6 +26,7 @@ void main(void){
   uint16_t i = 0;
   char* RPMsg_in;
   char RPMsg_out[] = "";
+  uint16_t data_block[248];
   struct DDS32 osc;
   __R30 = 0x00000000;
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
@@ -51,11 +52,20 @@ void main(void){
         IEPclear_int();
         INTCclear(7);
         DDSsetfreq(&osc);
+
         /* Toggle pin (debugging)*/
-        sprintf(RPMsg_out, "%x\n", osc.value);
-        RPMSGtransmit(RPMsg_out);
+        // sprintf(RPMsg_out, "%x\n", osc.value);
+        // RPMSGtransmit(RPMsg_out);
         __R30 ^= 1 << PIN;
         DDSstep(&osc);
+        if(i < 248){
+          data_block[i] = osc.value;
+          i++;
+        } else {
+          RPMSGtransmit_block(data_block);
+          data_block[0] = osc.value
+          i = 1
+        }
     }
   }
   __halt();
