@@ -11,7 +11,7 @@ volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 void main (void) {
   char* data;
   uint8_t i = 0;
-  int j = 0;
+  uint32_t j = 0;
   __R30 = 0x00000000;
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
@@ -21,8 +21,8 @@ void main (void) {
   data = RPMSGreceive();
 
 
-  pru0_mem[0] = atoi(data);
-  // pru0_mem[1] = (1000000000 / data[0]) / 5;
+  j = atoi(data);
+  pru0_mem[0] = (1000000000 / j) / 5;
 
   for(i = 0; i < 10; i++){
   /* Send chars to the ARM, buf = payload, 11 is length of payload. */
