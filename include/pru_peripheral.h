@@ -60,9 +60,9 @@ uint8_t INTERNCOM_status;
 
 void INTERNCOMinitialize(uint8_t sys_evt);
 
-void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint32_t remapping, uint16_t object);
+void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint16_t object);
 
-void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint32_t remapping, uint16_t object);
+void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint16_t object);
 
 void INTERNCOMpoke(void);
 

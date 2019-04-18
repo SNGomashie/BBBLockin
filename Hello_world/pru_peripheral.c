@@ -263,4 +263,40 @@ char UARTreceive(void){
   return CT_UART.RBR_bit.DATA;
 }
 
+/***********************************/
+/* Internal PRU-ICSS communication */
+/***********************************/
+void INTERNCOMinitialize(uint8_t sys_evt){
+  INTCinitialize(sys_evt, 0, 0);
+  INTERNCOM_status = 1;
+}
+
+void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint16_t object){
+  if(INTERNCOM_status == 1){
+    __R31 |= (1 << 30);
+    __xout(14, 0, 0, object);
+  }
+}
+
+void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint16_t object){
+  if(INTERNCOM_status == 1){
+    while(!(__R31 & (1 << 30)));
+      __xin(14, 0, 0, object);
+      INTCclear(20);
+  }
+}
+
+void INTERNCOMpoke(void){
+  if(INTERNCOM_status == 1){
+    __R31 |= (1 << 30);
+  }
+}
+
+void INTERNCOMlisten(void){
+  if(INTERNCOM_status == 1){
+    while(!(__R31 & (1 << 30)));
+  }
+}
+
+
 #endif

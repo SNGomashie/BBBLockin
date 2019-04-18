@@ -55,4 +55,16 @@ void UARTinitialize(uint32_t baud_rate);
 void UARTsend(volatile char* Message);
 char UARTreceive(void);
 
+/* Internal PRU-ICSS communication */
+uint8_t INTERNCOM_status;
+
+void INTERNCOMinitialize(uint8_t sys_evt);
+
+void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint16_t object);
+
+void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint16_t object);
+
+void INTERNCOMpoke(void);
+
+void INTERNCOMlisten(void);
 #endif /* __PERIPHERAL_LIB_H_ */
