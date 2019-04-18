@@ -31,30 +31,30 @@ void main(void){
 
   /*  Initialization  */
   RPMSGinitialize();
-  // INTCinitialize(7, 1, 1);
+  INTCinitialize(7, 1, 1);
   eCAPinitialize();
-  //
-  // RPMsg_in = RPMSGreceive();
-  //
-  // samp_period = (1000000000 / RPMsg_in[0]) / 5;
-  //
-  // DDSinitialize(&osc, samp_period);
-  // IEPinitialize(samp_period, 1, cmp);
-  //
-  //
-  // /* Main loop */
-  // while(1){
-  //   /* Timer interrupt polling */
-  //   while(__R31 & HOST_INT){
-  //       INTCclear(7);
-  //       IEPclear_int();
-  //       DDSsetfreq(&osc);
-  //       /* Toggle pin (debugging)*/
-  //       sprintf(RPMsg_out, "%x\n", osc.value);
-  //       RPMSGtransmit(RPMsg_out);
-  //       __R30 ^= 1 << PIN;
-  //       DDSstep(&osc);
-  //   }
-  // }
+
+  RPMsg_in = RPMSGreceive();
+
+  samp_period = (1000000000 / RPMsg_in[0]) / 5;
+
+  DDSinitialize(&osc, samp_period);
+  IEPinitialize(samp_period, 1, cmp);
+
+
+  /* Main loop */
+  while(1){
+    /* Timer interrupt polling */
+    while(__R31 & HOST_INT){
+        INTCclear(7);
+        IEPclear_int();
+        DDSsetfreq(&osc);
+        /* Toggle pin (debugging)*/
+        sprintf(RPMsg_out, "%x\n", osc.value);
+        RPMSGtransmit(RPMsg_out);
+        __R30 ^= 1 << PIN;
+        DDSstep(&osc);
+    }
+  }
   __halt();
 }
