@@ -21,8 +21,8 @@ void main (void) {
   data = RPMSGreceive();
 
 
-  pru0_mem[0] = data[0];
-  pru0_mem[1] = (1000000000 / data[0]) / 5;
+  // pru0_mem[0] = data[0];
+  // pru0_mem[1] = (1000000000 / data[0]) / 5;
 
   for(i = 0; i < 10; i++){
   /* Send chars to the ARM, buf = payload, 11 is length of payload. */
