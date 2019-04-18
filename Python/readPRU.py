@@ -19,7 +19,6 @@ def main():
     state = PRUstate.read(7)
     if 'running' in state:
         print("PRU0 is running")
-        PRUstate.close()
 
     elif 'offline' in state:
         print("PRU0 is offline, starting now")
