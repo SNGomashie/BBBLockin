@@ -22,26 +22,6 @@
 
 #define RPMSG_HEADER_SIZE			16
 
-/* Create array type for messaging */
-typedef struct{
-  unsigned char x[RPMSG_BUF_SIZE - RPMSG_HEADER_SIZE];
-} message;
-
-/* pru_rpmsg_transport is a strcture containing */
-/*      vring information for transportation    */
-/*    See 'pru_rpmsg.h' & 'pru_virtio_ring.h'   */
-struct pru_rpmsg_transport transport;
-
-/* Transportation parameters. */
-uint16_t src, dst, len;
-
-/* Received message. */
-char* input;
-
-/* Status of rpmsg. */
-volatile uint8_t *status;
-uint8_t state;
-
 /* Prototype functions */
 uint8_t RPMSGinitialize(void);
 char* RPMSGreceive(void);

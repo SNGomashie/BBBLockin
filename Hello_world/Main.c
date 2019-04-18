@@ -19,10 +19,6 @@ void main (void) {
 
   data = RPMSGreceive();
 
-  sscanf(data, "%d", &j);
-
-  pru0_mem[0] = j;
-
   for(i = 0; i < 10; i++){
   /* Send chars to the ARM, buf = payload, 11 is length of payload. */
     RPMSGtransmit(data);
