@@ -55,7 +55,7 @@ uint8_t RPMSGinitialize(void){
   channel_status = pru_rpmsg_channel(RPMSG_NS_CREATE, &transport, CHAN_NAME, CHAN_DESC, CHAN_PORT);
 
   /* See if error occured */
-  while((init_status != PRU_RPMSG_SUCCESS) || (channel_status != PRU_RPMSG_SUCCESS)){
+  while((init_status != PRU_RPMSG_SUCCESS) && (channel_status != PRU_RPMSG_SUCCESS)){
     // Debugging
     if (init_status != PRU_RPMSG_SUCCESS) {
       *GPIO1_SET = USR2;
