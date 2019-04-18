@@ -37,7 +37,7 @@ def main():
     try:
         PRUdev = open(CHAR_DEV0, "rb+", 0)
         samp_rate = input("Set sample rate: ")
-        PRUdev.write(bytes(samp_rate, encoding="utf-8"))
+        PRUdev.write(samp_rate)
         print("Communication established")
         # PRUdev.close()
         # sys.exit()
