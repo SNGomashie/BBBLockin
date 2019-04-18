@@ -30,7 +30,7 @@ typedef struct{
 /* Prototype functions */
 uint8_t RPMSGinitialize(void);
 message RPMSGreceive(void);
-void RPMSGsend(unsigned char *output);
+void RPMSGsend(char *output);
 void RPMSGclear_int(void);
 
 #endif /* RPMSG_LIB_H */

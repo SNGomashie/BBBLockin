@@ -31,7 +31,7 @@ struct pru_rpmsg_transport transport;
 uint16_t src, dst, len;
 
 /* Received message. */
-message input;
+message *input;
 
 /* Status of rpmsg. */
 volatile uint8_t *status;
@@ -68,9 +68,6 @@ uint8_t RPMSGinitialize(void){
 
 /* Receive a message from the ARM and return it */
 message RPMSGreceive(void){
-  /* Status variables */
-  uint8_t receive_status;
-
   /* See if initialization went correct */
   if(state == 1){
 
