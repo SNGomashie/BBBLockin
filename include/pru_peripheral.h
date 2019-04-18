@@ -13,6 +13,7 @@
 #include <sys_mcspi.h>
 #include <pru_uart.h>
 
+
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
@@ -54,4 +55,14 @@ void UARTinitialize(uint32_t baud_rate);
 void UARTsend(volatile char* Message);
 char UARTreceive(void);
 
+/* Internal PRU-ICSS communication */
+void INTERNCOMinitialize(uint8_t sys_evt);
+
+void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint32_t remapping, void& object);
+
+void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint32_t remapping, void& object);
+
+void INTERNCOMpoke(void);
+
+void INTERNCOMlisten(void);
 #endif /* __PERIPHERAL_LIB_H_ */

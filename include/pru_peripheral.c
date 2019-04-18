@@ -4,6 +4,9 @@
 /*          By: Sena Gomashie         */
 /**************************************/
 
+#ifndef __PERIPHERAL_LIB_C_
+#define __PERIPHERAL_LIB_C_
+
 #include <stdint.h>
 #include <stdio.h>
 #include "pru_peripheral.h"
@@ -126,6 +129,14 @@ void IEPstart(void){
 void IEPstop(void){
   /* Disable counter */
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
+}
+
+void IEPclear_int(void){
+  /* Clear Compare status */
+  CT_IEP.TMR_CMP_STS = (1 << 0);
+
+  /* delay for 5 cycles, clearing takes time */
+  __delay_cycles(5);
 }
 
 /****************************/
@@ -251,3 +262,44 @@ char UARTreceive(void){
 
   return CT_UART.RBR_bit.DATA;
 }
+
+/***********************************/
+/* Internal PRU-ICSS communication */
+/***********************************/
+uint8_t INTERNCOM_status;
+
+void INTERNCOMinitialize(uint8_t sys_evt){
+  INTCinitialize(sys_evt, 0, 0);
+  INTERNCOM_status = 1;
+}
+
+void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint32_t remapping, void& object){
+  if(INTERNCOM_status == 1){
+    __R31 |= (1 << 30);
+    __xout(device_id, base_register, 0, remapping, object);
+  }
+}
+
+void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint32_t remapping, void& object){
+  if(INTERNCOM_status == 1){
+    while(!(__R31 & (1 << 30))){
+      __xin(device_id, base_register, 0, remapping, object);
+      INTCclear(20);
+    }
+  }
+}
+
+void INTERNCOMpoke(void){
+  if(INTERNCOM_status == 1){
+    __R31 |= (1 << 30);
+  }
+}
+
+void INTERNCOMlisten(void){
+  if(INTERNCOM_status == 1){
+    while(!(__R31 & (1 << 30)));
+  }
+}
+
+
+#endif
