@@ -32,15 +32,14 @@ void main(void){
   /*  Initialization  */
   RPMSGinitialize();
   INTCinitialize(7, 1, 1);
+  eCAPintialize();
 
   RPMsg_in = RPMSGreceive();
 
   samp_period = (1000000000 / RPMsg_in[0]) / 5;
 
-  eCAPintialize();
-  IEPinitialize(samp_period, 1, cmp);
   DDSinitialize(&osc, samp_period);
-
+  IEPinitialize(samp_period, 1, cmp);
 
 
   /* Main loop */
