@@ -77,7 +77,7 @@ void INTCinitialize(uint8_t sys_evt, uint8_t chan, uint8_t host_int){
     CT_INTC.HMR2 |= (host_int << ((chan * 8) - 64));
   }
 
-  CT_INTC.SICR |= sys_evt;
+  CT_INTC.SICR = sys_evt;
   CT_INTC.EISR |= sys_evt;
   CT_INTC.HIEISR |= host_int;
 
@@ -86,7 +86,7 @@ void INTCinitialize(uint8_t sys_evt, uint8_t chan, uint8_t host_int){
 }
 
 void INTCclear(uint8_t sys_evt){
-  CT_INTC.SICR |= sys_evt;
+  CT_INTC.SICR = sys_evt;
   __delay_cycles(5);
 }
 
