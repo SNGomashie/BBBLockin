@@ -21,6 +21,22 @@
 unsigned int volatile * const GPIO1_CLEAR = (unsigned int *) (GPIO1 + GPIO_CLEARDATAOUT);
 unsigned int volatile * const GPIO1_SET   = (unsigned int *) (GPIO1 + GPIO_SETDATAOUT);
 
+/* pru_rpmsg_transport is a strcture containing */
+/*      vring information for transportation    */
+/*    See 'pru_rpmsg.h' & 'pru_virtio_ring.h'   */
+struct pru_rpmsg_transport transport;
+
+/* Transportation parameters. */
+uint16_t src, dst, len;
+
+/* Received message. */
+char* input;
+
+/* Status of rpmsg. */
+volatile uint8_t *status;
+uint8_t state;
+
+
 /* Initialization for rpmsg. */
 uint8_t RPMSGinitialize(void){
   /* Status variables. */
