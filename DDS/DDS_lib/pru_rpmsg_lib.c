@@ -39,6 +39,10 @@ uint8_t state;
 
 /* Initialization for rpmsg. */
 uint8_t RPMSGinitialize(void){
+  *GPIO1_CLEAR = USR1;
+  *GPIO1_CLEAR = USR2;
+  *GPIO1_CLEAR = USR3;
+
   /* Status variables. */
   uint8_t init_status, channel_status;
 
