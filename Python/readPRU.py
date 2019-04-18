@@ -37,7 +37,7 @@ def main():
     try:
         PRUdev = open(CHAR_DEV0, "rb+", 0)
         print("Sending message to start communication")
-        PRUdev.write(b'S')
+        PRUdev.write('100')
         print("Communication established")
         # PRUdev.close()
         # sys.exit()
