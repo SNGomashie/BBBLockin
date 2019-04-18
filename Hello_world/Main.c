@@ -19,7 +19,7 @@ void main (void) {
 
   data = RPMSGreceive();
 
-  j = sscanf(data, "%d", &j);
+  sscanf(data, "%x", &j);
 
   pru0_mem[0] = j;
 
