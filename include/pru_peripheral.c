@@ -266,21 +266,19 @@ char UARTreceive(void){
 /***********************************/
 /* Internal PRU-ICSS communication */
 /***********************************/
-uint8_t INTERNCOM_status;
-
 void INTERNCOMinitialize(uint8_t sys_evt){
   INTCinitialize(sys_evt, 0, 0);
   INTERNCOM_status = 1;
 }
 
-void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint32_t remapping, void& object){
+void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint32_t remapping, uint16_t object){
   if(INTERNCOM_status == 1){
     __R31 |= (1 << 30);
     __xout(device_id, base_register, 0, remapping, object);
   }
 }
 
-void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint32_t remapping, void& object){
+void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint32_t remapping, uint16_t object){
   if(INTERNCOM_status == 1){
     while(!(__R31 & (1 << 30))){
       __xin(device_id, base_register, 0, remapping, object);
