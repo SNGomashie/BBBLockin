@@ -56,6 +56,7 @@ def main():
                 PRUstate.write('stop')
                 PRUstate.close()
                 PRUdev.close()
+                sys.exit()
             except IOError:
                 print("Could not stop PRU")
                 sys.exit()
