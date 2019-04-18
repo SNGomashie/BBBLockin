@@ -46,26 +46,26 @@ void main(void){
 
   /* Main loop */
   while(1){
-  //   /* Timer interrupt polling */
-  //   while(__R31 & HOST_INT){
-  //       IEPclear_int();
-  //       INTCclear(7);
-  //       DDSsetfreq(&osc);
-  //       if(i < 248){
-  //         data_block[i] = osc.value;
-  //         i++;
-  //       } else {
-  //         RPMSGtransmit_block(data_block);
-  //         data_block[0] = osc.value;
-  //         i = 1;
-  //       }
-  //       /* Toggle pin (debugging)*/
-  //       // sprintf(RPMsg_out, "%x\n", osc.value);
-  //       // RPMSGtransmit(RPMsg_out);
-  //       __R30 ^= 1 << PIN;
-  //       DDSstep(&osc);
-  //
-  //   }
+    /* Timer interrupt polling */
+    while(__R31 & HOST_INT){
+        IEPclear_int();
+        INTCclear(7);
+        DDSsetfreq(&osc);
+        if(i < 248){
+          data_block[i] = osc.value;
+          i++;
+        } else {
+          RPMSGtransmit_block(data_block);
+          data_block[0] = osc.value;
+          i = 1;
+        }
+        /* Toggle pin (debugging)*/
+        // sprintf(RPMsg_out, "%x\n", osc.value);
+        // RPMSGtransmit(RPMsg_out);
+        __R30 ^= 1 << PIN;
+        DDSstep(&osc);
+
+    }
   }
   __halt();
 }
