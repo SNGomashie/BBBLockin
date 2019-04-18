@@ -56,12 +56,7 @@ void main(void){
         RPMSGtransmit(RPMsg_out);
         __R30 ^= 1 << PIN;
         DDSstep(&osc);
-        i++;
     }
-  if(!(i < 20)){
-    __R30 = 0x00000000;
-    break;
-  }
   }
   __halt();
 }

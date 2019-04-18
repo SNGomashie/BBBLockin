@@ -26,7 +26,6 @@ def main():
         try:
             PRUstate.write('start')
             print("PRU0 is being started")
-            PRUstate.close()
         except IOError:
             print("PRU0 failed to start")
             PRUstate.close()
@@ -41,27 +40,26 @@ def main():
         a = PRUdev.write(bytes(samp_rate, 'ASCII'))
         print(a)
         print("Communication established")
-        # PRUdev.close()
-        # sys.exit()
-        # samp_rate = input("Set sample rate: ")
-        # PRUdev.write(samp_rate.encode())
-        # num_samp = input("Set number of samples: ")
-        # PRUdev.write(num_samp.encode())
-        # print("Sample rate & number of samples is set")
     except IOError:
         print("Could not open device: 'rpmsg_pru30'")
+        PRUstate.close()
         PRUdev.close()
         sys.exit()
 
 
 # Receive several messages over rpmsg
     while(1):
-        readBuf = PRUdev.read(RPMSG_BUF_SIZE)
-        print(readBuf)
-
-# Stop PRU
-
-# FFT
+        try:
+            readBuf = PRUdev.read(RPMSG_BUF_SIZE)
+            print(readBuf)
+        except KeyboardInterrupt:
+            try:
+                PRUstate.write('stop')
+                PRUstate.close()
+                PRUdev.close()
+            except IOError:
+                print("Could not stop PRU")
+                sys.exit()
 
 
 # Upload image to imgur
