@@ -54,7 +54,7 @@ def main():
             charBuf = PRUdev.read(RPMSG_BUF_SIZE)
             intBuf = struct.unpack('<248H', charBuf)
             print(intBuf)
-            print("Datatype is= %d" % (type(intBuf)))
+            print("Datatype is= %s" % (type(intBuf)))
         except KeyboardInterrupt:
             try:
                 PRUstate.write('stop')
