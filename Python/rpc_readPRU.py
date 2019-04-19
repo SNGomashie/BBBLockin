@@ -45,7 +45,7 @@ class BeagleBoneDDS(rpyc.Service):
 
     def exposed_pru_communicate(self, samp_rate):
         try:
-            time.sleep(2)
+            time.sleep(5)
             self.PRUdev = open(self.CHAR_DEV0, "rb+", 0)
             self.PRUdev.write(bytes(samp_rate, 'ASCII'))
             print("-    Communication established")
