@@ -140,16 +140,18 @@ void IEPclear_int(void){
 /* Enchanced Capture Module */
 /****************************/
 void eCAPinitialize(void){
-	CT_ECAP.ECCTL2 &= ~(1 << 4);
+  /* Stop Cap module */
+  CT_ECAP.ECCTL2 &= ~(1 << TSCTRSTOP);
+
 	/* Difference mode */
-	CT_ECAP.ECCTL1 |= (1 << 1);
+	CT_ECAP.ECCTL1 |= (1 << CTRRST1);
 
 	/* Enable loading of CAP registers */
-	CT_ECAP.ECCTL1 |= (1 << 8);
+	CT_ECAP.ECCTL1 |= (1 << CAPLDEN);
 
-	CT_ECAP.ECCTL2 |= (0x2 << 6);
+	CT_ECAP.ECCTL2 |= (0x2 << SYNCO_SEL);
 
-	CT_ECAP.ECCTL2 |= (1 << 4);
+	CT_ECAP.ECCTL2 |= (1 << TSCTRSTOP);
 }
 
 /*********************************************/

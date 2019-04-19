@@ -46,6 +46,30 @@ void IEPclear_int(void);
 
 
 /* enhanced Capture module */
+/* ECCTL1 register */
+#define CAP1POL 0
+#define CTRRST1 1
+#define CAP2POL 2
+#define CTRRST2 3
+#define CAP3POL 4
+#define CTRRST3 5
+#define CAP4POL 6
+#define CTRRST4 7
+#define CAPLDEN 8
+#define PRESCALE 9
+#define FREE_SOFT 14
+
+/* ECCTL2 register */
+#define CONT_ONESHT 0
+#define	STOP_WRAP 1
+#define RE_ARM 3
+#define TSCTRSTOP 4
+#define SYNCI_EN 5
+#define SYNCO_SEL 6
+#define SWSYNC 8
+#define CAP_APWM 9
+#define APWMPOL 10
+
 void eCAPinitialize(void);
 
 void eCAPclear_int(void);
