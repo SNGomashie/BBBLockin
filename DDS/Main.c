@@ -61,7 +61,6 @@ void main(void){
   while(1){
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
-      CYCLEstart();
       IEPclear_int();
       INTCclear(7);
       /* Capture period and calculate phase incrementor */
@@ -89,12 +88,9 @@ void main(void){
       /*        0 - 256 .    0 - 65336          */
       accumulator &= (P2_24) - 1;
       x++;
-      cycle = CYCLEstop();
-      sprintf(data, "%d\n", cycle);
     }
     if(!(x < 248)){
       RPMSGtransmit_block(blkdata);
-      RPMSGtransmit(data);
       x = 0;
       break;
     }
