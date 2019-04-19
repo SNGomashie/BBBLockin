@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import struct
 import os.path
 import sys
 
@@ -56,8 +57,8 @@ def main():
     while(1):
         try:
             readBuf = PRUdev.read(RPMSG_BUF_SIZE)
-            os.write(data, readBuf)
-            print(readBuf)
+            intBuf = struct.unpack('<H', readBuf)
+            print(intBuf)
         except KeyboardInterrupt:
             try:
                 PRUstate.write('stop')
