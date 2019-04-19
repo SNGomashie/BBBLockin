@@ -79,12 +79,6 @@ void main(void){
 
       blkdata[x] = output;
 
-      /* Format string to be send */
-      sprintf(data,"%d, %d\n", output, accumulator);
-
-      /* Print to serial port */
-      UARTtransmit(data);
-
       /* add incrementor to phase */
       accumulator += incrementor;
 
