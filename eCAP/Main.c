@@ -57,9 +57,8 @@ void main(void)
 	while(1){
 		period = CT_ECAP.CAP1;
 		period2 = CT_ECAP.CAP2;
-		period3 = CT_ECAP.CAP3;
-		period4 = CT_ECAP.CAP4;
-		sprintf(data, "%d %d %d %d\n", period, period2, period3, period4);
+
+		sprintf(data, "%d %d \n", period, period2);
 		serialPRINT(data);
 		__delay_cycles(200000000);
 	}
