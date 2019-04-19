@@ -82,5 +82,5 @@ void INTERNCOMlisten(void);
 /* Instruction time counter */
 void CYCLEstart(void);
 
-void CYCLEstop(void);
+uint32_t CYCLEstop(void);
 #endif /* __PERIPHERAL_LIB_H_ */
