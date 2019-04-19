@@ -10,8 +10,6 @@
 #include "pru_rpmsg_lib.h"
 #include "resource_table.h"
 
-#define CHAN_NAME			"rpmsg-pru"
-
 // Debugging
 #define GPIO1 0x4804C000
 #define GPIO_CLEARDATAOUT 0x190
@@ -87,6 +85,7 @@ char* RPMSGreceive(void){
       *GPIO1_SET = USR1;
       *GPIO1_SET = USR2;
     }
+    INTCclear(17);
   }
   return input;
 }
