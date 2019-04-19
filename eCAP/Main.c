@@ -66,7 +66,7 @@ void main(void)
 /* Tracks the reference period */
 void initECAP(void){
 	/* Capture polarity */
-	CT_ECAP.EECTL1 &= ~(1 << CAP1POL);
+	CT_ECAP.ECCTL1 &= ~(1 << CAP1POL);
 
 	/* Difference mode */
 	CT_ECAP.ECCTL1 |= (1 << CTRRST1);
