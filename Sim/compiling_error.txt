@@ -1,0 +1,14 @@
+C:\Users\senag\Documents\github\Sim\test.c: In function 'main':
+C:\Users\senag\Documents\github\Sim\test.c:17:10: warning: passing argument 1 of 'testfunc' makes integer from pointer without a cast [-Wint-conversion]
+ testfunc(ptrBLK);
+          ^~~~~~
+C:\Users\senag\Documents\github\Sim\test.c:7:24: note: expected 'uint16_t' {aka 'short unsigned int'} but argument is of type 'uint16_t *' {aka 'short unsigned int *'}
+ void testfunc(uint16_t array);
+               ~~~~~~~~~^~~~~
+C:\Users\senag\Documents\github\Sim\test.c: At top level:
+C:\Users\senag\Documents\github\Sim\test.c:20:6: error: conflicting types for 'testfunc'
+ void testfunc(uint16_t* array){
+      ^~~~~~~~
+C:\Users\senag\Documents\github\Sim\test.c:7:6: note: previous declaration of 'testfunc' was here
+ void testfunc(uint16_t array);
+      ^~~~~~~~
