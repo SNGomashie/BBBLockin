@@ -13,6 +13,7 @@ REMOTEPROC_FIRM0 = "/sys/class/remoteproc/remoteproc1/firmware"
 RPMSG_BUF_SIZE = 512
 readBuf = "\0" * 512
 
+DATA = "data.txt"
 
 def main():
     # Initialize PRUs
@@ -37,7 +38,7 @@ def main():
         pass
 
     try:
-
+        data = os.open(DATA, os.O_CREAT | os.O_APPEND | os.O_RDWR)
         PRUdev = open(CHAR_DEV0, "rb+", 0)
         samp_rate = input("Set sample rate: ")
         print(":".join("{:02x}".format(ord(c)) for c in samp_rate))
@@ -55,6 +56,7 @@ def main():
     while(1):
         try:
             readBuf = PRUdev.read(RPMSG_BUF_SIZE)
+            os.write(data, readBuf)
             print(readBuf)
         except KeyboardInterrupt:
             try:

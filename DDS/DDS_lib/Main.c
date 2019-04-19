@@ -51,12 +51,7 @@ void main(void){
         IEPclear_int();
         INTCclear(7);
         DDSsetfreq(&osc);
-        blkdata[x] = osc.value;
-        if(!(x < 248)){
-          RPMSGtransmit_block(blkdata);
-          x = 0;
-          break;
-        }
+        blkdata[x] = osc.value;    
         /* Toggle pin (debugging)*/
         // sprintf(RPMsg_out, "%x\n", osc.value);
         // RPMSGtransmit(RPMsg_out);
@@ -64,7 +59,11 @@ void main(void){
         DDSstep(&osc);
         x++;
     }
-
+    if(!(x < 248)){
+      RPMSGtransmit_block(blkdata);
+      x = 0;
+      break;
+    }
   }
   __halt();
 }
