@@ -13,13 +13,5 @@ for(uint16_t i = 0; i < 248; i++){
 
 uint16_t *ptrBLK = output;
 
-float a = 248;
-float b = 496;
-float e = 5.5;
-float c;
-
-c = a * e % a;
-
-
-printf("%d\n", c);
+printf("%d\n", (sizeof(output)/sizeof(uint8_t)));
 }

@@ -108,7 +108,7 @@ void RPMSGtransmit_block(uint16_t output[248]){
   uint8_t blk_transmit_status;
   uint16_t *ptrBLK = output;
 
-  blk_transmit_status = pru_rpmsg_send(&transport, dst, src, ptrBLK, sizeof(output)/sizeof(uint16_t));
+  blk_transmit_status = pru_rpmsg_send(&transport, dst, src, ptrBLK, (sizeof(output)/sizeof(uint8_t)));
 
   /* See if transmission went correct */
   while(blk_transmit_status != PRU_RPMSG_SUCCESS){
