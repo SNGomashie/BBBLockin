@@ -3,7 +3,7 @@
 import struct
 import os.path
 import sys
-import Pastebin
+import pastebin
 
 # Character device PRU0
 CHAR_DEV0 = "/dev/rpmsg_pru30"
