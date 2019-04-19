@@ -54,7 +54,7 @@ def main():
 # Receive several messages over rpmsg
     while(1):
         try:
-            readBuf = PRUdev.read(RPMSG_BUF_SIZE)
+            readBuf = PRUdev.read()
             print(readBuf)
         except KeyboardInterrupt:
             try:
