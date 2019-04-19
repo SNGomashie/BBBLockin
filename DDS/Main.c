@@ -91,10 +91,10 @@ void main(void){
       x++;
       cycle = CYCLEstop();
       sprintf(data, "%d\n", cycle);
-      UARTtransmit(data);
     }
     if(!(x < 248)){
       RPMSGtransmit_block(blkdata);
+      RPMSGtransmit(data);
       x = 0;
       break;
     }
