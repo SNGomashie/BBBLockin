@@ -3,6 +3,8 @@ import struct
 import time
 import numpy as np
 
+rpyc.core.protocol.DEFAULT_CONFIG['allow_pickle'] = True
+
 
 class BeagleBoneDDS(rpyc.Service):
     # Character device PRU0
