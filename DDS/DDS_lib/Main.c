@@ -28,7 +28,7 @@ void main(void){
   uint32_t samp_freq =0;
   uint16_t x = 0;
   char* RPMsg_in;
-  char data[8] = "";
+  char data[] = "";
 
   /* NCO */
   uint64_t incrementor = 0;
@@ -76,7 +76,7 @@ void main(void){
       // sprintf(data, "%x %x\n", accumulator, period);
 
       /* Print to serial port */
-      serialPRINT(data);
+      UARTtransmit(data);
 
       /* add incrementor to phase */
       accumulator += incrementor;
