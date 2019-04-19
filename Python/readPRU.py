@@ -57,7 +57,7 @@ def main():
     while(1):
         try:
             readBuf = PRUdev.read(RPMSG_BUF_SIZE)
-            intBuf = struct.unpack('<H', readBuf)
+            intBuf = struct.unpack('<248H', readBuf)
             print(intBuf)
         except KeyboardInterrupt:
             try:
