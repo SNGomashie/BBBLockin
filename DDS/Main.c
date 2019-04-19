@@ -53,7 +53,7 @@ void main(void){
   samp_freq = atoi(RPMsg_in);
   samp_period = (10000000 / samp_freq) / 5;
 
-  IEPinitialize(samp_period, 1, cmp);
+  IEPinitialize((samp_period * 100), 1, cmp);
   UARTinitialize();
   IEPstart();
 
