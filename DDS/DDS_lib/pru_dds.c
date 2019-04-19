@@ -11,6 +11,7 @@ const uint16_t sinLUT256[257] = {0x8000,0x8324,0x8647,0x896a,0x8c8b,0x8fab,0x92c
 
 void DDSinitialize(struct DDS32 *n, uint32_t samp_period){
   n->accumulator = 0;
+  n->incrementor = 0;
   n->samp_period = samp_period;
   n->period = CT_ECAP.CAP1;
   n->value = sinLUT256[0];
@@ -30,6 +31,7 @@ void DDSsetfreq(struct DDS32 *n){
 void DDSstep(struct DDS32 *n){
   DDSinterpolate(n);
   n->accumulator += n->incrementor;
+  accumulator &= (P2_24) - 1;
 }
 
 void DDSinterpolate(struct DDS32 *n){

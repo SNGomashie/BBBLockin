@@ -55,7 +55,7 @@ void main(void){
       DDSsetfreq(&osc);
       // blkdata[x] = osc.value;
       /* Toggle pin (debugging)*/
-      sprintf(data, "%x\n", osc.value);
+      sprintf(data, "%x, %x\n", osc.value, osc.accumulator);
       UARTtransmit(data);
       // RPMSGtransmit(RPMsg_out);
       __R30 ^= 1 << PIN;
