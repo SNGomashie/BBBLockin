@@ -1,72 +1,97 @@
+ifdef PRU
+	PRUN := $(PRU)
+	PRU_ADDR := $(PRUN)+1
+else
+ 	PRUN := 0
+	PRU_ADDR := 1
+endif
 
+# System paths for compiler and support package
 PRU_CGT:= /usr/share/ti/cgt-pru
-PRU_RPMSG:= /usr/lib/ti/pru-software-support-package
+PRU_SUPPORT:= /usr/lib/ti/pru-software-support-package
+PRU_BBB := /home/debian/BBBLockin
+
+# Define current directory
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 PROJ_NAME=$(CURRENT_DIR)
+FILE_NAME= Main
+# Path to temporary folder
+GEN_DIR:=gen
+
+# Path to linker command file
 LINKER_COMMAND_FILE=./AM335x_PRU.cmd
-LIBS=--library=$(PRU_RPMSG)/lib/rpmsg_lib.lib
-INCLUDE=--include_path=$(PRU_CGT)/include --include_path=$(PRU_RPMSG)/include/ --include_path=$(PRU_RPMSG)/include/am335x/
+
+# Paths to libraries
+LIBS=--library=$(PRU_SUPPORT)/lib/rpmsg_lib.lib
+INCLUDE=--include_path=$(PRU_BBB)/include --include_path=$(PRU_CGT)/include --include_path=$(PRU_SUPPORT)/include/ --include_path=$(PRU_SUPPORT)/include/am335x/
+
+# Stack & Heap size
 STACK_SIZE=0x100
 HEAP_SIZE=0x100
-GEN_DIR=gen
 
-#Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
-CFLAGS=-v3 -O2 --display_error_number --endian=little --hardware_mac=on --obj_directory=$(GEN_DIR) --pp_directory=$(GEN_DIR) -ppd -ppa --c99 --printf_support=minimal
-#Linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
+# Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
+CFLAGS=-v3 -O2 --c99 --float_operations_allowed=none --display_error_number --endian=little --hardware_mac=on --printf_support=minimal --obj_directory=$(GEN_DIR) --pp_directory=$(GEN_DIR) -ppd -ppa
+
+# Linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 LFLAGS=--reread_libs --warn_sections --stack_size=$(STACK_SIZE) --heap_size=$(HEAP_SIZE)
 
+# Target file
 TARGET=$(GEN_DIR)/$(PROJ_NAME).out
+
+# Map file
 MAP=$(GEN_DIR)/$(PROJ_NAME).map
+
+# Source files
 SOURCES=$(wildcard *.c)
+
 #Using .object instead of .obj in order to not conflict with the CCS build process
 OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(SOURCES:.c=.object))
 
-all: printStart $(TARGET) printEnd
+# Lookup PRU by address
+ifeq ($(PRUN),0)
+PRU_ADDR=remoteproc1
+endif
+ifeq ($(PRUN),1)
+PRU_ADDR=remoteproc2
+endif
 
-printStart:
-	@echo ''
-	@echo '************************************************************'
-	@echo 'Building project: $(PROJ_NAME)'
+# PRU sysfs interface directory
+PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR))
+all: stop clean git install start
 
-printEnd:
-	@echo ''
-	@echo 'Finished building project: $(PROJ_NAME)'
-	@echo '************************************************************'
-	@echo ''
+stop:
+	@echo "-	Stopping PRU $(PRUN)"
+	@echo 'stop' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot stop $(PRUN)'
 
-# Invokes the linker (-z flag) to make the .out file
+
+git:
+	@echo '-	Updating repository'
+	@sudo git pull
+
+start:
+	@echo "-	Starting PRU $(PRUN)"
+	@echo 'start' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot start $(PRUN)'
+
+install: $(TARGET)
+	@echo '-	Copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
+	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
+
 $(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
-	@echo ''
-	@echo 'Building target: $@'
-	@echo 'Invoking: PRU Linker'
-	$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
-	@echo 'Finished building target: $@'
-	@echo ''
-	@echo 'Output files can be found in the "$(GEN_DIR)" directory'
+	@echo '-	Invoking: PRU Linker: $^'
+	@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET) $(OBJECTS) -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-# Invokes the compiler on all c files in the directory to create the object files
+
 $(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
-	@echo ''
-	@echo 'Building file: $<'
-	@echo 'Invoking: PRU Compiler'
-	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -fe $@ $< -D PRU1
+	@echo '-	Invoking: PRU Compiler: $<'
+	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU$(PRUN)
 
 .PHONY: all clean
 
-# Remove the $(GEN_DIR) directory
 clean:
-	@echo ''
-	@echo '************************************************************'
-	@echo 'Cleaning project: $(PROJ_NAME)'
-	@echo ''
-	@echo 'Removing files in the "$(GEN_DIR)" directory'
+	@echo '-	Clean'
 	@rm -rf $(GEN_DIR)
-	@echo ''
-	@echo 'Finished cleaning project: $(PROJ_NAME)'
-	@echo '************************************************************'
-	@echo ''
 
 # Includes the dependencies that the compiler creates (-ppd and -ppa flags)
 -include $(OBJECTS:%.object=%.pp)
