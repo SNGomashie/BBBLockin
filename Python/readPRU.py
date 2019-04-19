@@ -3,7 +3,7 @@
 import struct
 import os.path
 import sys
-import pastebin
+from pastebin import PastebinAPI
 
 # Character device PRU0
 CHAR_DEV0 = "/dev/rpmsg_pru30"
@@ -16,6 +16,7 @@ RPMSG_BUF_SIZE = 512
 charBuf = "\0" * 512
 
 DATA = "data.txt"
+
 
 def main():
     # Initialize PRUs
@@ -55,6 +56,9 @@ def main():
             intBuf = struct.unpack('<248H', charBuf)
             print(intBuf)
             print("Datatype is= %s" % (type(intBuf)))
+            my_key = PastebinAPI.generate_user_key()
+            print(my_key)
+            PastebinAPI.paste(my_key, intBuf)
         except KeyboardInterrupt:
             try:
                 PRUstate.write('stop')
