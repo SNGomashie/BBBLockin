@@ -43,16 +43,16 @@ void main(void){
 
   DDSinitialize(&osc, samp_period);
   IEPinitialize(samp_period, 1, cmp);
-  UARTinitialize(115200);
+  UARTinitialize();
   IEPstart();
 
   /* Main loop */
   while(1){
+    DDSsetfreq(&osc);
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
       IEPclear_int();
       INTCclear(7);
-      DDSsetfreq(&osc);
       // blkdata[x] = osc.value;
       /* Toggle pin (debugging)*/
       sprintf(data, "%x, %x\n", osc.value, osc.accumulator);
