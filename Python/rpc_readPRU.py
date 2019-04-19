@@ -56,11 +56,12 @@ class BeagleBoneDDS(rpyc.Service):
             t.close()
 
     def exposed_pru_read(self):
+        fullBuf = (0)
         for i in range(10):
             charBuf = self.PRUdev.read(self.RPMSG_BUF_SIZE)
             intBuf = struct.unpack('<248H', charBuf)
-            intBuf += intBuf
-        return intBuf
+            fullBuf += intBuf
+        return fullBuf
 
     def exposed_pru_close(self):
         self.PRUstate = open(self.REMOTEPROC_STATE0, "r+")
