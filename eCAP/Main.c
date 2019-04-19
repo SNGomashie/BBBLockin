@@ -51,7 +51,7 @@ void main(void)
 {
 	uint32_t period, period2, period3, period4;
 	char data[] = "";
-	initECAP();
+	eCAPinitialize();
 	initUART();
 
 	while(1){
