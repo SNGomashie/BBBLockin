@@ -2,7 +2,6 @@ import rpyc
 import struct
 import sys
 import time
-import os
 
 
 class BeagleBoneDDS(rpyc.Service):
@@ -45,21 +44,14 @@ class BeagleBoneDDS(rpyc.Service):
         pass
 
     def exposed_pru_communicate(self, samp_rate):
-        time_counter = 0
-        while not os.path.exists(self.CHAR_DEV0):
-            time.sleep(1)
-            time_counter += 1
-            if time_counter > 10:
-                break
-
         try:
+            time.wait(2)
             self.PRUdev = open(self.CHAR_DEV0, "rb+", 0)
             self.PRUdev.write(bytes(samp_rate, 'ASCII'))
             print("-    Communication established")
         except IOError:
             print("-  ERROR  Could not open device: 'rpmsg_pru30'")
             self.PRUstate.close()
-            self.PRUdev.close()
             sys.exit()
 
     def exposed_pru_read(self):
