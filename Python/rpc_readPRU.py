@@ -61,12 +61,17 @@ class BeagleBoneDDS(rpyc.Service):
         intBuf = struct.unpack('<248H', charBuf)
         return intBuf
 
-    def exposed_redirect(self, stdout):
-        sys.stdout = stdout
-
-    def exposed_restore(self):
-        sys.stdout = sys.__stdout__
-
+    def exposed_pru_close(self):
+        self.PRUstate = open(self.REMOTEPROC_STATE0, "r+")
+        try:
+            self.PRUstate.write('stop')
+            self.PRUstate.close()
+            sys.exit()
+        except IOError:
+            print("-  ERROR  PRU0 failed to stop")
+            self.PRUstate.close()
+            sys.exit()
+        
 
 if __name__ == '__main__':
     from rpyc.utils.server import ThreadedServer
