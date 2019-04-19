@@ -5,8 +5,6 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include <pru_cfg.h>
-#include <pru_ctrl.h>
 #include "pru_peripheral.h"
 #include "pru_rpmsg_lib.h"
 
@@ -61,18 +59,18 @@ void main(void){
 
   /* Main loop */
   while(1){
-    /* Capture period and calculate phase incrementor */
-    period = CT_ECAP.CAP1;
-
-    /* Calculate optimal phase increment for the corresponding period */
-    incrementor = (uint64_t)samp_period * (uint64_t)P2_24;
-    incrementor /= period;
-
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
       CYCLEstart();
       IEPclear_int();
       INTCclear(7);
+      /* Capture period and calculate phase incrementor */
+      period = CT_ECAP.CAP1;
+
+      /* Calculate optimal phase increment for the corresponding period */
+      incrementor = (uint64_t)samp_period * (uint64_t)P2_24;
+      incrementor /= period;
+
       /* Toggle pin (debugging)*/
       __R30 ^= 1 << PIN;
 
