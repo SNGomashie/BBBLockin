@@ -51,7 +51,7 @@ void main(void){
 
   RPMsg_in = RPMSGreceive();
   samp_freq = atoi(RPMsg_in);
-  samp_period = (1000000000 / samp_freq) / 5;
+  samp_period = (10000000 / samp_freq) / 5;
 
   IEPinitialize(samp_period, 1, cmp);
   UARTinitialize();
@@ -64,11 +64,11 @@ void main(void){
       IEPclear_int();
       INTCclear(7);
       /* Capture period and calculate phase incrementor */
-      period = CT_ECAP.CAP1;
+      period = (CT_ECAP.CAP1 / 100);
 
       /* Calculate optimal phase increment for the corresponding period */
-      incrementor = P2_24 / (period / 100);
-      incrementor *= (samp_period / 100);
+      incrementor = P2_24 / period;
+      incrementor = (uint64_t)incrementor * (uint64_t)samp_period;
 
       // incrementor = (uint64_t)samp_period * (uint64_t)P2_24;
       // incrementor /= period;
