@@ -59,6 +59,12 @@ class BeagleBoneDDS(rpyc.Service):
         intBuf = struct.unpack('<248H', charBuf)
         return intBuf
 
+    def exposed_redirect(self, stdout):
+        sys.stdout = stdout
+
+    def exposed_restore(self):
+        sys.stdout = sys.__stdout__
+
 
 if __name__ == '__main__':
     from rpyc.utils.server import ThreadedServer
