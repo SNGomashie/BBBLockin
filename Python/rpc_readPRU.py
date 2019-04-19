@@ -28,6 +28,7 @@ class BeagleBoneDDS(rpyc.Service):
                 self.PRUstate.write('start')
                 print("-    PRU0 is being started")
                 self.PRUstate.close()
+                time.sleep(2)
             except IOError:
                 print("-  ERROR  PRU0 failed to start")
                 self.PRUstate.close()
