@@ -285,5 +285,19 @@ void INTERNCOMlisten(void){
   }
 }
 
+/******************************/
+/*  Instruction time counter  */
+/******************************/
+void CYCLEstart(void){
+  PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
+  // Reset cycle counter, cycle is on the right side to force the compiler
+  // to put it in it's own register
+  PRU0_CTRL.CYCLE = 0;
+}
+
+uint32_t CYCLEstop(void){
+  return PRU0_CTRL.CYCLE;
+}
+
 
 #endif

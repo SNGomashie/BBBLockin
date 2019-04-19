@@ -24,23 +24,30 @@ volatile register unsigned int __R31;
 
 void PRCMinitialize(void);
 
+
 /* Interrupt controller addresses */
 void INTCinitialize(uint8_t sys_evt, uint8_t chan, uint8_t host_int);
+
 void INTCclear(uint8_t sys_evt);
+
 
 /* Industrial Ethernet Peripheral */
 typedef enum { cmp, cap } iep_config;
 
 void IEPinitialize(uint32_t period, uint32_t increment, iep_config mode);
+
 void IEPstart(void);
+
 void IEPstop(void);
+
 void IEPclear_int(void);
 
-/* enhanced Capture module */
-// volatile uint32_t *ecap_period = &CT_ECAP.CAP1;
 
+/* enhanced Capture module */
 void eCAPinitialize(void);
+
 void eCAPclear_int(void);
+
 
 /* Multi-channel Serial Peripheral Interface */
 // TODO: enum voor clock divider
@@ -52,8 +59,11 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints);
 #define BUFFER		40
 
 void UARTinitialize(void);
+
 void UARTtransmit(volatile char* Message);
+
 char UARTreceive(void);
+
 
 /* Internal PRU-ICSS communication */
 uint8_t INTERNCOM_status;
@@ -67,4 +77,10 @@ void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint16_t object
 void INTERNCOMpoke(void);
 
 void INTERNCOMlisten(void);
+
+
+/* Instruction time counter */
+void CYCLEstart(void);
+
+void CYCLEstop(void);
 #endif /* __PERIPHERAL_LIB_H_ */

@@ -30,6 +30,7 @@ uint32_t interpolate(uint32_t pos);
 void main(void){
   /* Initialize variables */
   uint32_t period = 0;
+  uint32_t cycle = 0;
   uint32_t samp_period =0;
   uint16_t samp_freq =0;
   uint16_t x = 0;
@@ -69,6 +70,7 @@ void main(void){
 
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
+      CYCLEstart();
       IEPclear_int();
       INTCclear(7);
       /* Toggle pin (debugging)*/
@@ -89,6 +91,9 @@ void main(void){
       /*        0 - 256 .    0 - 65336          */
       accumulator &= (P2_24) - 1;
       x++;
+      cycle = CYCLEstop();
+      sprintf(data, "%d\n", cycle);
+      UARTtransmit(data);
     }
     if(!(x < 248)){
       RPMSGtransmit_block(blkdata);
