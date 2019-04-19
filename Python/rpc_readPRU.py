@@ -62,6 +62,7 @@ class BeagleBoneDDS(rpyc.Service):
             intBuf = np.asarray(struct.unpack('<248H', charBuf))
             print(intBuf.shape)
             np.append(fullBuf, intBuf)
+        print(fullBuf.shape)
         return fullBuf
 
     def exposed_pru_close(self):
