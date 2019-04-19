@@ -101,7 +101,10 @@ void main(void){
     if(!(x < 248)){
       RPMSGtransmit_block(blkdata);
       x = 0;
-      break;
+      i++
+      if(!(i < 10)){
+        break;
+      }
     }
   }
   __halt();
