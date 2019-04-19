@@ -14,6 +14,8 @@ class BeagleBoneDDS(rpyc.Service):
     RPMSG_BUF_SIZE = 512
     charBuf = "\0" * 512
 
+    full_payload = np.empty(2480)
+
     def on_connect(self, conn):
         # Initialize PRUs
         self.PRUstate = open(self.REMOTEPROC_STATE0, "r+")
@@ -60,8 +62,8 @@ class BeagleBoneDDS(rpyc.Service):
             charBuf = self.PRUdev.read(self.RPMSG_BUF_SIZE)
             intBuf = struct.unpack('<248H', charBuf)
             payload = np.asarray(intBuf)
-            full_payload = np.append(payload)
-        return full_payload
+            np.append(self.full_payload, payload)
+        return self.full_payload
 
     def exposed_pru_close(self):
         self.PRUstate = open(self.REMOTEPROC_STATE0, "r+")
