@@ -187,7 +187,6 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
 /*************************************************/
 void UARTinitialize(uint32_t baud_rate){
   /* Verify acceptable input */
-  while(!((baud_rate == 1200) || (baud_rate == 2400) || (baud_rate == 4800) || (baud_rate == 19200) || (baud_rate == 38400) || (baud_rate == 57600) || !(baud_rate == 115200)));
   baud_rate /= 100;
   baud_rate = 1920000 / baud_rate;
   baud_rate /= 16;

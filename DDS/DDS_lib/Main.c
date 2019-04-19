@@ -42,6 +42,7 @@ void main(void){
 
   DDSinitialize(&osc, samp_period);
   IEPinitialize(samp_period, 1, cmp);
+  UARTinitialize(115200);
   IEPstart();
 
   /* Main loop */
@@ -51,19 +52,20 @@ void main(void){
       IEPclear_int();
       INTCclear(7);
       DDSsetfreq(&osc);
-      blkdata[x] = osc.value;
+      // blkdata[x] = osc.value;
       /* Toggle pin (debugging)*/
-      // sprintf(RPMsg_out, "%x\n", osc.value);
+      sprintf(RPMsg_out, "%x\n", osc.value);
+      UARTtransmit(RPMsg_out);
       // RPMSGtransmit(RPMsg_out);
       __R30 ^= 1 << PIN;
       DDSstep(&osc);
-      x++;
+
     }
-    if(!(x < 248)){
-      RPMSGtransmit_block(blkdata);
-      x = 0;
-      break;
-    }
+    // if(!(x < 248)){
+    //   RPMSGtransmit_block(blkdata);
+    //   x = 0;
+    //   break;
+    // }
   }
   __halt();
 }

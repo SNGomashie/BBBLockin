@@ -52,7 +52,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints);
 #define BUFFER		40
 
 void UARTinitialize(uint32_t baud_rate);
-void UARTsend(volatile char* Message);
+void UARTtransmit(volatile char* Message);
 char UARTreceive(void);
 
 /* Internal PRU-ICSS communication */

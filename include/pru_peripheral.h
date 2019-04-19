@@ -39,7 +39,7 @@ void IEPclear_int(void);
 /* enhanced Capture module */
 // volatile uint32_t *ecap_period = &CT_ECAP.CAP1;
 
-void eCAPintialize(void);
+void eCAPinitialize(void);
 void eCAPclear_int(void);
 
 /* Multi-channel Serial Peripheral Interface */
@@ -52,7 +52,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints);
 #define BUFFER		40
 
 void UARTinitialize(uint32_t baud_rate);
-void UARTsend(volatile char* Message);
+void UARTtransmit(volatile char* Message);
 char UARTreceive(void);
 
 /* Internal PRU-ICSS communication */
