@@ -27,8 +27,7 @@ class BeagleBoneDDS(rpyc.Service):
             try:
                 self.PRUstate.write('start')
                 print("-    PRU0 is being started")
-                while not os.path.exists(self.CHAR_DEV0):
-                    pass
+                self.PRUstate.close()
             except IOError:
                 print("-  ERROR  PRU0 failed to start")
                 self.PRUstate.close()
@@ -36,6 +35,7 @@ class BeagleBoneDDS(rpyc.Service):
         pass
 
     def on_disconnect(self, conn):
+        self.PRUstate = open(self.REMOTEPROC_STATE0, "r+")
         try:
             self.PRUstate.write('stop')
             self.PRUstate.close()
@@ -53,7 +53,6 @@ class BeagleBoneDDS(rpyc.Service):
             print("-    Communication established")
         except IOError:
             print("-  ERROR  Could not open device: 'rpmsg_pru30'")
-            self.PRUstate.close()
             sys.exit()
 
     def exposed_pru_read(self):
