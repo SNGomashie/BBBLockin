@@ -49,27 +49,46 @@ void serialPRINT(volatile char* Message);
 
 void main(void)
 {
-	uint32_t period;
+	uint32_t period, period2, period3, period4;
 	char data[] = "";
 	initECAP();
 	initUART();
 
 	while(1){
 		period = CT_ECAP.CAP1;
-		sprintf(data, "%d\n", period);
+		period2 = CT_ECAP.CAP2;
+		period3 = CT_ECAP.CAP3;
+		period4 = CT_ECAP.CAP4;
+		sprintf(data, "%d %d %d %d\n", period, period2, period3, period4);
 		serialPRINT(data);
 		__delay_cycles(200000000);
 	}
 }
 
-/*    Initialize eCAP module   */
-/* Tracks the reference period */
-void initECAP(void){
-	/* Capture polarity */
+void eCAPinitialize(void){
+	/* Capture polarity CAPreg 1 */
 	CT_ECAP.ECCTL1 &= ~(1 << CAP1POL);
 
-	/* Difference mode */
+	/* Difference mode Capreg 1 */
 	CT_ECAP.ECCTL1 |= (1 << CTRRST1);
+
+  /* Capture polarity Capreg 2 */
+  CT_ECAP.ECCTL1 &= ~(1 << CAP2POL);
+
+  /* Difference mode Capreg 2 */
+  CT_ECAP.ECCTL1 |= (1 << CTRRST2);
+
+  /* Capture polarity Capreg 3 */
+  CT_ECAP.ECCTL1 &= ~(1 << CAP3POL);
+
+  /* Difference mode Capreg 3 */
+  CT_ECAP.ECCTL1 |= (1 << CTRRST3);
+
+  /* Capture polarity Capreg 4 */
+  CT_ECAP.ECCTL1 &= ~(1 << CAP4POL);
+
+  /* Difference mode Capreg 4 */
+  CT_ECAP.ECCTL1 |= (1 << CTRRST4);
 
 	/* Enable loading of CAP registers */
 	CT_ECAP.ECCTL1 |= (1 << CAPLDEN);
@@ -88,6 +107,9 @@ void initECAP(void){
 
 	/* Select sync mode */
 	CT_ECAP.ECCTL2 &= ~(1 << SYNCI_EN);
+
+  /* Wrap after CAPreg1 */
+  CT_ECAP.ECCTL2 &= ~(1 << STOP_WRAP);
 
 	/* Start counter */
 	CT_ECAP.ECCTL2 |= (1 << TSCTRSTOP);
