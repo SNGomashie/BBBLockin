@@ -25,6 +25,8 @@ volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
 uint16_t blkdata[248];
 
+uint32_t interpolate(uint32_t pos);
+
 void main(void){
   /* Initialize variables */
   uint32_t period = 0;
