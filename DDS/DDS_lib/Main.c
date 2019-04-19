@@ -26,6 +26,7 @@ void main(void){
   uint32_t samp_freq =0;
   uint16_t x = 0;
   char* RPMsg_in;
+  char data[8] = "";
   struct DDS32 osc;
   __R30 = 0x00000000;
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
@@ -54,8 +55,8 @@ void main(void){
       DDSsetfreq(&osc);
       // blkdata[x] = osc.value;
       /* Toggle pin (debugging)*/
-      sprintf(RPMsg_out, "%x\n", osc.value);
-      UARTtransmit(RPMsg_out);
+      sprintf(data, "%x\n", osc.value);
+      UARTtransmit(data);
       // RPMSGtransmit(RPMsg_out);
       __R30 ^= 1 << PIN;
       DDSstep(&osc);
