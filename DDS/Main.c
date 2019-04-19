@@ -28,12 +28,11 @@ uint32_t interpolate(uint32_t pos);
 void main(void){
   /* Initialize variables */
   uint32_t period = 0;
-  uint32_t cycle = 0;
   uint32_t samp_period =0;
   uint16_t samp_freq =0;
   uint16_t x = 0;
   char* RPMsg_in;
-  char data[] = "";
+  uint8_t i = 0;
 
   /* NCO */
   uint64_t incrementor = 0;
@@ -101,7 +100,7 @@ void main(void){
     if(!(x < 248)){
       RPMSGtransmit_block(blkdata);
       x = 0;
-      i++
+      i++;
       if(!(i < 10)){
         break;
       }
