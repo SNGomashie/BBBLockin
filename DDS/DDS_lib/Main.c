@@ -51,7 +51,7 @@ void main(void){
         IEPclear_int();
         INTCclear(7);
         DDSsetfreq(&osc);
-        blkdata[x] = osc.value;
+        // blkdata[x] = osc.value;
         /* Toggle pin (debugging)*/
         // sprintf(RPMsg_out, "%x\n", osc.value);
         // RPMSGtransmit(RPMsg_out);
