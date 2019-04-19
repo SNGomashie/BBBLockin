@@ -139,7 +139,7 @@ void IEPclear_int(void){
 /****************************/
 /* Enchanced Capture Module */
 /****************************/
-void initECAP(void){
+void eCAPinitialize(void){
 	/* Capture polarity CAPreg 1 */
 	CT_ECAP.ECCTL1 &= ~(1 << CAP1POL);
 
