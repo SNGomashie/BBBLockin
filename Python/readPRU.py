@@ -54,13 +54,14 @@ def main():
 # Receive several messages over rpmsg
     while(1):
         try:
-            readBuf = PRUdev.read()
+            readBuf = PRUdev.read(RPMSG_BUF_SIZE)
             print(readBuf)
         except KeyboardInterrupt:
             try:
                 PRUstate.write('stop')
                 PRUstate.close()
                 PRUdev.close()
+                print("PRU is offline")
                 sys.exit()
             except IOError:
                 print("Could not stop PRU")
