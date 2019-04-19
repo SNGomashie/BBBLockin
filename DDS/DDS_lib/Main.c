@@ -24,8 +24,9 @@ uint16_t blkdata[248];
 
 void main(void){
   /* Initialize variables */
+  uint32_t period = 0;
   uint32_t samp_period =0;
-  uint32_t samp_freq =0;
+  uint16_t samp_freq =0;
   uint16_t x = 0;
   char* RPMsg_in;
   char data[] = "";
