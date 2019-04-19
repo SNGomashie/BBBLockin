@@ -18,6 +18,7 @@
 #define PRU0_MEM 0x00000000
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
+uint16_t blkdata[248];
 
 void main(void){
   /* Initialize variables */
@@ -25,7 +26,6 @@ void main(void){
   uint32_t samp_freq =0;
   uint16_t x = 0;
   char* RPMsg_in;
-  uint16_t blkdata[248];
   struct DDS32 osc;
   __R30 = 0x00000000;
   /*Allow OCP master port access by the PRU so the PRU can read external memories. */
