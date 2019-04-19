@@ -32,7 +32,7 @@ class BeagleBoneDDS(rpyc.Service):
             except IOError:
                 print("-  ERROR  PRU0 failed to start")
                 self.PRUstate.close()
-                sys.exit()
+                t.close()
         pass
 
     def on_disconnect(self, conn):
@@ -40,11 +40,11 @@ class BeagleBoneDDS(rpyc.Service):
         try:
             self.PRUstate.write('stop')
             self.PRUstate.close()
-            sys.exit()
+            t.close()
         except IOError:
             print("-  ERROR  PRU0 failed to stop")
             self.PRUstate.close()
-            sys.exit()
+            t.close()
         pass
 
     def exposed_pru_communicate(self, samp_rate):
@@ -54,7 +54,7 @@ class BeagleBoneDDS(rpyc.Service):
             print("-    Communication established")
         except IOError:
             print("-  ERROR  Could not open device: 'rpmsg_pru30'")
-            sys.exit()
+            t.close()
 
     def exposed_pru_read(self):
         charBuf = self.PRUdev.read(self.RPMSG_BUF_SIZE)
@@ -66,12 +66,12 @@ class BeagleBoneDDS(rpyc.Service):
         try:
             self.PRUstate.write('stop')
             self.PRUstate.close()
-            sys.exit()
+            t.close()
         except IOError:
             print("-  ERROR  PRU0 failed to stop")
             self.PRUstate.close()
-            sys.exit()
-        
+            t.close()
+
 
 if __name__ == '__main__':
     from rpyc.utils.server import ThreadedServer
