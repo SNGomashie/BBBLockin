@@ -2,6 +2,7 @@ import rpyc
 import struct
 import sys
 import time
+import os.path
 
 
 class BeagleBoneDDS(rpyc.Service):
@@ -26,6 +27,8 @@ class BeagleBoneDDS(rpyc.Service):
             try:
                 self.PRUstate.write('start')
                 print("-    PRU0 is being started")
+                while not os.path.exists(self.CHAR_DEV0):
+                    pass
             except IOError:
                 print("-  ERROR  PRU0 failed to start")
                 self.PRUstate.close()
@@ -45,7 +48,6 @@ class BeagleBoneDDS(rpyc.Service):
 
     def exposed_pru_communicate(self, samp_rate):
         try:
-            time.sleep(5)
             self.PRUdev = open(self.CHAR_DEV0, "rb+", 0)
             self.PRUdev.write(bytes(samp_rate, 'ASCII'))
             print("-    Communication established")
