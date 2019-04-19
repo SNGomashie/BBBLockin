@@ -67,8 +67,11 @@ void main(void){
       period = CT_ECAP.CAP1;
 
       /* Calculate optimal phase increment for the corresponding period */
-      incrementor = (uint64_t)samp_period * (uint64_t)P2_24;
-      incrementor /= period;
+      incrementor = P2_24 / (period / 100);
+      incrementor *= (samp_period / 100);
+
+      // incrementor = (uint64_t)samp_period * (uint64_t)P2_24;
+      // incrementor /= period;
 
       /* Toggle pin (debugging)*/
       __R30 ^= 1 << PIN;
