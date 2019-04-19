@@ -3,6 +3,7 @@
 import struct
 import os.path
 import sys
+import Pastebin
 
 # Character device PRU0
 CHAR_DEV0 = "/dev/rpmsg_pru30"
@@ -12,7 +13,7 @@ REMOTEPROC_STATE0 = "/sys/class/remoteproc/remoteproc1/state"
 REMOTEPROC_FIRM0 = "/sys/class/remoteproc/remoteproc1/firmware"
 
 RPMSG_BUF_SIZE = 512
-readBuf = "\0" * 512
+charBuf = "\0" * 512
 
 DATA = "data.txt"
 
@@ -21,33 +22,27 @@ def main():
     PRUstate = open(REMOTEPROC_STATE0, "r+")
     state = PRUstate.read(7)
     if 'running' in state:
-        print("PRU0 is running")
+        print("-    PRU0 is running")
 
     elif 'offline' in state:
-        print("PRU0 is offline, starting now")
+        print("-    PRU0 is offline, starting now")
         try:
             PRUstate.write('start')
-            print("PRU0 is being started")
+            print("-    PRU0 is being started")
         except IOError:
-            print("PRU0 failed to start")
+            print("-  ERROR  PRU0 failed to start")
             PRUstate.close()
             sys.exit()
 
 # Start communication over rpmsg
-
-    while not os.path.exists(CHAR_DEV0):
-        pass
-
     try:
         data = os.open(DATA, os.O_CREAT | os.O_APPEND | os.O_RDWR)
         PRUdev = open(CHAR_DEV0, "rb+", 0)
-        samp_rate = input("Set sample rate: ")
-        print(":".join("{:02x}".format(ord(c)) for c in samp_rate))
-        a = PRUdev.write(bytes(samp_rate, 'ASCII'))
-        print(a)
-        print("Communication established")
+        samp_rate = input("-    Set sample rate: ")
+        PRUdev.write(bytes(samp_rate, 'ASCII'))
+        print("-    Communication established")
     except IOError:
-        print("Could not open device: 'rpmsg_pru30'")
+        print("-  ERROR  Could not open device: 'rpmsg_pru30'")
         PRUstate.close()
         PRUdev.close()
         sys.exit()
@@ -56,9 +51,10 @@ def main():
 # Receive several messages over rpmsg
     while(1):
         try:
-            readBuf = PRUdev.read(RPMSG_BUF_SIZE)
-            intBuf = struct.unpack('<248H', readBuf)
+            charBuf = PRUdev.read(RPMSG_BUF_SIZE)
+            intBuf = struct.unpack('<248H', charBuf)
             print(intBuf)
+            print("Datatype is= %d" % (type(intBuf)))
         except KeyboardInterrupt:
             try:
                 PRUstate.write('stop')
@@ -67,7 +63,7 @@ def main():
                 print("PRU is offline")
                 sys.exit()
             except IOError:
-                print("Could not stop PRU")
+                print("-  ERROR  Could not stop PRU")
                 sys.exit()
 
 
