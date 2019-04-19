@@ -31,7 +31,7 @@ void DDSsetfreq(struct DDS32 *n){
 void DDSstep(struct DDS32 *n){
   DDSinterpolate(n);
   n->accumulator += n->incrementor;
-  accumulator &= (P2_24) - 1;
+  n->accumulator &= (P2_24) - 1;
 }
 
 void DDSinterpolate(struct DDS32 *n){
