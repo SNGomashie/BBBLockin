@@ -48,16 +48,16 @@ void main(void){
   while(1){
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
-        IEPclear_int();
-        INTCclear(7);
-        DDSsetfreq(&osc);
-        blkdata[x] = osc.value;    
-        /* Toggle pin (debugging)*/
-        // sprintf(RPMsg_out, "%x\n", osc.value);
-        // RPMSGtransmit(RPMsg_out);
-        __R30 ^= 1 << PIN;
-        DDSstep(&osc);
-        x++;
+      IEPclear_int();
+      INTCclear(7);
+      DDSsetfreq(&osc);
+      blkdata[x] = osc.value;
+      /* Toggle pin (debugging)*/
+      // sprintf(RPMsg_out, "%x\n", osc.value);
+      // RPMSGtransmit(RPMsg_out);
+      __R30 ^= 1 << PIN;
+      DDSstep(&osc);
+      x++;
     }
     if(!(x < 248)){
       RPMSGtransmit_block(blkdata);
