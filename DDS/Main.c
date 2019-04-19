@@ -15,8 +15,8 @@ const uint16_t sinLUT256[257] = {0x8000,0x8324,0x8647,0x896a,0x8c8b,0x8fab,0x92c
 
 
 /* data RAM definition for debugging */
-#define PRU0_MEM 0x00000000
-volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
+#define PRU1_MEM 0x00002000
+volatile uint32_t *pru1_mem =  (unsigned int *) PRU1_MEM;
 
 #define P2_16 0xFFFF
 #define P2_24 0x01000000
@@ -51,11 +51,13 @@ void main(void){
 
   RPMsg_in = RPMSGreceive();
   samp_freq = atoi(RPMsg_in);
-  samp_period = (10000000 / samp_freq) / 5;
+  samp_period = (1000000000 / samp_freq) / 5;
 
-  IEPinitialize((samp_period * 100), 1, cmp);
+  IEPinitialize(samp_period, 1, cmp);
   UARTinitialize();
   IEPstart();
+
+  samp_period /= 100;
 
   /* Main loop */
   while(1){
@@ -64,12 +66,17 @@ void main(void){
       IEPclear_int();
       INTCclear(7);
       /* Capture period and calculate phase incrementor */
-      period = (CT_ECAP.CAP1 / 100);
+      period = CT_ECAP.CAP1;
+      period /= 100;
+
+      pru1_mem[0] = period;
 
       /* Calculate optimal phase increment for the corresponding period */
       incrementor = P2_24 / period;
       incrementor = (uint64_t)incrementor * (uint64_t)samp_period;
 
+      pru1_mem[1] = incrementor;
+      
       // incrementor = (uint64_t)samp_period * (uint64_t)P2_24;
       // incrementor /= period;
 
