@@ -67,7 +67,7 @@ void main(void){
       INTCclear(7);
       /* Capture period and calculate phase incrementor */
       period = CT_ECAP.CAP1;
-      period /= 100;
+      // period /= 100;
 
       pru1_mem[0] = period;
 
@@ -76,7 +76,7 @@ void main(void){
       incrementor = (uint64_t)incrementor * (uint64_t)samp_period;
 
       pru1_mem[1] = incrementor;
-      
+
       // incrementor = (uint64_t)samp_period * (uint64_t)P2_24;
       // incrementor /= period;
 
@@ -99,7 +99,7 @@ void main(void){
       accumulator &= (P2_24) - 1;
       x++;
     }
-    if(!(x < 248)){
+    if(!(x < 100)){
       RPMSGtransmit_block(blkdata);
       x = 0;
       break;
