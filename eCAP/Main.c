@@ -65,15 +65,31 @@ void main(void)
 /*    Initialize eCAP module   */
 /* Tracks the reference period */
 void initECAP(void){
-	CT_ECAP.ECCTL2 &= ~(1 << TSCTRSTOP);
+	/* Capture polarity */
+	CT_ECAP.EECTL1 &= ~(1 << CAP1POL);
+
 	/* Difference mode */
 	CT_ECAP.ECCTL1 |= (1 << CTRRST1);
 
 	/* Enable loading of CAP registers */
 	CT_ECAP.ECCTL1 |= (1 << CAPLDEN);
 
-	CT_ECAP.ECCTL2 |= (0x2 << SYNCO_SEL);
+	/* Prescaler */
+	CT_ECAP.ECCTL1 &= ~(1 << PRESCALE);
 
+	/* Capture mode */
+	CT_ECAP.ECCTL2 &= ~(1 << CAP_APWM);
+
+	/* Continuous or one-shot mode */
+	CT_ECAP.ECCTL2 &= ~(1 << CONT_ONESHT);
+
+ 	/* Sync-out select */
+	CT_ECAP.ECCTL2 |= (0x3 << SYNCO_SEL);
+
+	/* Select sync mode */
+	CT_ECAP.ECCTL2 &= ~(1 << SYNCI_EN);
+
+	/* Start counter */
 	CT_ECAP.ECCTL2 |= (1 << TSCTRSTOP);
 }
 
