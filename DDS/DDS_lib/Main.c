@@ -60,6 +60,7 @@ void main(void){
         x++;
     }
     if(!(x < 248)){
+      RPMSGtransmit_block(blkdata);
       x = 0;
     }
   }
