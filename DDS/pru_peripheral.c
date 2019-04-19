@@ -139,18 +139,53 @@ void IEPclear_int(void){
 /****************************/
 /* Enchanced Capture Module */
 /****************************/
-void eCAPinitialize(void){
-  /* Stop Cap module */
-  CT_ECAP.ECCTL2 &= ~(1 << TSCTRSTOP);
+void initECAP(void){
+	/* Capture polarity CAPreg 1 */
+	CT_ECAP.ECCTL1 &= ~(1 << CAP1POL);
 
-	/* Difference mode */
+	/* Difference mode Capreg 1 */
 	CT_ECAP.ECCTL1 |= (1 << CTRRST1);
+
+  /* Capture polarity Capreg 2 */
+  CT_ECAP.ECCTL1 &= ~(1 << CAP2POL);
+
+  /* Difference mode Capreg 2 */
+  CT_ECAP.ECCTL1 |= (1 << CTRRST2);
+
+  /* Capture polarity Capreg 3 */
+  CT_ECAP.ECCTL1 &= ~(1 << CAP3POL);
+
+  /* Difference mode Capreg 3 */
+  CT_ECAP.ECCTL1 |= (1 << CTRRST3);
+
+  /* Capture polarity Capreg 4 */
+  CT_ECAP.ECCTL1 &= ~(1 << CAP4POL);
+
+  /* Difference mode Capreg 4 */
+  CT_ECAP.ECCTL1 |= (1 << CTRRST4);
 
 	/* Enable loading of CAP registers */
 	CT_ECAP.ECCTL1 |= (1 << CAPLDEN);
 
-	CT_ECAP.ECCTL2 |= (0x2 << SYNCO_SEL);
+	/* Prescaler */
+	CT_ECAP.ECCTL1 &= ~(1 << PRESCALE);
 
+	/* Capture mode */
+	CT_ECAP.ECCTL2 &= ~(1 << CAP_APWM);
+
+	/* Continuous or one-shot mode */
+	CT_ECAP.ECCTL2 &= ~(1 << CONT_ONESHT);
+
+ 	/* Sync-out select */
+	CT_ECAP.ECCTL2 |= (0x3 << SYNCO_SEL);
+
+	/* Select sync mode */
+	CT_ECAP.ECCTL2 &= ~(1 << SYNCI_EN);
+
+  /* Wrap after CAPreg1 */
+  CT_ECAP.ECCTL2 &= ~(1 << STOP_WRAP);
+
+	/* Start counter */
 	CT_ECAP.ECCTL2 |= (1 << TSCTRSTOP);
 }
 
