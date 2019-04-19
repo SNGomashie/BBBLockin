@@ -51,7 +51,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints);
 #define MAX_CHARS	8
 #define BUFFER		40
 
-void UARTinitialize(uint32_t baud_rate);
+void UARTinitialize(void);
 void UARTtransmit(volatile char* Message);
 char UARTreceive(void);
 

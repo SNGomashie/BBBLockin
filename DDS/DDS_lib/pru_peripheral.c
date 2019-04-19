@@ -185,22 +185,13 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
 /*  Universal Asynchronous Receiver/Transmitter  */
 /* 1200, 2400, 4800, 19200, 38400, 57600, 115200 */
 /*************************************************/
-void UARTinitialize(uint32_t baud_rate){
-  /* Verify acceptable input */
-  baud_rate /= 100;
-  baud_rate = 1920000 / baud_rate;
-  baud_rate /= 16;
-
-  /* Configure baudrate */
-  CT_UART.DLL = (0xFF) & baud_rate;
-  CT_UART.DLH = (0xFF00) & baud_rate;
-  CT_UART.MDR_bit.OSM_SEL = 0x0;
+void UARTinitialize(void){
 
   /* Set up UART to function at 115200 baud - DLL divisor is 104 at 16x oversample
   * 192MHz / 104 / 16 = ~115200 */
-  // CT_UART.DLL = 104;
-  // CT_UART.DLH = 0;
-  // CT_UART.MDR_bit.OSM_SEL = 0x0;
+  CT_UART.DLL = 104;
+  CT_UART.DLH = 0;
+  CT_UART.MDR_bit.OSM_SEL = 0x0;
 
   /* If FIFOs are to be used, select desired trigger level and enable
   * FIFOs by writing to FCR. FIFOEN bit in FCR must be set first before
