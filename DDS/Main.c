@@ -66,7 +66,7 @@ void main(void){
       IEPclear_int();
       INTCclear(7);
       /* Capture period and calculate phase incrementor */
-      period = CT_ECAP.CAP2;
+      period = CT_ECAP.CAP1;
       // period /= 100;
 
       pru1_mem[0] = period;
