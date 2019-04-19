@@ -43,7 +43,7 @@ volatile register unsigned int __R31;
 #define PRU0_MEM 0x00000000
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
-void initECAP(void);
+void eCAPinitialize(void);
 void initUART(void);
 void serialPRINT(volatile char* Message);
 
