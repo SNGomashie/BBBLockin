@@ -65,6 +65,7 @@ class BeagleBoneDDS(rpyc.Service):
             print(intBuf.shape)
             np.append(fullBuf, intBuf)
         print(fullBuf.shape)
+        print(fullBuf)
         return fullBuf
 
     def exposed_pru_close(self):
