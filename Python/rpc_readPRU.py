@@ -64,7 +64,7 @@ class BeagleBoneDDS(rpyc.Service):
             charBuf = self.PRUdev.read(self.RPMSG_BUF_SIZE)
             intBuf = np.asarray(struct.unpack('<248H', charBuf))
             fullBuf = np.append(fullBuf, intBuf)
-            print("-    rpmsg packet received ( %d / %d )" % (i, tot), end='\r')
+            print("\r-    rpmsg packet received ( %d / %d )" % ((i + 1), tot), end='')
         return fullBuf
 
     def exposed_pru_close(self):
