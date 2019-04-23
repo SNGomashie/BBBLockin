@@ -53,12 +53,16 @@ class BeagleBoneDDS(rpyc.Service):
         try:
             self.PRUstate.write('stop')
             self.PRUstate.close()
-            t.close()
         except IOError:
             print("-  ERROR  PRU0 failed to stop")
             self.PRUstate.close()
-            t.close()
 
+    def exposed_close_server(self):
+        try:
+            t.close()
+        except EOFError:
+            print("connection lost")
+    
     def exposed_pru_communicate(self, samp_rate):
         try:
             self.PRUdev = open(self.CHAR_DEV0, "rb+", 0)
