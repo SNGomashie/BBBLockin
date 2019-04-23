@@ -96,13 +96,16 @@ void main(void){
       /*        0 - 256 .    0 - 65336          */
       accumulator &= (P2_24) - 1;
       x++;
-      if(!(x < 248)){
-        RPMSGtransmit_block(blkdata);
-        x = 0;
-        i++;
+
+    }
+    if(!(x < 248)){
+      RPMSGtransmit_block(blkdata);
+      x = 0;
+      i++;
+      if(i < 41){
+        break;
       }
     }
-
   }
   __halt();
 }
