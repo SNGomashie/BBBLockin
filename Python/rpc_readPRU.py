@@ -2,6 +2,7 @@ import rpyc
 import struct
 import time
 import numpy as np
+import os
 
 rpyc.core.protocol.DEFAULT_CONFIG['allow_pickle'] = True
 
@@ -39,7 +40,9 @@ class BeagleBoneDDS(rpyc.Service):
     def on_disconnect(self, conn):
         self.PRUstate = open(self.REMOTEPROC_STATE0, "r+")
         try:
+            # os.fsync(self.PRUdev)
             self.PRUdev.close()
+            time.sleep(2)
             print("\n-    Stopping PRU & RPC server")
             self.PRUstate.write('stop')
             self.PRUstate.close()

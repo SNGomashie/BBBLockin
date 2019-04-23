@@ -327,8 +327,8 @@ void INTERNCOMlisten(void){
 /******************************/
 void CYCLEstart(void){
   PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
-  // Reset cycle counter, cycle is on the right side to force the compiler
-  // to put it in it's own register
+
+  // Reset cycle counter
   PRU0_CTRL.CYCLE = 0;
 }
 
