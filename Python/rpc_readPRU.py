@@ -72,7 +72,7 @@ class BeagleBoneDDS(rpyc.Service):
     def exposed_pru_read(self, samples):
         fullBuf = np.empty(0)
         tot = np.ceil(samples / 248)
-        # self.PRUdev.write(bytes(str(tot), 'ASCII'))
+        self.PRUdev.write(bytes(str(tot), 'ASCII'))
         print("-    %d samples will be transfered in %d packets" % (samples, tot))
         for i in range(np.uint16(tot)):
             charBuf = self.PRUdev.read(self.RPMSG_BUF_SIZE)
