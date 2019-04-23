@@ -79,7 +79,7 @@ class BeagleBoneDDS(rpyc.Service):
             if i < tot:
                 print("\r-    rpmsg packet received ( %d / %d )" % ((i + 1), tot), end='')
             else:
-                print("\r-    rpmsg packet received ( %d / %d )" % ((i + 1), tot))
+                print("\r-    rpmsg packet received ( %d / %d )" % ((i + 1), tot), end='\n')
         return fullBuf
 
 
