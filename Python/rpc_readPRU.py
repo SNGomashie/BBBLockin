@@ -53,16 +53,12 @@ class BeagleBoneDDS(rpyc.Service):
         try:
             self.PRUstate.write('stop')
             self.PRUstate.close()
+            t.close()
         except IOError:
             print("-  ERROR  PRU0 failed to stop")
             self.PRUstate.close()
-
-    def exposed_close_server(self):
-        try:
             t.close()
-        except EOFError:
-            print("connection lost")
-    
+
     def exposed_pru_communicate(self, samp_rate):
         try:
             self.PRUdev = open(self.CHAR_DEV0, "rb+", 0)
@@ -79,8 +75,10 @@ class BeagleBoneDDS(rpyc.Service):
             charBuf = self.PRUdev.read(self.RPMSG_BUF_SIZE)
             intBuf = np.asarray(struct.unpack('<248H', charBuf))
             fullBuf = np.append(fullBuf, intBuf)
-            print("\r-    rpmsg packet received ( %d / %d )" % ((i + 1), tot), end='')
-        self.exposed_pru_close()
+            if i < tot:
+                print("\r-    rpmsg packet received ( %d / %d )" % ((i + 1), tot), end='')
+            else:
+                print("\r-    rpmsg packet received ( %d / %d )" % ((i + 1), tot))
         return fullBuf
 
 
