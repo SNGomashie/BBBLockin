@@ -59,9 +59,6 @@ void main(void){
 
   samp_period /= 100;
 
-  RPMsg_in = RPMSGreceive();
-  amount_samp = atoi(RPMsg_in);
-
   /* Main loop */
   while(1){
     /* Timer interrupt polling */
@@ -100,7 +97,7 @@ void main(void){
         i++;
       }
     }
-    if(!(i < amount_samp)){
+    if(!(i < 41)){
       break;
     }
   }
