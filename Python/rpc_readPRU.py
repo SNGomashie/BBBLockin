@@ -27,7 +27,7 @@ class BeagleBoneDDS(rpyc.Service):
             print("-    PRU0 is offline, starting now")
             try:
                 self.PRUstate.write('start')
-                print("-    PRU0 is being started")
+                print("-    PRU0 has started")
                 self.PRUstate.close()
                 time.sleep(2)
             except IOError:
@@ -42,11 +42,9 @@ class BeagleBoneDDS(rpyc.Service):
             print("\n-    Stopping PRU & RPC server")
             self.PRUstate.write('stop')
             self.PRUstate.close()
-            t.close()
         except IOError:
             print("-  ERROR  PRU0 failed to stop")
             self.PRUstate.close()
-            t.close()
         pass
 
     def exposed_pru_close(self):
