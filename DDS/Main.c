@@ -31,6 +31,7 @@ void main(void){
   uint32_t samp_period =0;
   uint16_t samp_freq =0;
   uint16_t x = 0;
+  uint8_t amount_samp = 0;
   char* RPMsg_in;
   uint8_t i = 0;
 
