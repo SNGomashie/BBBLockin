@@ -53,6 +53,7 @@ class BeagleBoneDDS(rpyc.Service):
         try:
             self.PRUstate.write('stop')
             self.PRUstate.close()
+            print("-    Disconnected")
             t.close()
         except IOError:
             print("-  ERROR  PRU0 failed to stop")
