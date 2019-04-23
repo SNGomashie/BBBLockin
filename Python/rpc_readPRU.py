@@ -39,6 +39,7 @@ class BeagleBoneDDS(rpyc.Service):
     def on_disconnect(self, conn):
         self.PRUstate = open(self.REMOTEPROC_STATE0, "r+")
         try:
+            print("\n-    Stopping PRU & RPC server")
             self.PRUstate.write('stop')
             self.PRUstate.close()
             t.close()
@@ -53,7 +54,7 @@ class BeagleBoneDDS(rpyc.Service):
         try:
             self.PRUstate.write('stop')
             self.PRUstate.close()
-            print("\n-    Disconnected")
+            print("-    Disconnected")
             t.close()
         except IOError:
             print("-  ERROR  PRU0 failed to stop")
