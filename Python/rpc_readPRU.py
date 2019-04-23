@@ -57,13 +57,14 @@ class BeagleBoneDDS(rpyc.Service):
             print("-  ERROR  Could not open device: 'rpmsg_pru30'")
             t.close()
 
-    def exposed_pru_read(self):
+    def exposed_pru_read(self, samples):
         fullBuf = np.empty(0)
-        for i in range(10):
+        tot = samples / 248
+        for i in range(tot):
             charBuf = self.PRUdev.read(self.RPMSG_BUF_SIZE)
             intBuf = np.asarray(struct.unpack('<248H', charBuf))
             fullBuf = np.append(fullBuf, intBuf)
-            print("-    rpmsg packet received")
+            print("-    rpmsg packet received ( %d / %d )" % (i, tot), end='\r')
         return fullBuf
 
     def exposed_pru_close(self):
