@@ -95,11 +95,12 @@ void main(void){
         RPMSGtransmit_block(blkdata);
         x = 0;
         i++;
+        if(!(i < 67)){
+          IEPstop();
+        }
       }
     }
-    if(!(i < 67)){
-      break;
-    }
+
   }
   __halt();
 }
