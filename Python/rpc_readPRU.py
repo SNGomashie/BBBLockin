@@ -42,6 +42,7 @@ class BeagleBoneDDS(rpyc.Service):
         try:
             # os.fsync(self.PRUdev)
             self.PRUdev.close()
+            # Delay for a few seconds so the kernel can flush the remoteproc FIFO
             time.sleep(2)
             print("\n-    Stopping PRU & RPC server")
             self.PRUstate.write('stop')
