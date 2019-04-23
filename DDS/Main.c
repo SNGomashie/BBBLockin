@@ -70,17 +70,11 @@ void main(void){
       INTCclear(7);
       /* Capture period and calculate phase incrementor */
       period = CT_ECAP.CAP1;
-      pru1_mem[0] = period;
       period /= 100;
 
       /* Calculate optimal phase increment for the corresponding period */
       incrementor = P2_24 / period;
       incrementor = (uint64_t)incrementor * (uint64_t)samp_period;
-
-      pru1_mem[1] = incrementor;
-
-      // incrementor = (uint64_t)samp_period * (uint64_t)P2_24;
-      // incrementor /= period;
 
       /* Toggle pin (debugging)*/
       __R30 ^= 1 << PIN;
@@ -106,7 +100,7 @@ void main(void){
       RPMSGtransmit_block(blkdata);
       x = 0;
       i++;
-      if(!(i < amount_samp)){
+      if(!(i < 41)){
         break;
       }
     }
