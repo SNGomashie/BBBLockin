@@ -58,12 +58,13 @@ class BeagleBoneDDS(rpyc.Service):
             t.close()
 
     def exposed_pru_read(self):
-        fullBuf = np.empty(2480)
+        fullBuf = np.empty(0)
         for i in range(10):
             charBuf = self.PRUdev.read(self.RPMSG_BUF_SIZE)
             intBuf = np.asarray(struct.unpack('<248H', charBuf))
             print(intBuf)
-            np.append(fullBuf, intBuf)
+            fullBuf = np.append(fullBuf, intBuf)
+        print(fullBuf)
         return fullBuf
 
     def exposed_pru_close(self):
