@@ -101,9 +101,6 @@ void main(void){
       RPMSGtransmit_block(blkdata);
       x = 0;
       i++;
-      if(!(i < 10)){
-        break;
-      }
     }
   }
   __halt();
