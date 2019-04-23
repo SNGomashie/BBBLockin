@@ -97,7 +97,7 @@ void main(void){
         i++;
       }
     }
-    if(!(i < 41)){
+    if(!(i < 67)){
       break;
     }
   }
