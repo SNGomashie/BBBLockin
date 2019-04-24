@@ -217,7 +217,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   CT_MCSPI0.CH0CONF_bit.CLKD = divider;
 
   /* Set world length to 16bit */
-  CT_MCSPI0.CH0CONF_bit.WL = wordlength;
+  CT_MCSPI0.CH0CONF_bit.WL = word_length;
 
   // Set SPID0 as not a transmissionline
   CT_MCSPI0.CH0CONF_bit.DPE0 = 0x1;
