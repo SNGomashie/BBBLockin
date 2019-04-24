@@ -242,8 +242,8 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   CT_MCSPI0.CH0CONF_bit.TRM = 0x0;
   CT_MCSPI0.CH0CONF_bit.DMAW = 0x0;
   CT_MCSPI0.CH0CONF_bit.DMAR = 0x0;
-  CT_MCSPI0.CH0CONF_bit.DPE0 = 0x0;
-  CT_MCSPI0.CH0CONF_bit.DPE1 = 0x1;
+  CT_MCSPI0.CH0CONF_bit.DPE0 = 0x1;
+  CT_MCSPI0.CH0CONF_bit.DPE1 = 0x0;
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
   CT_MCSPI0.CH0CONF_bit.TURBO = 0x0;
   CT_MCSPI0.CH0CONF_bit.FORCE = 0x0;
