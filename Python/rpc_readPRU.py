@@ -2,7 +2,7 @@ import rpyc
 import struct
 import time
 import numpy as np
-import os
+import sys
 
 rpyc.core.protocol.DEFAULT_CONFIG['allow_pickle'] = True
 
@@ -46,9 +46,11 @@ class BeagleBoneDDS(rpyc.Service):
             print("\n-    Stopping PRU & RPC server")
             self.PRUstate.write('stop')
             self.PRUstate.close()
+            t.close()
         except IOError:
             print("-  ERROR  PRU0 failed to stop")
             self.PRUstate.close()
+            t.close()
         pass
 
     def exposed_pru_close(self):
