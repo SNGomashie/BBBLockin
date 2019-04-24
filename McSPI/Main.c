@@ -41,7 +41,7 @@ void main(void){
   /* Enable channel */
   McSPIenable(0);
 
-  CT_MCSPI0.TX0 = 0xFFFF;
+  // CT_MCSPI0.TX0 = 0xFFFF;
 
   // pru0_mem[0] = CT_MCSPI0.TX0;
   // pru0_mem[1] = 0xFFFF;
