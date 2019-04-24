@@ -43,5 +43,7 @@ void main(void){
 
   pru0_mem[0] = LTC1859singletransfer(0);
 
+  McSPIdisable(0);
+
   __halt();
 }

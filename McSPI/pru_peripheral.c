@@ -249,7 +249,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   CT_MCSPI0.CH0CONF_bit.FORCE = 0x0;
   CT_MCSPI0.CH0CONF_bit.SBE = 0x0;
   CT_MCSPI0.CH0CONF_bit.FFEW = 0x0;
-  CT_MCPSI0.CH0CONF_bit.FFER = 0x0;
+  CT_MCSPI0.CH0CONF_bit.FFER = 0x0;
   CT_MCSPI0.CH0CONF_bit.CLKG = 0x0;
 
 }
