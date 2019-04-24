@@ -205,7 +205,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 0x0001;
   /* Wait until reset is done */
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
-  CT_CSPI0.SYSCONFIG_bit.CLOCKACTIVITY = 0x3;
+  CT_MCSPI0.SYSCONFIG_bit.CLOCKACTIVITY = 0x3;
 
   // Module configuration
   /* Set SPI module to Master Mode */
