@@ -40,6 +40,8 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
      11. [SYNC w/ timer](https://github.com/SNGomashie/BBBLockin/tree/master/Sync)
      12. [SYNC w/ eCAP](https://github.com/SNGomashie/BBBLockin/tree/master/eCAP)
 4. [Simulating a Lock-in Amplifier](https://github.com/SNGomashie/BBBLockin/tree/master/Sim)
+5. [Generating Sine/Cosine through DDS](https://github.com/SNGomashie/BBBLockin/tree/master/DDS)
+5. [Implementing the Lock-in Amplifier](https://github.com/SNGomashie/BBBLockin/tree/master/Lockin)
 
 
 
@@ -60,10 +62,20 @@ During my intership at SRON Netherlands Institute for Space Research I had to de
 - [x] Determine max speed for lock in on PRU
 - [x] Determine reading speed PRU
 - [x] Measure period using eCAP
-- [ ] Implement PLL
+- [x] Implement DDS
 - [ ] Implement lock-in amplifier on the PRU
 
 ## Setup
+
+### Requierments
+1. BeagleBone Black
+2. 16GB microSD card
+3. MicroSD to USB / MicroSD to SD adapter
+4. MicroUSB cable to power the BeagleBone Black
+4. An internet connection wired or wireless
+5. (Optional - UART example) 3V3 FTDI cable
+6. (Optional - SPI example) SPI ADC
+7. (Optional - eCAP example)  Function generator
 
 ### Quick start guide
 1. Download the latest image from the [BeagleBone website](https://beagleboard.org/latest-images)
