@@ -12,7 +12,7 @@ data = c.root.pru_read(samples)
 
 sin_array = np.asarray(data)
 
-sin_array -= 32766
+sin_array -= 32767
 
 samp_freq = 10000  # Hz
 freq = 100  # Hz
