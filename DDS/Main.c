@@ -86,12 +86,13 @@ void main(void){
       output = interpolate(accumulator);
 
 
-      CYCLEstart();
+
       blkdata[x] = output;
-      pru1_mem[0] = CYCLEstop();
+
+      CYCLEstart();
       /* add incrementor to phase */
       accumulator += incrementor;
-
+      pru1_mem[0] = CYCLEstop();
       /* Limit the phase accumulator to 24 bits */
       /*       Q00000000.0000000000000000       */
       /*        --------.----------------       */
