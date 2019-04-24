@@ -43,11 +43,11 @@ void main(void){
 
   CT_MCSPI0.TX0 = 0xFFFF;
 
-  pru0_mem[0] = CT_MCSPI0.TX0;
-  pru0_mem[1] = 0xFFFF;
-  // pru0_mem[0] = LTC1859singletransfer(0);
+  // pru0_mem[0] = CT_MCSPI0.TX0;
+  // pru0_mem[1] = 0xFFFF;
+  pru0_mem[0] = LTC1859singletransfer(0);
 
-  // McSPIdisable(0);
+  McSPIdisable(0);
 
   __halt();
 }
