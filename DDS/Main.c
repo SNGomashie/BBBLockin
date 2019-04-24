@@ -73,10 +73,9 @@ void main(void){
       period = CT_ECAP.CAP1;
       period /= 100;
 
+      CYCLEstart();
       /* Calculate optimal phase increment for the corresponding period */
       norm_period = P2_24 / period;
-
-      CYCLEstart();
       incrementor = (uint64_t)norm_period * (uint64_t)samp_period;
       pru1_mem[0] = CYCLEstop();
 
