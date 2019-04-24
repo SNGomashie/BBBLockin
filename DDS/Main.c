@@ -36,8 +36,8 @@ void main(void){
   uint8_t i = 0;
 
   /* NCO */
-  uint64_t incrementor64 = 0;
-  uint32_t incrementor32 = 0;
+  uint64_t incrementor = 0;
+
   uint32_t norm_period = 0;
   uint32_t accumulator = 0;
   uint32_t output = 0;
@@ -77,8 +77,7 @@ void main(void){
 
       /* Calculate optimal phase increment for the corresponding period */
       norm_period = P2_24 / period;
-      incrementor64 = (uint64_t)norm_period * (uint64_t)samp_period;
-      incrementor32 = incrementor64;
+      incrementor = (uint64_t)norm_period * (uint64_t)samp_period;
 
       /* Toggle pin (debugging)*/
       // __R30 ^= 1 << PIN;
@@ -92,7 +91,7 @@ void main(void){
 
       CYCLEstart();
       /* add incrementor to phase */
-      accumulator += incrementor32;
+      accumulator = accumulator + incrementor;
       pru1_mem[0] = CYCLEstop();
       /* Limit the phase accumulator to 24 bits */
       /*       Q00000000.0000000000000000       */
