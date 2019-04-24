@@ -203,9 +203,9 @@ void eCAPclear_int(void);
  */
 void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints);
 
-void McSPIenable(void);
+void McSPIenable(uint8_t module);
 
-void McSPIdisable(void);
+void McSPIdisable(uint8_t module);
 
 
 /***********************************************/
