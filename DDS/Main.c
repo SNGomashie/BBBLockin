@@ -67,9 +67,9 @@ void main(void){
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
       CYCLEstart();
+      pru1_mem[0] = CYCLEstop();
       IEPclear_int();
       INTCclear(7);
-      pru1_mem[0] = CYCLEstop();
       /* Capture period and calculate phase incrementor */
       period = CT_ECAP.CAP1;
       period /= 100;
