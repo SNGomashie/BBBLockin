@@ -18,7 +18,7 @@ void LTC1859initialize(void){
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan){
-
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
   // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000000000000000; // single-ended, input +/-5V
   uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
   // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
@@ -41,7 +41,7 @@ uint16_t LTC1859singletransfer(uint8_t chan){
 
   /* Clear interrupts */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
-
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
   /* Start conversion, Stop reading */
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
@@ -51,7 +51,7 @@ uint16_t LTC1859singletransfer(uint8_t chan){
 
   /* Wait until Conversion is done */
   while(!(__R31 & (1 << _BUSY)));
-
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
   /* pull down CONVST and _RD */
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
@@ -64,7 +64,7 @@ uint16_t LTC1859singletransfer(uint8_t chan){
 
   /* Clear interrupts */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
-
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
   /* Start conversion */
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
