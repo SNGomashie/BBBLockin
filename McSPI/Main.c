@@ -39,7 +39,7 @@ void main(void){
   LTC1859initialize();
 
   /* Enable channel */
-  McSPIenable(0);
+  // McSPIenable(0);
 
   CT_MCSPI0.TX0 = 0xFFFF;
   pru0_mem[0] = CT_MCSPI0.TX0;
