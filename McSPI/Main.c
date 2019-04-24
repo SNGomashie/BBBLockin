@@ -38,11 +38,11 @@ void main(void){
   /* Initialize the LTC1859 adc */
   LTC1859initialize();
 
-
-
-  CT_MCSPI0.TX0 = 0xFFFF;
   /* Enable channel */
   McSPIenable(0);
+
+  CT_MCSPI0.TX0 = 0xFFFF;
+
   pru0_mem[0] = CT_MCSPI0.TX0;
   pru0_mem[1] = 0xFFFF;
   // pru0_mem[0] = LTC1859singletransfer(0);
