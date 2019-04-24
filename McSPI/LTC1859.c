@@ -64,8 +64,11 @@ uint16_t LTC1859singletransfer(uint8_t chan){
 
   /* Clear interrupts */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
-  CT_MCSPI0.CH0CTRL_bit.FORCE = 0x0;
+
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
+  CT_MCSPI0.CH0CONF_bit.FORCE = 0x0;
+
   /* Start conversion */
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
