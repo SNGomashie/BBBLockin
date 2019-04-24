@@ -74,8 +74,10 @@ void main(void){
       /* Calculate optimal phase increment for the corresponding period */
       CYCLEstart();
       incrementor = P2_24 / period;
-      incrementor = (uint64_t)incrementor * (uint64_t)samp_period;
       pru1_mem[0] = CYCLEstop();
+
+      incrementor = (uint64_t)incrementor * (uint64_t)samp_period;
+
 
       /* Toggle pin (debugging)*/
       __R30 ^= 1 << PIN;
