@@ -30,9 +30,9 @@ void main(void){
   uint32_t period = 0;
   uint32_t samp_period =0;
   uint16_t samp_freq =0;
-  uint16_t x = 0;
   uint8_t amount_samp = 0;
   char* RPMsg_in;
+  uint16_t x = 0;
   uint8_t i = 0;
 
   /* NCO */
@@ -66,8 +66,10 @@ void main(void){
   while(1){
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
+      CYCLEstart();
       IEPclear_int();
       INTCclear(7);
+      pru1_mem = CYCLEstop();
       /* Capture period and calculate phase incrementor */
       period = CT_ECAP.CAP1;
       period /= 100;
@@ -103,7 +105,6 @@ void main(void){
         }
       }
     }
-
   }
   __halt();
 }
