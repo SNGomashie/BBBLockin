@@ -80,7 +80,7 @@ void main(void){
       pru1_mem[0] = CYCLEstop();
 
       /* Toggle pin (debugging)*/
-      __R30 ^= 1 << PIN;
+      // __R30 ^= 1 << PIN;
 
       /* interpolate to get accurate output */
       output = interpolate(accumulator);
