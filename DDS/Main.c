@@ -67,7 +67,7 @@ void main(void){
   while(1){
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
-      CYCLEstart();
+
       IEPclear_int();
       INTCclear(7);
       /* Capture period and calculate phase incrementor */
@@ -81,10 +81,12 @@ void main(void){
 
       /* Toggle pin (debugging)*/
       // __R30 ^= 1 << PIN;
-
+      CYCLEstart();
       /* interpolate to get accurate output */
       output = interpolate(accumulator);
 
+      pru1_mem[0] = CYCLEstop();
+      
       blkdata[x] = output;
 
       /* add incrementor to phase */
@@ -105,7 +107,7 @@ void main(void){
           IEPstop();
         }
       }
-    pru1_mem[0] = CYCLEstop();
+
     }
   }
   __halt();
