@@ -68,7 +68,7 @@ uint16_t LTC1859singletransfer(uint8_t chan){
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
 
-  return CT_MCSPI0
+  return CT_MCSPI0.RX0;
 }
 
 // uint16_t LTC1859transfer(uint8_t chan[]){

@@ -9,6 +9,11 @@
 #define _BUSY   0
 #define CONVST  5
 
+#ifndef __R30
+  volatile register unsigned int __R30;
+  volatile register unsigned int __R31;
+#endif
+
 const uint8_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
 
 void LTC1859initialize(void);
