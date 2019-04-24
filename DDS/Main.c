@@ -67,17 +67,17 @@ void main(void){
   while(1){
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
+      CYCLEstart();
       IEPclear_int();
       INTCclear(7);
       /* Capture period and calculate phase incrementor */
       period = CT_ECAP.CAP1;
       period /= 100;
 
-      CYCLEstart();
       /* Calculate optimal phase increment for the corresponding period */
       norm_period = P2_24 / period;
       incrementor = (uint64_t)norm_period * (uint64_t)samp_period;
-      pru1_mem[0] = CYCLEstop();
+
 
       /* Toggle pin (debugging)*/
       // __R30 ^= 1 << PIN;
@@ -105,6 +105,7 @@ void main(void){
           IEPstop();
         }
       }
+    pru1_mem[0] = CYCLEstop();
     }
   }
   __halt();
