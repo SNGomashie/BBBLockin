@@ -41,7 +41,9 @@ void main(void){
   /* Enable channel */
   McSPIenable(0);
 
-  pru0_mem[0] = LTC1859singletransfer(0);
+  CT_MCSPI0.TX0 = 0xFFFF;
+
+  // pru0_mem[0] = LTC1859singletransfer(0);
 
   McSPIdisable(0);
 
