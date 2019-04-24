@@ -203,30 +203,55 @@ void eCAPinitialize(void){
 void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   /* Reset McSPI0 module */
   CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 0x0001;
-
   /* Wait until reset is done */
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
 
+  // Module configuration
+  /* Set SPI module to Master Mode */
+  CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
+  /* Single channel in master mode */
+  CT_MCSPI0.MODULCTRL_bit.SINGLE = 0x1;
+  /* SPI CS does nothing */
+  CT_MCSPI0.MODULCTRL_bit.PIN34 = 0x1;
+  /* Functional mode */
+  CT_MCSPI0.MODULCTRL_bit.SYSTEM_TEST = 0x0;
+  /* No initial delay */
+  CT_MCSPI0.MODULCTRL_bit.INITDLY = 0x0;
+  /* Multiple word access disabled */
+  CT_MCSPI0.MODULCTRL_bit.MOA = 0x0;
+  /* FIFOs data managed by TX, RX registers */
+  CT_MCSPI0.MODULCTRL_bit.FDAA = 0x0;
+
+  // Interrupt configuration
   /* Reset interrupt status */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
-
   /* Configure interrupts */
   CT_MCSPI0.IRQENABLE = ints;
 
-  // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
+  // Channel configuration
+  /* SPI clk phase (data latched on odd number edges) */
+  CT_MCSPI0.CH0CONF_bit.PHA = 0x0;
+  /* SPI clk polatiry (clk high on active state) */
+  CT_MCSPI0.CH0CONF_bit.POL = 0x0;
+  /* Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4 */
   CT_MCSPI0.CH0CONF_bit.CLKD = divider;
-
+  /* CS polarity */
+  CT_MCSPI0.CH0CONF_bit.EPOL = 0;
   /* Set world length to 16bit */
   CT_MCSPI0.CH0CONF_bit.WL = word_length;
-
-  // Set SPID0 as not a transmissionline
-  CT_MCSPI0.CH0CONF_bit.DPE0 = 0x1;
-
-  // Set SPID0 as input
+  CT_MCSPI0.CH0CONF_bit.TRM = 0x0;
+  CT_MCSPI0.CH0CONF_bit.DMAW = 0x0;
+  CT_MCSPI0.CH0CONF_bit.DMAR = 0x0;
+  CT_MCSPI0.CH0CONF_bit.DPE0 = 0x0;
+  CT_MCSPI0.CH0CONF_bit.DPE1 = 0x1;
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
+  CT_MCSPI0.CH0CONF_bit.TURBO = 0x0;
+  CT_MCSPI0.CH0CONF_bit.FORCE = 0x0;
+  CT_MCSPI0.CH0CONF_bit.SBE = 0x0;
+  CT_MCSPI0.CH0CONF_bit.FFEW = 0x0;
+  CT_MCPSI0.CH0CONF_bit.FFER = 0x0;
+  CT_MCSPI0.CH0CONF_bit.CLKG = 0x0;
 
-  /* Enable channel */
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 }
 
 void McSPIenable(uint8_t module){
