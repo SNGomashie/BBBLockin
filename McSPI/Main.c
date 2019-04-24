@@ -39,7 +39,7 @@ void main(void){
   LTC1859initialize();
 
   pru0_mem[0] = LTC1859singletransfer(0);
-
+  pru0_mem[1] = LTC1859singletransfer(1);
 
   __halt();
 }
