@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include "pru_peripheral.h"
 #include "LTC1859.h"
+#include "resource_table.h"
 
 #define DEBUG   6
 
