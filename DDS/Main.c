@@ -37,6 +37,7 @@ void main(void){
 
   /* NCO */
   uint64_t incrementor = 0;
+  uint32_t norm_period = 0;
   uint32_t accumulator = 0;
   uint32_t output = 0;
 
@@ -71,12 +72,12 @@ void main(void){
       /* Capture period and calculate phase incrementor */
       period = CT_ECAP.CAP1;
       period /= 100;
-      /* Calculate optimal phase increment for the corresponding period */
 
-      incrementor = P2_24 / period;
+      /* Calculate optimal phase increment for the corresponding period */
+      norm_period = P2_24 / period;
 
       CYCLEstart();
-      incrementor = (uint64_t)incrementor * (uint64_t)samp_period;
+      incrementor = (uint64_t)norm_period * (uint64_t)samp_period;
       pru1_mem[0] = CYCLEstop();
 
       /* Toggle pin (debugging)*/
