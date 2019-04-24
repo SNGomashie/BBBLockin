@@ -206,6 +206,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   /* Wait until reset is done */
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
 
+  CT_MCSPI0.SYSCONFIG_bit.SIDLEMODE = 0x1;
   // Module configuration
   /* Set SPI module to Master Mode */
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
