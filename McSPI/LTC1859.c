@@ -69,8 +69,8 @@ uint16_t LTC1859singletransfer(uint8_t chan){
   CT_MCSPI0.CH0CONF_bit.FORCE = 0x0;
 
   /* Start conversion */
-  __R30 |= (1 << CONVST);
-  __R30 |= (1 << _RD);
+  // __R30 |= (1 << CONVST);
+  // __R30 |= (1 << _RD);
 
   return CT_MCSPI0.RX0;
 }
