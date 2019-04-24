@@ -13,7 +13,6 @@ void LTC1859initialize(void){
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
 
   /* Set pins */
-  __R30 |= (1 << CS);
   __R30 |= (1 << _RD);
 }
 
