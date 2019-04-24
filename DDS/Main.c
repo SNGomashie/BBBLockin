@@ -92,7 +92,7 @@ void main(void){
 
       CYCLEstart();
       /* add incrementor to phase */
-      accumulator += incrementor;
+      accumulator += incrementor32;
       pru1_mem[0] = CYCLEstop();
       /* Limit the phase accumulator to 24 bits */
       /*       Q00000000.0000000000000000       */
