@@ -213,7 +213,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   /* Single channel in master mode */
   CT_MCSPI0.MODULCTRL_bit.SINGLE = 0x1;
   /* SPI CS does nothing */
-  CT_MCSPI0.MODULCTRL_bit.PIN34 = 0x0;
+  CT_MCSPI0.MODULCTRL_bit.PIN34 = 0x1;
   /* Functional mode */
   CT_MCSPI0.MODULCTRL_bit.SYSTEM_TEST = 0x0;
   /* No initial delay */
