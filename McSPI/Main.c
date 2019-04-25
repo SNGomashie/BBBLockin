@@ -23,6 +23,8 @@
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
 void main(void){
+  uint16_t result = 0;
+  char data[16] = "";
   /* Clear output register */
   __R30 = 0x00000000;
 
@@ -31,14 +33,18 @@ void main(void){
 
   /* Access PRCM (without CT) to initialize McSPI0 clock */
   PRCMinitialize();
-
+  UARTinitialize();
   /* Initialize the McSPI module */
   McSPIinitialze(0x2, 0xF, 0x0);
 
   /* Initialize the LTC1859 adc */
   LTC1859initialize();
+  while(1){
+    result = LTC1859singletransfer(0);
+    sprintf(data, "-  %d", result);
+    UARTtransmit(data);
+  }
 
-  pru0_mem[0] = LTC1859singletransfer(0);
 
   __halt();
 }
