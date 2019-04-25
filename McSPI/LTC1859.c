@@ -18,6 +18,7 @@ void LTC1859initialize(void){
   __delay_cycles(150);
   __R30 &= ~(1 << CONVST);
   while(!(__R31 & (1 << _BUSY)));
+  __R30 ^= (1 << DEBUG);
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
@@ -39,13 +40,13 @@ uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
 
   /* Check if McSPI TX register is empty, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
-
+  __R30 ^= (1 << DEBUG);
   /* Write word to be transmitted into TX register */
   CT_MCSPI0.TX0 = SPIsend;
 
   /* Check if McSPI RX register is full, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
-
+  __R30 ^= (1 << DEBUG);
   /* Disable channel */
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 

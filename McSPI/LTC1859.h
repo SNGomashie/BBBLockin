@@ -8,6 +8,7 @@
 #define _RD     1
 #define _BUSY   0
 #define CONVST  5
+#define DEBUG   3
 
 #ifndef __R30
   volatile register unsigned int __R30;
