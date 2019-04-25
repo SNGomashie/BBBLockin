@@ -39,8 +39,7 @@ uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   /* Check if McSPI TX register is empty, if it is continue */
-  while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
-  __R30 ^= (1 << DEBUG);
+
   /* Write word to be transmitted into TX register */
   CT_MCSPI0.TX0 = SPIsend;
 
