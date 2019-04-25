@@ -50,12 +50,12 @@ uint16_t LTC1859singletransfer(uint8_t chan){
 
   /* Delay until conversion starts */
   __delay_cycles(100);
-
+  __R30 &= ~(1 << CONVST);
   /* Wait until Conversion is done */
   while(!(__R31 & (1 << _BUSY)));
 
   /* pull down CONVST and _RD */
-  __R30 &= ~(1 << CONVST);
+
   __R30 &= ~(1 << _RD);
 
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
