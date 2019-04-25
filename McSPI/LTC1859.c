@@ -11,11 +11,11 @@ void LTC1859initialize(void){
   __R30 = 0x00000000;
 
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
-
+  while((__R31 & (1 << _BUSY)));
   /* Set pins */
   __R30 |= (1 << _RD);
   __R30 |= (1 << CONVST);
-  __delay_cycles(100);
+  __delay_cycles(150);
   while(!(__R31 & (1 << _BUSY)));
 }
 
