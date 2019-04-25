@@ -40,7 +40,7 @@ uint16_t LTC1859singletransfer(uint8_t chan){
   /* Check if McSPI RX register is full, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
 
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+  // CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
   /* Clear interrupts */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
@@ -58,7 +58,7 @@ uint16_t LTC1859singletransfer(uint8_t chan){
 
   __R30 &= ~(1 << _RD);
 
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+  // CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
   /* Write nothing to TX Register */
   CT_MCSPI0.TX0 = 0x0000;
 
