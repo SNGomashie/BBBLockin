@@ -48,7 +48,7 @@ uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
 
   /* Write word to be transmitted into TX register */
   CT_MCSPI0.TX0 = SPIsend;
-
+  __halt();
   __R30 ^= (1 << DEBUG); // LOW
 
   /* Check if McSPI RX register is full, if it is continue */
