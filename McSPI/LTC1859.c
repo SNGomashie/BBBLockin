@@ -25,16 +25,14 @@ uint16_t LTC1859singletransfer(uint8_t chan){
   /* Check if ADC is busy with conversion and continue if not*/
   while(!(__R31 & (1 << _BUSY)));
   /* pull down CONVST and _RD */
-
+  __R30 &= ~(1 << CONVST);
+  __R30 &= ~(1 << _RD);
 
   CT_MCSPI0.CH0CONF_bit.FORCE = 0x1;
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   /* Check if McSPI TX register is empty, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
-
-  __R30 &= ~(1 << CONVST);
-  __R30 &= ~(1 << _RD);
 
   /* Write word to be transmitted into TX register */
   CT_MCSPI0.TX0 = SPIsend;
@@ -48,7 +46,7 @@ uint16_t LTC1859singletransfer(uint8_t chan){
 
   /* Start conversion, Stop reading */
   __R30 |= (1 << CONVST);
-  __R30 |= (1 << _RD);
+  // __R30 |= (1 << _RD);
 
   /* Delay until conversion starts */
   __delay_cycles(100);
