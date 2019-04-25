@@ -16,7 +16,6 @@ void LTC1859initialize(void){
   __R30 |= (1 << CONVST);
   __delay_cycles(100);
   __R30 &= ~(1 << CONVST);
-  while(!(__R31 & (1 << _BUSY)));
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan){
