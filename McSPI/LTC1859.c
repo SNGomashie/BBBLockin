@@ -17,11 +17,11 @@ void LTC1859initialize(void){
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan){
-  uint16_t SPIsend = (ADCch[chan] << 12) | 0b0000000000000000; // single-ended, input +/-5V
+  // uint16_t SPIsend = (ADCch[chan] << 12) | 0b0000000000000000; // single-ended, input +/-5V
   // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
   // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
   // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
-
+  uint16_t SPIsend = 0x0000000000000000;
   /* Check if ADC is busy with conversion and continue if not*/
   while(!(__R31 & (1 << _BUSY)));
   /* pull down CONVST and _RD */
