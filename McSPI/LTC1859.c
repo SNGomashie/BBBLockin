@@ -8,9 +8,7 @@
 const uint16_t ADCch[] = {0, 4, 1, 5, 2, 6, 3, 7};
 
 void LTC1859initialize(void){
-  __R30 = 0x00000000;
-
-  while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
+while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
 
   /* Set pins */
   __R30 |= (1 << CS);
