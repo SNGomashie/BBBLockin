@@ -17,7 +17,6 @@ void LTC1859initialize(void){
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan){
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
   // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000000000000000; // single-ended, input +/-5V
   uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
   // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
@@ -29,6 +28,8 @@ uint16_t LTC1859singletransfer(uint8_t chan){
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
 
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+
   /* Check if McSPI TX register is empty, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
 
@@ -38,9 +39,10 @@ uint16_t LTC1859singletransfer(uint8_t chan){
   /* Check if McSPI RX register is full, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
 
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
   /* Clear interrupts */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+
   /* Start conversion, Stop reading */
   __R30 |= (1 << CONVST);
   __R30 |= (1 << _RD);
@@ -50,23 +52,26 @@ uint16_t LTC1859singletransfer(uint8_t chan){
 
   /* Wait until Conversion is done */
   while(!(__R31 & (1 << _BUSY)));
-  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+
   /* pull down CONVST and _RD */
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
 
+  CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
   /* Write nothing to TX Register */
   CT_MCSPI0.TX0 = 0x0000;
 
   /* Wait until RX register is full */
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
 
-  /* Clear interrupts */
-  CT_MCSPI0.IRQSTATUS = 0xFFFF;
-
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
 
   CT_MCSPI0.CH0CONF_bit.FORCE = 0x0;
+
+  /* Clear interrupts */
+  CT_MCSPI0.IRQSTATUS = 0xFFFF;
+
+
 
   /* Start conversion */
   // __R30 |= (1 << CONVST);
