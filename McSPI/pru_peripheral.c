@@ -240,6 +240,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   CT_MCSPI0.CH0CONF_bit.EPOL = 0x0;
   /* Set world length to 16bit */
   CT_MCSPI0.CH0CONF_bit.WL = word_length;
+  /* Transmite receive mode */
   CT_MCSPI0.CH0CONF_bit.TRM = 0x0;
   CT_MCSPI0.CH0CONF_bit.DMAW = 0x0;
   CT_MCSPI0.CH0CONF_bit.DMAR = 0x0;
@@ -247,7 +248,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   CT_MCSPI0.CH0CONF_bit.DPE1 = 0x0;
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
   // CT_MCSPI0.CH0CONF_bit.TURBO = 0x1;
-  // CT_MCSPI0.CH0CONF_bit.FORCE = 0x1;
+  CT_MCSPI0.CH0CONF_bit.FORCE = 0x1;
   CT_MCSPI0.CH0CONF_bit.SBE = 0x0;
   CT_MCSPI0.CH0CONF_bit.FFEW = 0x0;
   CT_MCSPI0.CH0CONF_bit.FFER = 0x0;
