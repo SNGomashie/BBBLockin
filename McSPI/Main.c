@@ -38,7 +38,7 @@ void main(void){
   /* Initialize the LTC1859 adc */
   LTC1859initialize();
 
-  pru0_mem[0] = LTC1859singletransfer(1);
+  pru0_mem[0] = LTC1859singletransfer(0);
 
   __halt();
 }
