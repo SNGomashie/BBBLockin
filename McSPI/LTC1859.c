@@ -21,17 +21,18 @@ void LTC1859initialize(void){
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
+  uint16_t SPIsend = 0;
   switch(mode){
     case 0:
-      uint16_t SPIsend = (ADCch[chan] << 12) | 0b0000000000000000; // single-ended, input +/-5V
+      SPIsend = (ADCch[chan] << 12) | 0b0000000000000000; // single-ended, input +/-5V
     case 1:
-      uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
+      SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
     case 2:
-      uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
+      SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
     case 3:
-      uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
+      SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
     default:
-      uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
+      SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
   }
   /* Enable McSPI channel */
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
