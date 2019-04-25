@@ -22,7 +22,7 @@ void LTC1859initialize(void){
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
-  
+
   __R30 ^= (1 << DEBUG); // LOW
 
   uint16_t SPIsend = 0;
@@ -40,7 +40,7 @@ uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
   }
   /* Enable McSPI channel */
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
-
+  __delay_cycles(10);
   /* Check if McSPI TX register is empty, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
 
