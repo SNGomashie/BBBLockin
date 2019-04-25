@@ -27,7 +27,8 @@ uint16_t LTC1859singletransfer(uint8_t chan){
   /* pull down CONVST and _RD */
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
-
+  
+  CT_MCSPI0.CH0CONF_bit.FORCE = 0x1;
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   /* Check if McSPI TX register is empty, if it is continue */
