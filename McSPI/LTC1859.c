@@ -15,7 +15,6 @@ void LTC1859initialize(void){
   /* Set pins */
   __R30 |= (1 << CONVST);
   __delay_cycles(100);
-  __R30 &= ~(1 << CONVST);
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan){
