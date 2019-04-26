@@ -40,7 +40,7 @@ void main(void){
 
   while(1){
     adc_out = LTC1859readout(0, 1);
-    sprintf(data, "-  %d\n", adc_out);
+    sprintf(data, "%d\n", adc_out);
     UARTtransmit(data);
   }
 
