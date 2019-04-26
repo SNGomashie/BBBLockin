@@ -9,7 +9,7 @@ CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 PROJ_DIR=$(CURRENT_DIR)
 
 # Path to temporary folder
-PRU_0_GEN_DIR:=tmp0
+GEN_DIR:=tmp
 # PRU_1_GEN_DIR:=tmp1
 
 # PRU Folders
@@ -27,17 +27,17 @@ STACK_SIZE=0x100
 HEAP_SIZE=0x100
 
 # Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
-CFLAGS=-v3 -O2 --c99 --float_operations_allowed=none --display_error_number --endian=little --hardware_mac=on --printf_support=minimal --obj_directory=$(PRU_0_GEN_DIR) --pp_directory=$(PRU_0_GEN_DIR) -ppd -ppa
+CFLAGS=-v3 -O2 --c99 --float_operations_allowed=none --display_error_number --endian=little --hardware_mac=on --printf_support=minimal --obj_directory=$(GEN_DIR) --pp_directory=$(GEN_DIR) -ppd -ppa
 
 # Linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 LFLAGS=--reread_libs --warn_sections --stack_size=$(STACK_SIZE) --heap_size=$(HEAP_SIZE)
 
 # Targets
-PRU_0_TARGET=$(PRU_0_GEN_DIR)/$(PROJ_DIR).out
+PRU_0_TARGET=$(GEN_DIR)/$(PROJ_DIR).out
 # PRU_1_TARGET=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.out
 
 # Map file
-PRU_0_MAP=$(PRU_0_GEN_DIR)/$(PROJ_DIR).map
+PRU_0_MAP=$(GEN_DIR)/$(PROJ_DIR).map
 # PRU_1_MAP=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.map
 
 # Source files
@@ -45,9 +45,9 @@ PRU_0_SOURCES=$(wildcard PRU0/*.c)
 # PRU_1_SOURCES=$(wildcard PRU1/*.c)
 
 #Using .object instead of .obj in order to not conflict with the CCS build process
-PRU_0_OBJECTS=$(patsubst %,$(PRU_0_GEN_DIR)/%,$(PRU_0_SOURCES:.c=.object))
+PRU_0_OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(PRU_0_SOURCES:.c=.object))
 
-# PRU_0_OBJECTS=$(PRU_0_GEN_DIR)/$(PROJ_DIR)_0.obj
+# PRU_0_OBJECTS=$(GEN_DIR)/$(PROJ_DIR)_0.obj
 # PRU_1_OBJECTS=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.obj
 
 PRU_0_SYSFS=$(wildcard /sys/class/remoteproc/remoteproc1)
@@ -70,8 +70,8 @@ start:
 	@echo 'start' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot start PRU 1'
 
 install: $(PRU_0_TARGET)
-	@echo '-	Copying firmware files $(PRU_0_GEN_DIR)/$(PROJ_DIR).out & $(PRU_1_GEN_DIR)/$(PROJ_DIR).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
-	@sudo cp $(PRU_0_GEN_DIR)/$(PROJ_DIR).out /lib/firmware/am335x-pru0-fw
+	@echo '-	Copying firmware files $(GEN_DIR)/$(PROJ_DIR).out & $(PRU_1_GEN_DIR)/$(PROJ_DIR).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
+	@sudo cp $(GEN_DIR)/$(PROJ_DIR).out /lib/firmware/am335x-pru0-fw
 
 $(PRU_0_TARGET): $(PRU_0_OBJECTS) $(LINKER_COMMAND_FILE)
 	@echo '-	Invoking PRU Linker for PRU0: $^'
@@ -81,8 +81,8 @@ $(PRU_0_TARGET): $(PRU_0_OBJECTS) $(LINKER_COMMAND_FILE)
 	# 	@echo '-	Invoking PRU Linker for PRU1: $^'
 	# 	@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_1_TARGET) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-$(PRU_0_GEN_DIR)/%.object: PRU0/%.c
-	@mkdir -p $(PRU_0_GEN_DIR)
+$(GEN_DIR)/%.object: %.c
+	@mkdir -p $(GEN_DIR)
 	@echo '-	Invoking PRU Compiler for PRU0: $<'
 	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU0
 
@@ -93,4 +93,4 @@ $(PRU_0_GEN_DIR)/%.object: PRU0/%.c
 
 clean:
 	@echo '-	Cleaning output folders'
-	@rm -rf $(PRU_0_GEN_DIR)
+	@rm -rf $(GEN_DIR)
