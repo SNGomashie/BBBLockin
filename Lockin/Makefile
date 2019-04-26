@@ -41,7 +41,7 @@ PRU_0_MAP=$(PRU_0_GEN_DIR)/$(PROJ_DIR).map
 # PRU_1_MAP=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.map
 
 # Source files
-PRU_0_SOURCES=$(wildcard *.c)
+PRU_0_SOURCES=$(wildcard PRU0/*.c)
 # PRU_1_SOURCES=$(wildcard PRU1/*.c)
 
 #Using .object instead of .obj in order to not conflict with the CCS build process
@@ -81,7 +81,7 @@ $(PRU_0_TARGET): $(PRU_0_OBJECTS) $(LINKER_COMMAND_FILE)
 	# 	@echo '-	Invoking PRU Linker for PRU1: $^'
 	# 	@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_1_TARGET) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-$(PRU_0_GEN_DIR)/%.object: %.c
+$(PRU_0_GEN_DIR)/%.object: PRU0/%.c
 	@mkdir -p $(PRU_0_GEN_DIR)
 	@echo '-	Invoking PRU Compiler for PRU0: $<'
 	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU0
