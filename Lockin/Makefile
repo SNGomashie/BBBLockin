@@ -80,12 +80,12 @@ install: $(PRU_0_TARGET) $(PRU_1_TARGET)
 		@echo '-	Invoking: PRU Linker for PRU1: $^'
 		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET1) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-	$(GEN_DIR)/PRU0/%.object: PRU0/%.c
+	$(PRU_0_GEN_DIR)/%.object: PRU0/%.c
 		@mkdir -p $(GEN_DIR)
 		@echo '-	Invoking: PRU Compiler for PRU0: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU0
 
-	$(GEN_DIR)/PRU1/%.object: PRU1/%.c
+	$(PRU_1_GEN_DIR)/%.object: PRU1/%.c
 		@mkdir -p $(GEN_DIR)
 		@echo '-	Invoking: PRU Compiler for PRU1: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
