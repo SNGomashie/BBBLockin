@@ -9,7 +9,7 @@ CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 PROJ_DIR=$(CURRENT_DIR)
 
 # Path to temporary folder
-GEN_DIR:=gen
+GEN_DIR:=gen/PRU0
 # PRU_1_GEN_DIR:=tmp1
 
 # PRU Folders
@@ -33,7 +33,7 @@ CFLAGS=-v3 -O2 --c99 --float_operations_allowed=none --display_error_number --en
 LFLAGS=--reread_libs --warn_sections --stack_size=$(STACK_SIZE) --heap_size=$(HEAP_SIZE)
 
 # Targets
-PRU_0_TARGET=$(GEN_DIR)/PRU0/$(PROJ_DIR).out
+PRU_0_TARGET=$(GEN_DIR)/$(PROJ_DIR).out
 # PRU_1_TARGET=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.out
 
 # Map file
@@ -81,7 +81,7 @@ $(PRU_0_TARGET): $(PRU_0_OBJECTS) $(LINKER_COMMAND_FILE)
 	# 	@echo '-	Invoking PRU Linker for PRU1: $^'
 	# 	@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_1_TARGET) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-$(GEN_DIR)/PRU0/%.object: %.c
+$(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
 	@echo '-	Invoking PRU Compiler for PRU0: $<'
 	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU0
