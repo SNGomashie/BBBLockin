@@ -15,11 +15,11 @@ void main(void) {
   IEPinitialize(0x30D3B, 1, cmp);
   INTERNCOMinitialize(23);
   IEPstart();
+  INTERNCOMpoke();
   while(1){
     while(__R31 & (1 << 31)){
       IEPclear_int();
       INTCclear(7);
-      INTERNCOMpoke();
     }
   }
   __halt();
