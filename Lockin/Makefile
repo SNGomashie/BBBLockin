@@ -9,8 +9,8 @@ CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 PROJ_DIR=$(CURRENT_DIR)
 
 # Path to temporary folder
-PRU_0_GEN_DIR:=gen/PRU0
-PRU_1_GEN_DIR:=gen/PRU1
+PRU_0_GEN_DIR:=tmp/PRU0
+PRU_1_GEN_DIR:=tmp/PRU1
 
 # PRU Folders
 PRU_1_DIR:=$(CURRENT_DIR)/PRU1/
@@ -37,8 +37,8 @@ PRU_0_TARGET=$(PRU_0_GEN_DIR)/$(PROJ_DIR)_0.out
 PRU_1_TARGET=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.out
 
 # Map file
-PRU_0_MAP=$(GEN_DIR)/$(PROJ_DIR)_0.map
-PRU_1_MAP=$(GEN_DIR)/$(PROJ_DIR)_1.map
+PRU_0_MAP=$(PRU_0_GEN_DIR)/$(PROJ_DIR)_0.map
+PRU_1_MAP=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.map
 
 # Source files
 PRU_0_SOURCES=$(wildcard PRU0/*.c)
@@ -72,23 +72,23 @@ install: $(PRU_0_TARGET)
 	@sudo cp $(PRU_0_TARGET) /lib/firmware/am335x-pru0-fw
 	@sudo cp $(PRU_1_TARGET) /lib/firmware/am335x-pru1-fw
 
-	$(PRU_0_TARGET): $(PRU_0_OBJECTS)
+	$(PRU_0_TARGET): $(PRU_0_OBJECTS) $(LINKER_COMMAND_FILE)
 		@echo '-	Invoking PRU Linker for PRU0: $^'
 		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_0_TARGET) $(PRU_0_OBJECTS) -m$(PRU_0_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-	$(PRU_1_TARGET): $(PRU_1_OBJECTS)
-		@echo '-	Invoking PRU Linker for PRU1: $^'
-		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_1_TARGET) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
+	# $(PRU_1_TARGET): $(PRU_1_OBJECTS)
+	# 	@echo '-	Invoking PRU Linker for PRU1: $^'
+	# 	@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_1_TARGET) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
 	$(PRU_0_OBJECTS): PRU0/%.c
 		@mkdir -p $(PRU_0_GEN_DIR)
 		@echo '-	Invoking PRU Compiler for PRU0: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU0
 
-	$(PRU_1_OBJECTS): PRU1/%.c
-		@mkdir -p $(PRU_1_GEN_DIR)
-		@echo '-	Invoking PRU Compiler for PRU1: $<'
-		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
+	# $(PRU_1_OBJECTS): PRU1/%.c
+	# 	@mkdir -p $(PRU_1_GEN_DIR)
+	# 	@echo '-	Invoking PRU Compiler for PRU1: $<'
+	# 	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
 
 clean:
 	@echo '-	Cleaning output folders'
