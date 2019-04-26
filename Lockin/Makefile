@@ -50,7 +50,7 @@ PRU_1_OBJECTS=$(patsubst %,$(GEN_DIR)/PRU1/%,$(SOURCES:.c=.object))
 PRU_0_SYSFS=$(wildcard /sys/class/remoteproc/remoteproc1)
 PRU_1_SYSFS=$(wildcard /sys/class/remoteproc/remoteproc2)
 
-all: stop clean git install start
+all: stop clean git install upload start
 
 stop:
 	@echo "-	Stopping PRU-ICSS"
@@ -67,9 +67,6 @@ start:
 	@echo 'start' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot start PRU 1'
 
 install: $(PRU_0_TARGET) $(PRU_1_TARGET)
-	@echo '-	Copying firmware files $(GEN_DIR)/$(PROJ_NAME).out & $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
-	@sudo cp $(GEN_DIR)/$(PROJ_NAME)_PRU0.out /lib/firmware/am335x-pru0-fw
-	@sudo cp $(GEN_DIR)/$(PROJ_NAME)_PRU1.out /lib/firmware/am335x-pru1-fw
 
 	$(PRU_0_TARGET): $(PRU_0_OBJECTS) $(LINKER_COMMAND_FILE)
 		@echo '-	Invoking: PRU Linker for PRU0: $^'
@@ -88,6 +85,11 @@ install: $(PRU_0_TARGET) $(PRU_1_TARGET)
 		@mkdir -p $(GEN_DIR)
 		@echo '-	Invoking: PRU Compiler for PRU1: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
+
+upload:
+	@echo '-	Copying firmware files $(GEN_DIR)/$(PROJ_NAME).out & $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
+	@sudo cp $(GEN_DIR)/$(PROJ_NAME)_PRU0.out /lib/firmware/am335x-pru0-fw
+	@sudo cp $(GEN_DIR)/$(PROJ_NAME)_PRU1.out /lib/firmware/am335x-pru1-fw
 
 clean:
 	@echo '-	Cleaning output folders'
