@@ -157,7 +157,7 @@ uint16_t * LTC1859multitransfer(uint8_t amount, uint8_t chans[], uint8_t mode){
     /* Check if McSPI RX register is full, if it is continue */
     while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
 
-    result[j - 1] = CT_MCSPI0.RX0
+    result[j - 1] = CT_MCSPI0.RX0;
 
     CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
     /* Clear interrupts */
@@ -185,7 +185,7 @@ uint16_t * LTC1859multitransfer(uint8_t amount, uint8_t chans[], uint8_t mode){
   /* Check if McSPI RX register is full, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
 
-  result[j] = CT_MCSPI0.RX0
+  result[j] = CT_MCSPI0.RX0;
 
   CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
   /* Clear interrupts */
