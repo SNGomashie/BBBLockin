@@ -39,7 +39,7 @@ void main(void){
   LTC1859initialize();
 
   // while(1){
-    result = LTC1859singletransfer(0);
+    result = LTC1859singletransfer(0, 1);
   //   sprintf(data, "-  %d", result);
   //   UARTtransmit(data);
   // }
