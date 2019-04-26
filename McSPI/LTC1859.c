@@ -64,8 +64,6 @@ uint16_t LTC1859readout(uint8_t chan, uint8_t mode){
       SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
     case 3:
       SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
-    default:
-      SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
   }
 
   while(!(__R31 & (1 << _BUSY)));
