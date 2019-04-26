@@ -146,7 +146,6 @@ uint16_t * LTC1859multitransfer(uint8_t amount, uint8_t chans[], uint8_t mode){
     SPIsend |= (ADCch[chans[j]] << 12);
     /* Wait until Conversion is done */
     while(!(__R31 & (1 << _BUSY)));
-    CT_MCSPI0.CH0CONF_bit.FORCE = 0x1;
     CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
     /* Check if McSPI TX register is empty, if it is continue */
@@ -175,7 +174,6 @@ uint16_t * LTC1859multitransfer(uint8_t amount, uint8_t chans[], uint8_t mode){
   }
   /* Wait until Conversion is done */
   while(!(__R31 & (1 << _BUSY)));
-  CT_MCSPI0.CH0CONF_bit.FORCE = 0x1;
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
   /* Check if McSPI TX register is empty, if it is continue */
