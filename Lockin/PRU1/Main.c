@@ -1,5 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <pru_cfg.h>
+#include <pru_ctrl.h>
 #include "resource_table_empty.h"
 #include "pru_peripheral.h"
 
