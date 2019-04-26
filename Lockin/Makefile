@@ -32,12 +32,12 @@ CFLAGS=-v3 -O2 --c99 --float_operations_allowed=none --display_error_number --en
 LFLAGS=--reread_libs --warn_sections --stack_size=$(STACK_SIZE) --heap_size=$(HEAP_SIZE)
 
 # Targets
-PRU_0_TARGET=$(GEN_DIR)/PRU0/$(PROJ_NAME)_0.out
-PRU_1_TARGET=$(GEN_DIR)/PRU1/$(PROJ_NAME)_1.out
+PRU_0_TARGET=$(GEN_DIR)/PRU0/$(PROJ_DIR)_0.out
+PRU_1_TARGET=$(GEN_DIR)/PRU1/$(PROJ_DIR)_1.out
 
 # Map file
-PRU_0_MAP=$(GEN_DIR)/PRU0/$(PROJ_NAME)_0.out
-PRU_1_MAP=$(GEN_DIR)/PRU1/$(PROJ_NAME)_1.out
+PRU_0_MAP=$(GEN_DIR)/PRU0/$(PROJ_DIR)_0.out
+PRU_1_MAP=$(GEN_DIR)/PRU1/$(PROJ_DIR)_1.out
 
 # Source files
 PRU_0_SOURCES=$(wildcard /PRU0/*.c)
@@ -87,9 +87,9 @@ install: $(PRU_0_TARGET) $(PRU_1_TARGET)
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
 
 upload:
-	@echo '-	Copying firmware files $(GEN_DIR)/$(PROJ_NAME).out & $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
-	@sudo cp $(GEN_DIR)/$(PROJ_NAME)_PRU0.out /lib/firmware/am335x-pru0-fw
-	@sudo cp $(GEN_DIR)/$(PROJ_NAME)_PRU1.out /lib/firmware/am335x-pru1-fw
+	@echo '-	Copying firmware files $(GEN_DIR)/$(PROJ_DIR).out & $(GEN_DIR)/$(PROJ_DIR).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
+	@sudo cp $(GEN_DIR)/$(PROJ_DIR)_PRU0.out /lib/firmware/am335x-pru0-fw
+	@sudo cp $(GEN_DIR)/$(PROJ_DIR)_PRU1.out /lib/firmware/am335x-pru1-fw
 
 clean:
 	@echo '-	Cleaning output folders'
