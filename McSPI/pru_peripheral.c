@@ -212,7 +212,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   /* Set SPI module to Master Mode */
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
   /* SPI CS does nothing */
-  CT_MCSPI0.MODULCTRL_bit.PIN34 = 0x1;
+  CT_MCSPI0.MODULCTRL_bit.PIN34 = 0x0;
   /* Single channel in master mode */
   CT_MCSPI0.MODULCTRL_bit.SINGLE = 0x1;
   /* Functional mode */
@@ -248,7 +248,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   CT_MCSPI0.CH0CONF_bit.DPE0 = 0x1;
   CT_MCSPI0.CH0CONF_bit.DPE1 = 0x0;
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
-  // CT_MCSPI0.CH0CONF_bit.TURBO = 0x1;
+  CT_MCSPI0.CH0CONF_bit.TURBO = 0x1;
   // CT_MCSPI0.CH0CONF_bit.FORCE = 0x0;
   CT_MCSPI0.CH0CONF_bit.SBE = 0x0;
   CT_MCSPI0.CH0CONF_bit.FFEW = 0x0;
