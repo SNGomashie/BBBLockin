@@ -41,8 +41,8 @@ PRU_0_MAP=$(GEN_DIR)/$(PROJ_DIR)_0.out
 PRU_1_MAP=$(GEN_DIR)/$(PROJ_DIR)_1.out
 
 # Source files
-PRU_0_SOURCES=$(wildcard *.c)
-PRU_1_SOURCES=$(wildcard *.c)
+PRU_0_SOURCES=$(wildcard PRU0/*.c)
+PRU_1_SOURCES=$(wildcard PRU1/*.c)
 
 #Using .object instead of .obj in order to not conflict with the CCS build process
 PRU_0_OBJECTS=$(patsubst %,$(PRU_0_GEN_DIR)/%,$(PRU_0_SOURCES:.c=.object))
