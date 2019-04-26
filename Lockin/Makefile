@@ -37,8 +37,8 @@ PRU_0_TARGET=$(PRU_0_GEN_DIR)/$(PROJ_DIR)_0.out
 PRU_1_TARGET=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.out
 
 # Map file
-PRU_0_MAP=$(GEN_DIR)/$(PROJ_DIR)_0.out
-PRU_1_MAP=$(GEN_DIR)/$(PROJ_DIR)_1.out
+PRU_0_MAP=$(GEN_DIR)/$(PROJ_DIR)_0.map
+PRU_1_MAP=$(GEN_DIR)/$(PROJ_DIR)_1.map
 
 # Source files
 PRU_0_SOURCES=$(wildcard PRU0/*.c)
@@ -73,21 +73,21 @@ install: $(PRU_0_TARGET) $(PRU_1_TARGET)
 	@sudo cp $(GEN_DIR)/$(PROJ_DIR)_PRU1.out /lib/firmware/am335x-pru1-fw
 
 	$(PRU_0_TARGET): $(PRU_0_OBJECTS) $(LINKER_COMMAND_FILE)
-		@echo '-	Invoking: PRU Linker for PRU0: $^'
-		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET0) $(PRU_0_OBJECTS) -m$(PRU_0_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
+		@echo '-	Invoking PRU Linker for PRU0: $^'
+		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_0_TARGET) $(PRU_0_OBJECTS) -m$(PRU_0_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
 	$(PRU_1_TARGET): $(PRU_1_OBJECTS) $(LINKER_COMMAND_FILE)
-		@echo '-	Invoking: PRU Linker for PRU1: $^'
-		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET1) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
+		@echo '-	Invoking PRU Linker for PRU1: $^'
+		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_1_TARGET) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
 	$(PRU_0_OBJECTS): PRU0/%.c
 		@mkdir -p $(PRU_0_GEN_DIR)
-		@echo '-	Invoking: PRU Compiler for PRU0: $<'
+		@echo '-	Invoking PRU Compiler for PRU0: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU0
 
 	$(PRU_1_OBJECTS): PRU1/%.c
 		@mkdir -p $(PRU_1_GEN_DIR)
-		@echo '-	Invoking: PRU Compiler for PRU1: $<'
+		@echo '-	Invoking PRU Compiler for PRU1: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
 
 upload:
