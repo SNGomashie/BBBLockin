@@ -13,15 +13,15 @@ void LTC1859initialize(void){
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
 
   /* Set pins */
-  __R30 &= ~(1 << CS);
+  __R30 |= (1 << CS);
   __R30 |= (1 << _RD);
   __R30 |= (1 << CONVST);
-  __delay_cycles(100);
+  while(!(__R31 & (1 << _BUSY)));
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
 
-  __R30 |= (1 << CS);
+
 
   uint16_t SPIsend = 0;
 switch(mode){
@@ -37,7 +37,7 @@ switch(mode){
     SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
 }
   /* Check if ADC is busy with conversion and continue if not*/
-  while(!(__R31 & (1 << _BUSY)));
+
   /* pull down CONVST and _RD */
   __R30 &= ~(1 << CONVST);
   __R30 &= ~(1 << _RD);
