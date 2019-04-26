@@ -67,7 +67,6 @@ start:
 	@echo 'start' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot start PRU 1'
 
 install: $(PRU_0_TARGET) $(PRU_1_TARGET)
-
 	$(PRU_0_TARGET): $(PRU_0_OBJECTS) $(LINKER_COMMAND_FILE)
 		@echo '-	Invoking: PRU Linker for PRU0: $^'
 		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET0) $(PRU_0_OBJECTS) -m$(PRU_0_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
