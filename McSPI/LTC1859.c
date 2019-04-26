@@ -18,12 +18,20 @@ void LTC1859initialize(void){
   __delay_cycles(100);
 }
 
-uint16_t LTC1859singletransfer(uint8_t chan){
-  // uint16_t SPIsend = (ADCch[chan] << 12) | 0b0000000000000000; // single-ended, input +/-5V
-  uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
-  // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
-  // uint16_t SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
-  // uint16_t SPIsend = 0b1010100000000000;
+uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
+  uint16_t SPIsend = 0;
+switch(mode){
+  case 0:
+    SPIsend = (ADCch[chan] << 12) | 0b0000000000000000; // single-ended, input +/-5V
+  case 1:
+    SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
+  case 2:
+    SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
+  case 3:
+    SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
+  default:
+    SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
+}
   /* Check if ADC is busy with conversion and continue if not*/
   while(!(__R31 & (1 << _BUSY)));
   /* pull down CONVST and _RD */
