@@ -211,7 +211,7 @@ uint16_t LTC1859transfer(uint16_t spi_word){
   while(!(CT_MCSPI0.IRQSTATUS_bit.TX0_EMPTY == 0x1));
 
   /* Write word to be transmitted into TX register */
-  CT_MCSPI0.TX0 = SPIsend;
+  CT_MCSPI0.TX0 = spi_word;
 
   /* Check if McSPI RX register is full, if it is continue */
   while(!(CT_MCSPI0.IRQSTATUS_bit.RX0_FULL == 0x1));
@@ -249,7 +249,7 @@ uint16_t LTC1859readout(uint8_t chan, uint8_t mode){
   result = LTC1859transfer(SPIsend);
 
   LTC1859conversion(CONVST);
-  
+
   return result;
 }
 
