@@ -54,8 +54,8 @@ all: stop clean git install start
 
 stop:
 	@echo "-	Stopping PRU-ICSS"
-	@echo 'stop' | sudo tee -a $(PRU_0_SYSFS)/state > /dev/null || echo '-	Cannot stop 0'
-	@echo 'stop' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot stop 1'
+	@echo 'stop' | sudo tee -a $(PRU_0_SYSFS)/state > /dev/null || echo '-	Cannot stop PRU 0'
+	@echo 'stop' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot stop PRU 1'
 
 git:
 	@echo '-	Updating repository'
@@ -63,7 +63,8 @@ git:
 
 start:
 	@echo "-	Starting PRU-ICSS"
-	@echo 'start' | sudo tee -a $(PRU0_SYSFS)/state > /dev/null || echo '-	Cannot start 0' && 'start' | sudo tee -a $(PRU1_SYSFS)/state > /dev/null || echo '-	Cannot start 1'
+	@echo 'start' | sudo tee -a $(PRU0_SYSFS)/state > /dev/null || echo '-	Cannot start PRU 0' 
+	@echo 'start' | sudo tee -a $(PRU1_SYSFS)/state > /dev/null || echo '-	Cannot start PRU 1'
 
 install: $(TARGET1) $(TARGET2)
 	@echo '-	Copying firmware files $(GEN_DIR)/$(PROJ_NAME).out & $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
