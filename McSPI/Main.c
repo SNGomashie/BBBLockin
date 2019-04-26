@@ -21,7 +21,7 @@
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
 void main(void){
-  uint16_t result[4];
+  uint16_t adc_out[4];
   char data[16] = "";
   uint8_t channels[4] = {0, 1, 2, 3};
   /* Clear output register */
@@ -39,11 +39,11 @@ void main(void){
   /* Initialize the LTC1859 adc */
   LTC1859initialize();
 
-    result = LTC1859multitransfer(4, channels, 1);
-    pru0_mem[0] = result[0];
-    pru0_mem[1] = result[1];
-    pru0_mem[2] = result[2];
-    pru0_mem[3] = result[3];
+    adc_out = LTC1859multitransfer(4, channels, 1);
+    pru0_mem[0] = adc_out[0];
+    pru0_mem[1] = adc_out[1];
+    pru0_mem[2] = adc_out[2];
+    pru0_mem[3] = adc_out[3];
 
 
 
