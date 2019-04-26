@@ -69,14 +69,14 @@ start:
 
 install: $(PRU_0_TARGET) $(PRU_1_TARGET)
 	@echo '-	Copying firmware files $(GEN_DIR)/$(PROJ_DIR).out & $(GEN_DIR)/$(PROJ_DIR).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
-	@sudo cp $(GEN_DIR)/$(PROJ_DIR)_PRU0.out /lib/firmware/am335x-pru0-fw
-	@sudo cp $(GEN_DIR)/$(PROJ_DIR)_PRU1.out /lib/firmware/am335x-pru1-fw
+	@sudo cp $(PRU_0_TARGET) /lib/firmware/am335x-pru0-fw
+	@sudo cp $(PRU_1_TARGET) /lib/firmware/am335x-pru1-fw
 
-	$(PRU_0_TARGET): $(PRU_0_OBJECTS) $(LINKER_COMMAND_FILE)
+	$(PRU_0_TARGET): $(PRU_0_OBJECTS)
 		@echo '-	Invoking PRU Linker for PRU0: $^'
 		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_0_TARGET) $(PRU_0_OBJECTS) -m$(PRU_0_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-	$(PRU_1_TARGET): $(PRU_1_OBJECTS) $(LINKER_COMMAND_FILE)
+	$(PRU_1_TARGET): $(PRU_1_OBJECTS)
 		@echo '-	Invoking PRU Linker for PRU1: $^'
 		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_1_TARGET) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
@@ -89,9 +89,6 @@ install: $(PRU_0_TARGET) $(PRU_1_TARGET)
 		@mkdir -p $(PRU_1_GEN_DIR)
 		@echo '-	Invoking PRU Compiler for PRU1: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
-
-upload:
-
 
 clean:
 	@echo '-	Cleaning output folders'
