@@ -9,7 +9,8 @@ CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 PROJ_DIR=$(CURRENT_DIR)
 
 # Path to temporary folder
-GEN_DIR:=gen
+PRU_0_GEN_DIR:=gen/PRU0
+PRU_1_GEN_DIR:=gen/PRU1
 
 # PRU Folders
 PRU_1_DIR:=$(CURRENT_DIR)/PRU1/
@@ -32,20 +33,20 @@ CFLAGS=-v3 -O2 --c99 --float_operations_allowed=none --display_error_number --en
 LFLAGS=--reread_libs --warn_sections --stack_size=$(STACK_SIZE) --heap_size=$(HEAP_SIZE)
 
 # Targets
-PRU_0_TARGET=$(GEN_DIR)/PRU0/$(PROJ_DIR)_0.out
-PRU_1_TARGET=$(GEN_DIR)/PRU1/$(PROJ_DIR)_1.out
+PRU_0_TARGET=$(PRU_0_GEN_DIR)/$(PROJ_DIR)_0.out
+PRU_1_TARGET=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.out
 
 # Map file
-PRU_0_MAP=$(GEN_DIR)/PRU0/$(PROJ_DIR)_0.out
-PRU_1_MAP=$(GEN_DIR)/PRU1/$(PROJ_DIR)_1.out
+PRU_0_MAP=$(GEN_DIR)/$(PROJ_DIR)_0.out
+PRU_1_MAP=$(GEN_DIR)/$(PROJ_DIR)_1.out
 
 # Source files
-PRU_0_SOURCES=$(wildcard PRU0/*.c)
-PRU_1_SOURCES=$(wildcard PRU1/*.c)
+PRU_0_SOURCES=$(wildcard *.c)
+PRU_1_SOURCES=$(wildcard *.c)
 
 #Using .object instead of .obj in order to not conflict with the CCS build process
-PRU_0_OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(PRU_0_SOURCES:.c=.object))
-PRU_1_OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(PRU_1_SOURCES:.c=.object))
+PRU_0_OBJECTS=$(patsubst %,$(PRU_0_GEN_DIR)/%,$(PRU_0_SOURCES:.c=.object))
+PRU_1_OBJECTS=$(patsubst %,$(PRU_1_GEN_DIR)/%,$(PRU_1_SOURCES:.c=.object))
 
 PRU_0_SYSFS=$(wildcard /sys/class/remoteproc/remoteproc1)
 PRU_1_SYSFS=$(wildcard /sys/class/remoteproc/remoteproc2)
