@@ -13,7 +13,6 @@ void main(void) {
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;
   INTCinitialize(7, 1, 1);
   IEPinitialize(0x30D40, 1, cmp);
-  INTERNCOMinitialize(23);
   IEPstart();
 
   while(1){

@@ -8,9 +8,8 @@
 void main(void) {
   while(1){
     while(__R31 & (1 << 31)){
-      IEPclear_int();
-      INTCclear(7);
       __R30 ^= (1 << DEBUG_PIN);
+      while(!(CT_IEP.TMR_CMP_STS == 0));
     }
   }
   __halt();
