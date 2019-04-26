@@ -21,6 +21,6 @@ void LTC1859initialize(void);
 
 uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode);
 
-// void LTC1859multitransfer(uint8_t chan, uint8_t );
+uint16_t * LTC1859multitransfer(uint8_t amount, uint8_t chans[], uint8_t mode);
 
 #endif
