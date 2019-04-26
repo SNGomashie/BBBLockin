@@ -67,7 +67,7 @@ start:
 	@echo 'start' | sudo tee -a $(PRU_0_SYSFS)/state > /dev/null || echo '-	Cannot start PRU 0'
 	@echo 'start' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot start PRU 1'
 
-install: $(PRU_0_TARGET) $(PRU_1_TARGET)
+install: $(PRU_0_TARGET)
 	@echo '-	Copying firmware files $(GEN_DIR)/$(PROJ_DIR).out & $(GEN_DIR)/$(PROJ_DIR).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
 	@sudo cp $(PRU_0_TARGET) /lib/firmware/am335x-pru0-fw
 	@sudo cp $(PRU_1_TARGET) /lib/firmware/am335x-pru1-fw
