@@ -4,7 +4,7 @@ install:
 	cd PRU0 && $(MAKE)
 	cd PRU1 && $(MAKE)
 	cd PRU0 && $(MAKE) upload
-	cd PRU0 && $(MAKE) upload
+	cd PRU1 && $(MAKE) upload
 
 stop:
 	@cd PRU0 && $(MAKE) stop || echo '- Cannot stop PRU0'
