@@ -206,7 +206,8 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   /* Wait until reset is done */
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
 
-  CT_MCSPI0.SYSCONFIG_bit.SIDLEMODE = 0x1;
+  // CT_MCSPI0.SYSCONFIG_bit.SIDLEMODE = 0x1;
+
   // Module configuration
   /* Set SPI module to Master Mode */
   CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
@@ -237,7 +238,7 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   /* Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4 */
   CT_MCSPI0.CH0CONF_bit.CLKD = divider;
   /* CS polarity */
-  CT_MCSPI0.CH0CONF_bit.EPOL = 0x0;
+  // CT_MCSPI0.CH0CONF_bit.EPOL = 0x0;
   /* Set world length to 16bit */
   CT_MCSPI0.CH0CONF_bit.WL = word_length;
   /* Transmite receive mode */
@@ -247,8 +248,8 @@ void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   CT_MCSPI0.CH0CONF_bit.DPE0 = 0x1;
   CT_MCSPI0.CH0CONF_bit.DPE1 = 0x0;
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
-  CT_MCSPI0.CH0CONF_bit.TURBO = 0x1;
-  CT_MCSPI0.CH0CONF_bit.FORCE = 0x0;
+  // CT_MCSPI0.CH0CONF_bit.TURBO = 0x1;
+  // CT_MCSPI0.CH0CONF_bit.FORCE = 0x0;
   CT_MCSPI0.CH0CONF_bit.SBE = 0x0;
   CT_MCSPI0.CH0CONF_bit.FFEW = 0x0;
   CT_MCSPI0.CH0CONF_bit.FFER = 0x0;
