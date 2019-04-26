@@ -1,10 +1,5 @@
-ifdef PRU
-	PRUN := $(PRU)
-	PRU_ADDR := $(PRUN)+1
-else
- 	PRUN := 0
-	PRU_ADDR := 1
-endif
+PRUN := 1
+
 
 # System paths for compiler and support package
 PRU_CGT:= /usr/share/ti/cgt-pru
@@ -54,7 +49,7 @@ PRU_ADDR=remoteproc2
 
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR))
-all: stop clean git install start
+all: stop clean git install
 
 stop:
 	@echo "-	Stopping PRU $(PRUN)"
@@ -70,8 +65,6 @@ start:
 	@echo 'start' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot start $(PRUN)'
 
 install: $(TARGET)
-	@echo '-	Copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
-	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
 $(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
 	@echo '-	Invoking: PRU Linker: $^'
@@ -82,6 +75,10 @@ $(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
 	@echo '-	Invoking: PRU Compiler: $<'
 	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
+
+upload:
+	@echo '-	Copying firmware file $(GEN_DIR)/$(PROJ_NAME).out to /lib/firmware/am335x-pru$(PRUN)-fw'
+	@sudo cp $(GEN_DIR)/$(PROJ_NAME).out /lib/firmware/am335x-pru$(PRUN)-fw
 
 .PHONY: all clean
 
