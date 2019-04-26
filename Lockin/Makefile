@@ -9,12 +9,12 @@ CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 PROJ_DIR=$(CURRENT_DIR)
 
 # Path to temporary folder
-PRU_0_GEN_DIR:=tmp/PRU0
-PRU_1_GEN_DIR:=tmp/PRU1
+PRU_0_GEN_DIR:=tmp0
+# PRU_1_GEN_DIR:=tmp/PRU1
 
 # PRU Folders
-PRU_1_DIR:=$(CURRENT_DIR)/PRU1/
-PRU_2_DIR:=$(CURRENT_DIR)/PRU2/
+# PRU_1_DIR:=$(CURRENT_DIR)/PRU1/
+# PRU_2_DIR:=$(CURRENT_DIR)/PRU2/
 
 LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 
@@ -33,25 +33,27 @@ CFLAGS=-v3 -O2 --c99 --float_operations_allowed=none --display_error_number --en
 LFLAGS=--reread_libs --warn_sections --stack_size=$(STACK_SIZE) --heap_size=$(HEAP_SIZE)
 
 # Targets
-PRU_0_TARGET=$(PRU_0_GEN_DIR)/$(PROJ_DIR)_0.out
-PRU_1_TARGET=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.out
+PRU_0_TARGET=$(PRU_0_GEN_DIR)/$(PROJ_DIR).out
+# PRU_1_TARGET=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.out
 
 # Map file
-PRU_0_MAP=$(PRU_0_GEN_DIR)/$(PROJ_DIR)_0.map
-PRU_1_MAP=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.map
+PRU_0_MAP=$(PRU_0_GEN_DIR)/$(PROJ_DIR).map
+# PRU_1_MAP=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.map
 
 # Source files
 PRU_0_SOURCES=$(wildcard PRU0/*.c)
-PRU_1_SOURCES=$(wildcard PRU1/*.c)
+# PRU_1_SOURCES=$(wildcard PRU1/*.c)
 
 #Using .object instead of .obj in order to not conflict with the CCS build process
-PRU_0_OBJECTS=$(PRU_0_GEN_DIR)/$(PROJ_DIR)_0.obj
-PRU_1_OBJECTS=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.obj
+PRU_0_OBJECTS=$(patsubst %,$(PRU_0_GEN_DIR)/%,$(PRU_0_SOURCES:.c=.object))
+
+# PRU_0_OBJECTS=$(PRU_0_GEN_DIR)/$(PROJ_DIR)_0.obj
+# PRU_1_OBJECTS=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.obj
 
 PRU_0_SYSFS=$(wildcard /sys/class/remoteproc/remoteproc1)
 PRU_1_SYSFS=$(wildcard /sys/class/remoteproc/remoteproc2)
 
-all: stop clean git install upload start
+all: stop clean git install start
 
 stop:
 	@echo "-	Stopping PRU-ICSS"
@@ -80,7 +82,7 @@ install: $(PRU_0_TARGET)
 	# 	@echo '-	Invoking PRU Linker for PRU1: $^'
 	# 	@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(PRU_1_TARGET) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-	$(PRU_0_OBJECTS): PRU0/%.c
+	$(PRU_0_GEN_DIR)/%.object: PRU0/%.c
 		@mkdir -p $(PRU_0_GEN_DIR)
 		@echo '-	Invoking PRU Compiler for PRU0: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU0
@@ -92,4 +94,4 @@ install: $(PRU_0_TARGET)
 
 clean:
 	@echo '-	Cleaning output folders'
-	@rm -rf $(GEN_DIR)
+	@rm -rf $(PRU_0_GEN_DIR)
