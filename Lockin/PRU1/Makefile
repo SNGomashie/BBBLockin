@@ -48,13 +48,9 @@ SOURCES=$(wildcard *.c)
 #Using .object instead of .obj in order to not conflict with the CCS build process
 OBJECTS=$(patsubst %,$(GEN_DIR)/%,$(SOURCES:.c=.object))
 
-# Lookup PRU by address
-ifeq ($(PRUN),0)
-PRU_ADDR=remoteproc1
-endif
-ifeq ($(PRUN),1)
+# PRU by address
 PRU_ADDR=remoteproc2
-endif
+
 
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR))
@@ -85,7 +81,7 @@ $(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
 $(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
 	@echo '-	Invoking: PRU Compiler: $<'
-	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU$(PRUN)
+	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
 
 .PHONY: all clean
 
