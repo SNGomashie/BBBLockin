@@ -33,7 +33,7 @@ void main(void){
   PRCMinitialize();
   UARTinitialize();
   /* Initialize the McSPI module */
-  McSPIinitialze(0x2, 0xF, 0x0);
+  McSPIinitialze(0x5, 0xF, 0x0);
 
   /* Initialize the LTC1859 adc */
   LTC1859initialize();
