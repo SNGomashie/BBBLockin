@@ -9,7 +9,7 @@ CURRENT_DIR := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 PROJ_DIR=$(CURRENT_DIR)
 
 # Path to temporary folder
-GEN_DIR:=tmp
+GEN_DIR:=gen
 # PRU_1_GEN_DIR:=tmp1
 
 # PRU Folders
