@@ -21,7 +21,7 @@
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
 void main(void){
-  uint16_t adc_out[4] = 0;
+  uint16_t* adc_out;
   char data[16] = "";
   uint8_t channels[4] = {0, 1, 2, 3};
   /* Clear output register */
