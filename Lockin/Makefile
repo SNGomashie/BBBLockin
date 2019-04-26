@@ -67,6 +67,10 @@ start:
 	@echo 'start' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot start PRU 1'
 
 install: $(PRU_0_TARGET) $(PRU_1_TARGET)
+	@echo '-	Copying firmware files $(GEN_DIR)/$(PROJ_DIR).out & $(GEN_DIR)/$(PROJ_DIR).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
+	@sudo cp $(GEN_DIR)/$(PROJ_DIR)_PRU0.out /lib/firmware/am335x-pru0-fw
+	@sudo cp $(GEN_DIR)/$(PROJ_DIR)_PRU1.out /lib/firmware/am335x-pru1-fw
+	
 	$(PRU_0_TARGET): $(PRU_0_OBJECTS) $(LINKER_COMMAND_FILE)
 		@echo '-	Invoking: PRU Linker for PRU0: $^'
 		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET0) $(PRU_0_OBJECTS) -m$(PRU_0_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
@@ -75,20 +79,18 @@ install: $(PRU_0_TARGET) $(PRU_1_TARGET)
 		@echo '-	Invoking: PRU Linker for PRU1: $^'
 		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET1) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-	$(PRU_0_OBJECTS): /PRU0/%.c
+	$(PRU_0_OBJECTS): $(PRU_0_SOURCES)
 		@mkdir -p $(GEN_DIR)
 		@echo '-	Invoking: PRU Compiler for PRU0: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU0
 
-	$(PRU_1_OBJECTS): /PRU1/%.c
+	$(PRU_1_OBJECTS): $(PRU_1_SOURCES)
 		@mkdir -p $(GEN_DIR)
 		@echo '-	Invoking: PRU Compiler for PRU1: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
 
 upload:
-	@echo '-	Copying firmware files $(GEN_DIR)/$(PROJ_DIR).out & $(GEN_DIR)/$(PROJ_DIR).out to /lib/firmware/am335x-pru0-fw & /lib/firmware/am335x-pru1-fw'
-	@sudo cp $(GEN_DIR)/$(PROJ_DIR)_PRU0.out /lib/firmware/am335x-pru0-fw
-	@sudo cp $(GEN_DIR)/$(PROJ_DIR)_PRU1.out /lib/firmware/am335x-pru1-fw
+
 
 clean:
 	@echo '-	Cleaning output folders'
