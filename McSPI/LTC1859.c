@@ -13,12 +13,16 @@ void LTC1859initialize(void){
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
 
   /* Set pins */
+  __R30 &= ~(1 << CS);
   __R30 |= (1 << _RD);
   __R30 |= (1 << CONVST);
   __delay_cycles(100);
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
+
+  __R30 |= (1 << CS);
+
   uint16_t SPIsend = 0;
 switch(mode){
   case 0:
