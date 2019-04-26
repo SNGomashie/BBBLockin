@@ -27,6 +27,8 @@ void PRCMinitialize(void){
   // Look up more
 }
 
+
+
 /**********************************/
 /*      Interrupt controller      */
 /**********************************/
@@ -90,6 +92,8 @@ void INTCclear(uint8_t sys_evt){
   __delay_cycles(5);
 }
 
+
+
 /**********************************/
 /* Industrial Ethernet Peripheral */
 /**********************************/
@@ -136,21 +140,62 @@ void IEPclear_int(void){
   __delay_cycles(5);
 }
 
+
+
 /****************************/
 /* Enchanced Capture Module */
 /****************************/
 void eCAPinitialize(void){
-	CT_ECAP.ECCTL2 &= ~(1 << 4);
-	/* Difference mode */
-	CT_ECAP.ECCTL1 |= (1 << 1);
+	/* Capture polarity CAPreg 1 */
+	CT_ECAP.ECCTL1 &= ~(1 << CAP1POL);
+
+	/* Difference mode Capreg 1 */
+	CT_ECAP.ECCTL1 |= (1 << CTRRST1);
+
+  /* Capture polarity Capreg 2 */
+  CT_ECAP.ECCTL1 &= ~(1 << CAP2POL);
+
+  /* Difference mode Capreg 2 */
+  CT_ECAP.ECCTL1 |= (1 << CTRRST2);
+
+  /* Capture polarity Capreg 3 */
+  CT_ECAP.ECCTL1 &= ~(1 << CAP3POL);
+
+  /* Difference mode Capreg 3 */
+  CT_ECAP.ECCTL1 |= (1 << CTRRST3);
+
+  /* Capture polarity Capreg 4 */
+  CT_ECAP.ECCTL1 &= ~(1 << CAP4POL);
+
+  /* Difference mode Capreg 4 */
+  CT_ECAP.ECCTL1 |= (1 << CTRRST4);
 
 	/* Enable loading of CAP registers */
-	CT_ECAP.ECCTL1 |= (1 << 8);
+	CT_ECAP.ECCTL1 |= (1 << CAPLDEN);
 
-	CT_ECAP.ECCTL2 |= (0x2 << 6);
+	/* Prescaler */
+	CT_ECAP.ECCTL1 &= ~(1 << PRESCALE);
 
-	CT_ECAP.ECCTL2 |= (1 << 4);
+	/* Capture mode */
+	CT_ECAP.ECCTL2 &= ~(1 << CAP_APWM);
+
+	/* Continuous or one-shot mode */
+	CT_ECAP.ECCTL2 &= ~(1 << CONT_ONESHT);
+
+ 	/* Sync-out select */
+	CT_ECAP.ECCTL2 |= (0x3 << SYNCO_SEL);
+
+	/* Select sync mode */
+	CT_ECAP.ECCTL2 &= ~(1 << SYNCI_EN);
+
+  /* Wrap after CAPreg1 */
+  CT_ECAP.ECCTL2 &= ~(1 << STOP_WRAP);
+
+	/* Start counter */
+	CT_ECAP.ECCTL2 |= (1 << TSCTRSTOP);
 }
+
+
 
 /*********************************************/
 /* Multi-channel Serial Peripheral Interface */
@@ -158,49 +203,103 @@ void eCAPinitialize(void){
 void McSPIinitialze(uint8_t divider, uint8_t word_length, uint8_t ints){
   /* Reset McSPI0 module */
   CT_MCSPI0.SYSCONFIG_bit.SOFTRESET = 0x0001;
-
   /* Wait until reset is done */
   while(!(CT_MCSPI0.SYSSTATUS_bit.RESETDONE == 0x1));
 
+  CT_MCSPI0.SYSCONFIG_bit.SIDLEMODE = 0x1;
+  // Module configuration
+  /* Set SPI module to Master Mode */
+  CT_MCSPI0.MODULCTRL_bit.MS = 0x0;
+  /* Single channel in master mode */
+  CT_MCSPI0.MODULCTRL_bit.SINGLE = 0x1;
+  /* SPI CS does nothing */
+  CT_MCSPI0.MODULCTRL_bit.PIN34 = 0x0;
+  /* Functional mode */
+  CT_MCSPI0.MODULCTRL_bit.SYSTEM_TEST = 0x0;
+  /* No initial delay */
+  CT_MCSPI0.MODULCTRL_bit.INITDLY = 0x0;
+  /* Multiple word access disabled */
+  CT_MCSPI0.MODULCTRL_bit.MOA = 0x0;
+  /* FIFOs data managed by TX, RX registers */
+  CT_MCSPI0.MODULCTRL_bit.FDAA = 0x0;
+
+  // Interrupt configuration
   /* Reset interrupt status */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
-
   /* Configure interrupts */
-  CT_MCSPI0.IRQENABLE = 0x0;
+  CT_MCSPI0.IRQENABLE = ints;
 
-  // Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4;
-  CT_MCSPI0.CH0CONF_bit.CLKD = 0x2;
-
+  // Channel configuration
+  /* SPI clk phase (data latched on odd number edges) */
+  CT_MCSPI0.CH0CONF_bit.PHA = 0x0;
+  /* SPI clk polatiry (clk high on active state) */
+  CT_MCSPI0.CH0CONF_bit.POL = 0x0;
+  /* Set clock devider, SPI clock = 48MHz, Device clock = 20Mhz. devider = 4 */
+  CT_MCSPI0.CH0CONF_bit.CLKD = divider;
+  /* CS polarity */
+  CT_MCSPI0.CH0CONF_bit.EPOL = 0x0;
   /* Set world length to 16bit */
-  CT_MCSPI0.CH0CONF_bit.WL = 0xF;
-
-  // Set SPID0 as not a transmissionline
+  CT_MCSPI0.CH0CONF_bit.WL = word_length;
+  CT_MCSPI0.CH0CONF_bit.TRM = 0x0;
+  CT_MCSPI0.CH0CONF_bit.DMAW = 0x0;
+  CT_MCSPI0.CH0CONF_bit.DMAR = 0x0;
   CT_MCSPI0.CH0CONF_bit.DPE0 = 0x1;
-
-  // Set SPID0 as input
+  CT_MCSPI0.CH0CONF_bit.DPE1 = 0x0;
   CT_MCSPI0.CH0CONF_bit.IS = 0x0;
+  CT_MCSPI0.CH0CONF_bit.TURBO = 0x1;
+  // CT_MCSPI0.CH0CONF_bit.FORCE = 0x1;
+  CT_MCSPI0.CH0CONF_bit.SBE = 0x0;
+  CT_MCSPI0.CH0CONF_bit.FFEW = 0x0;
+  CT_MCSPI0.CH0CONF_bit.FFER = 0x0;
+  CT_MCSPI0.CH0CONF_bit.CLKG = 0x0;
+
 }
 
-/**********************************/
+void McSPIenable(uint8_t module){
+  /* Enable channel */
+  switch(module){
+    case 0:
+      CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+    case 1:
+      CT_MCSPI0.CH1CTRL_bit.EN = 0x1;
+    case 2:
+      CT_MCSPI0.CH2CTRL_bit.EN = 0x1;
+    case 3:
+      CT_MCSPI0.CH3CTRL_bit.EN = 0x1;
+    default:
+      CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
+  }
+}
+
+void McSPIdisable(uint8_t module){
+  /* Enable channel */
+  switch(module){
+    case 0:
+      CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+    case 1:
+      CT_MCSPI0.CH1CTRL_bit.EN = 0x0;
+    case 2:
+      CT_MCSPI0.CH2CTRL_bit.EN = 0x0;
+    case 3:
+      CT_MCSPI0.CH3CTRL_bit.EN = 0x0;
+    default:
+      CT_MCSPI0.CH0CTRL_bit.EN = 0x0;
+  }
+}
+
+
+
+/*************************************************/
 /*  Universal Asynchronous Receiver/Transmitter  */
 /* 1200, 2400, 4800, 19200, 38400, 57600, 115200 */
 /*************************************************/
-void UARTinitialize(uint32_t baud_rate){
-  /* Verify acceptable input */
-  baud_rate /= 100;
-  baud_rate = 1920000 / baud_rate;
-  baud_rate /= 16;
-
-  /* Configure baudrate */
-  CT_UART.DLL = (0xFF) & baud_rate;
-  CT_UART.DLH = (0xFF00) & baud_rate;
-  CT_UART.MDR_bit.OSM_SEL = 0x0;
+void UARTinitialize(void){
 
   /* Set up UART to function at 115200 baud - DLL divisor is 104 at 16x oversample
   * 192MHz / 104 / 16 = ~115200 */
-  // CT_UART.DLL = 104;
-  // CT_UART.DLH = 0;
-  // CT_UART.MDR_bit.OSM_SEL = 0x0;
+  CT_UART.DLL = 104;
+  CT_UART.DLH = 0;
+  CT_UART.MDR_bit.OSM_SEL = 0x0;
 
   /* If FIFOs are to be used, select desired trigger level and enable
   * FIFOs by writing to FCR. FIFOEN bit in FCR must be set first before
@@ -259,6 +358,8 @@ char UARTreceive(void){
   return CT_UART.RBR_bit.DATA;
 }
 
+
+
 /***********************************/
 /* Internal PRU-ICSS communication */
 /***********************************/
@@ -292,6 +393,22 @@ void INTERNCOMlisten(void){
   if(INTERNCOM_status == 1){
     while(!(__R31 & (1 << 30)));
   }
+}
+
+
+
+/******************************/
+/*  Instruction time counter  */
+/******************************/
+void CYCLEstart(void){
+  PRU0_CTRL.CTRL_bit.CTR_EN = 1;  // Enable cycle counter
+
+  // Reset cycle counter
+  PRU0_CTRL.CYCLE = 0;
+}
+
+uint32_t CYCLEstop(void){
+  return PRU0_CTRL.CYCLE;
 }
 
 
