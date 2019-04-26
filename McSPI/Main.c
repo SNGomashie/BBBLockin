@@ -37,10 +37,12 @@ void main(void){
 
   /* Initialize the LTC1859 adc */
   LTC1859initialize();
+  while(1){
+    result = LTC1859singletransfer(0, 1);
+    sprintf(data, "%d\n", result);
+    UARTtransmit(data);
+  }
 
-  result = LTC1859singletransfer(0, 1);
-  sprintf(data, "%d\n", 0xFFFF);
-  UARTtransmit(data);
 
 
   __halt();
