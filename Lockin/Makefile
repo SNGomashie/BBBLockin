@@ -53,12 +53,9 @@ PRU_1_SYSFS=$(wildcard /sys/class/remoteproc/remoteproc2)
 all: stop clean git install start
 
 stop:
-	STATE0 = 'sudo cat $(PRU_0_SYSFS)/state'
-	STATE1 = 'sudo cat $(PRU_1_SYSFS)/state'
-	ifeq ($(STATE0), 0) && ($(STATE1), 0)
-		@echo "-	Stopping PRU-ICSS"
-		@echo 'stop' | sudo tee -a $(PRU_0_SYSFS)/state > /dev/null || echo '-	Cannot stop 0' && 'stop' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot stop 1'
-	endif
+	@echo "-	Stopping PRU-ICSS"
+	@echo 'stop' | sudo tee -a $(PRU_0_SYSFS)/state > /dev/null || echo '-	Cannot stop 0' && 'stop' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot stop 1'
+
 
 git:
 	@echo '-	Updating repository'
