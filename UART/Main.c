@@ -8,7 +8,7 @@ void main(void){
   char data[16] = "";
   char data2[16] = "";
 
-  UARTinitialize(115200);
+  UARTinitialize();
 
   while(1){
   __R30 |= (1 << 7);
