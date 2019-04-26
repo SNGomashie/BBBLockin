@@ -15,32 +15,34 @@ void LTC1859initialize(void){
   /* Set pins */
   __R30 |= (1 << CS);
 
+  /* Start converson to clock in SPI word */
   __R30 |= (1 << CONVST);
+
+  /* Delay so conversion starts before continuing */
   __delay_cycles(50);
+
+  /* pull down CONVST */
   __R30 &= ~(1 << CONVST);
+
+  /* Wait until conversion is done */
   while(!(__R31 & (1 << _BUSY)));
 }
 
 uint16_t LTC1859singletransfer(uint8_t chan, uint8_t mode){
   uint16_t SPIsend = 0;
-switch(mode){
-  case 0:
-    SPIsend = (ADCch[chan] << 12) | 0b0000000000000000; // single-ended, input +/-5V
-  case 1:
-    SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
-  case 2:
-    SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
-  case 3:
-    SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
-  default:
-    SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
-}
-  /* Check if ADC is busy with conversion and continue if not*/
-
-  /* pull down CONVST and _RD */
-  
-
-
+  switch(mode){
+    case 0:
+      SPIsend = (ADCch[chan] << 12) | 0b0000000000000000; // single-ended, input +/-5V
+    case 1:
+      SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
+    case 2:
+      SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
+    case 3:
+      SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
+    default:
+      SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
+  }
+  while(!(__R31 & (1 << _BUSY)));
   CT_MCSPI0.CH0CONF_bit.FORCE = 0x1;
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
 
@@ -59,17 +61,15 @@ switch(mode){
 
   /* Start conversion, Stop reading */
   __R30 |= (1 << CONVST);
-  // __R30 |= (1 << _RD);
 
   /* Delay until conversion starts */
-  __delay_cycles(100);
+  __delay_cycles(50);
+
+  /* pull down CONVST */
   __R30 &= ~(1 << CONVST);
+
   /* Wait until Conversion is done */
   while(!(__R31 & (1 << _BUSY)));
-
-  /* pull down CONVST and _RD */
-
-  __R30 &= ~(1 << _RD);
 
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
   /* Write nothing to TX Register */
@@ -85,11 +85,14 @@ switch(mode){
   /* Clear interrupts */
   CT_MCSPI0.IRQSTATUS = 0xFFFF;
 
-
-
   /* Start conversion */
-  // __R30 |= (1 << CONVST);
-  // __R30 |= (1 << _RD);
+   __R30 |= (1 << CONVST);
+
+   /* Delay until conversion starts */
+   __delay_cycles(50);
+
+   /* pull down CONVST */
+   __R30 &= ~(1 << CONVST);
 
   return CT_MCSPI0.RX0;
 }
