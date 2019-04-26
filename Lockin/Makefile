@@ -45,8 +45,8 @@ PRU_0_SOURCES=$(wildcard PRU0/*.c)
 PRU_1_SOURCES=$(wildcard PRU1/*.c)
 
 #Using .object instead of .obj in order to not conflict with the CCS build process
-PRU_0_OBJECTS=$(patsubst %,$(PRU_0_GEN_DIR)/%,$(PRU_0_SOURCES:.c=.object))
-PRU_1_OBJECTS=$(patsubst %,$(PRU_1_GEN_DIR)/%,$(PRU_1_SOURCES:.c=.object))
+PRU_0_OBJECTS=$(PRU_0_GEN_DIR)/$(PROJ_DIR)_0.obj
+PRU_1_OBJECTS=$(PRU_1_GEN_DIR)/$(PROJ_DIR)_1.obj
 
 PRU_0_SYSFS=$(wildcard /sys/class/remoteproc/remoteproc1)
 PRU_1_SYSFS=$(wildcard /sys/class/remoteproc/remoteproc2)
@@ -80,12 +80,12 @@ install: $(PRU_0_TARGET) $(PRU_1_TARGET)
 		@echo '-	Invoking: PRU Linker for PRU1: $^'
 		@$(PRU_CGT)/bin/clpru $(CFLAGS) -z -i$(PRU_BBB)/include -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(LFLAGS) -o $(TARGET1) $(PRU_1_OBJECTS) -m$(PRU_1_MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(LIBS)
 
-	$(PRU_0_GEN_DIR)/%.object: PRU0/%.c
+	$(PRU_0_OBJECTS): PRU0/%.c
 		@mkdir -p $(GEN_DIR)
 		@echo '-	Invoking: PRU Compiler for PRU0: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU0
 
-	$(PRU_1_GEN_DIR)/%.object: PRU1/%.c
+	$(PRU_1_OBJECTS): PRU1/%.c
 		@mkdir -p $(GEN_DIR)
 		@echo '-	Invoking: PRU Compiler for PRU1: $<'
 		@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU1
