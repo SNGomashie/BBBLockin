@@ -14,9 +14,10 @@ void LTC1859initialize(void){
 
   /* Set pins */
   __R30 |= (1 << CS);
-  __R30 |= (1 << _RD);
+
   __R30 |= (1 << CONVST);
   __delay_cycles(50);
+  __R30 &= ~(1 << CONVST);
   while(!(__R31 & (1 << _BUSY)));
 }
 
@@ -37,8 +38,8 @@ switch(mode){
   /* Check if ADC is busy with conversion and continue if not*/
 
   /* pull down CONVST and _RD */
-  __R30 &= ~(1 << CONVST);
-  __R30 &= ~(1 << _RD);
+  
+
 
   CT_MCSPI0.CH0CONF_bit.FORCE = 0x1;
   CT_MCSPI0.CH0CTRL_bit.EN = 0x1;
