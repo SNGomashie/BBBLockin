@@ -54,8 +54,8 @@ all: stop clean git install start
 
 stop:
 	@echo "-	Stopping PRU-ICSS"
-	@echo 'stop' | sudo tee -a $(PRU_0_SYSFS)/state > /dev/null || echo '-	Cannot stop 0' && 'stop' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot stop 1'
-
+	@echo 'stop' | sudo tee -a $(PRU_0_SYSFS)/state > /dev/null || echo '-	Cannot stop 0'
+	@echo 'stop' | sudo tee -a $(PRU_1_SYSFS)/state > /dev/null || echo '-	Cannot stop 1'
 
 git:
 	@echo '-	Updating repository'
