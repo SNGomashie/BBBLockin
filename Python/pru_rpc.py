@@ -17,12 +17,12 @@ class BeagleBoneDDS(rpyc.Service):
         pass
 
     def on_disconnect(self, conn):
-        print("-    Connection has been terminated")
+        print("\n-    Connection has been terminated")
         t.close()
         pass
 
     def exposed_pru_initialize(self, pru):
-        self.pru = pru;
+        self.pru = pru
         if pru == 0:
             self.CHAR_DEV = "/dev/rpmsg_pru30"
             self.STATE = "/sys/class/remoteproc/remoteproc1/state"
