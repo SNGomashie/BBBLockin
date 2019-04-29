@@ -65,6 +65,7 @@ void main(void){
 
       blkdata[x] = osc.output;
       pru1_mem[0] = *osc.period;
+      pru1_mem[1] = CT_ECAP.CAP1;
       x++;
       if(!(x < 248)){
         RPMSGtransmit_block(blkdata);
