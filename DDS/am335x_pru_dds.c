@@ -6,6 +6,7 @@
 #include "am335x_pru_dds.h"
 
 void DDSinitialize(struct DDS *n, uint32_t sample_period){
+  n->period* = &CT_ECAP.CAP1;
   n->accumulator = 0;
   n->sample_period = sample_period;
   n->output = sinLUT[0];
