@@ -35,11 +35,11 @@ void main (void) {
   while(1){
     while(shared[0] == INT_ON){
       /* Read scratchpad */
-      __xin(10, 0, 0, test2Ptr);
+      __xin(14, 0, 0, test2Ptr);
 
 
       pru1_mem[0] = test2;
-
+      pru1_mem[1] = 0xFFFFFFFF;
       /* reset shared memory interrupt*/
       shared[0] = INT_OFF;
 
