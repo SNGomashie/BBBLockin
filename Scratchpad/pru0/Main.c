@@ -21,6 +21,9 @@ volatile register unsigned int __R31;
 #define SHARE_MEM  0x00010000
 volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
+uint32_t data = 0xF0F0F0FF;
+uint32_t* dataPtr = &data;
+
 void main(void) {
 	shared[0] = INT_OFF;
 
