@@ -2,6 +2,10 @@
 #include <pru_cfg.h>
 #include "resource_table.h"
 
+/* Interrupt definitions */
+#define INT_OFF 0x00000000
+#define INT_ON 0xFFFFFFFF
+
 /* Shared memory location & definiton*/
 #define SHARE_MEM  0x00010000
 volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
@@ -18,7 +22,7 @@ void main (void) {
     while(shared[0] == INT_ON){
       /* Read scratchpad */
       __xin(14, 0, 0, dataPtr);
-      
+
       pru1_mem[1] = data;
       /* reset shared memory interrupt*/
       shared[0] = INT_OFF;
