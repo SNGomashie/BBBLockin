@@ -35,7 +35,7 @@ void main (void) {
       __xin(10, 0, 0, dmemBuf);
 
 
-      pru1_mem[0] = dmemBuf;
+      pru1_mem[0] = dmemBuf[0];
 
       /* reset shared memory interrupt*/
       shared[0] = INT_OFF;
