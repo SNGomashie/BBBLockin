@@ -25,8 +25,6 @@ void main(void){
   uint16_t samp_freq =0;
   uint8_t amount_samp = 0;
   char* RPMsg_in;
-  uint16_t x = 0;
-  uint8_t i = 0;
 
   struct DDS osc;
 
