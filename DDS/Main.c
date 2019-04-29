@@ -64,7 +64,7 @@ void main(void){
       DDSstep(&osc);
 
       blkdata[x] = osc.output;
-
+      pru1_mem[0] = *osc.period;
       x++;
       if(!(x < 248)){
         RPMSGtransmit_block(blkdata);
