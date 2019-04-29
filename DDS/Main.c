@@ -62,12 +62,14 @@ void main(void){
       IEPclear_int();
       INTCclear(7);
 
+      __R30 ^= (1 << PIN);
       /* Capture period and calculate phase incrementor */
       DDSsetfreq(&osc);
 
       /* Step to the next value */
       DDSstep(&osc);
-
+      
+      __R30 ^= (1 << PIN);
       /* Save in data block */
       blkdata[x] = osc.cos_output;
 
