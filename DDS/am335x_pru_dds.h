@@ -10,7 +10,7 @@ const uint16_t sinLUT[257] = {0x8000,0x8324,0x8647,0x896a,0x8c8b,0x8fab,0x92c7,0
 
 struct DDS {
   uint32_t sample_period;
-  uint32_t *period;
+  volatile uint32_t *period;
   uint64_t incrementor;
   uint32_t accumulator;
   uint32_t output;
