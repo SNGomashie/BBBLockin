@@ -18,7 +18,7 @@ void LTC1859initialize(void){
   __R30 |= (1 << CONVST);
 
   /* Delay so conversion starts before continuing */
-  __delay_cycles(50);
+  __delay_cycles(10);
 
   /* pull down CONVST */
   __R30 &= ~(1 << CONVST);
@@ -86,7 +86,7 @@ void LTC1859conversion(uint8_t pin){
   __R30 |= (1 << pin);
 
   /* Delay until conversion starts */
-  __delay_cycles(50);
+  __delay_cycles(10);
 
   /* pull down CONVST */
   __R30 &= ~(1 << pin);
