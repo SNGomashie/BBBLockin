@@ -10,7 +10,8 @@ const uint16_t sinLUT[257] = {0x8000,0x8324,0x8647,0x896a,0x8c8b,0x8fab,0x92c7,0
 
 void DDSinitialize(struct DDS *n, uint32_t samp_period){
   n->period = &CT_ECAP.CAP1;
-  n->accumulator = 0;
+  n->sin_accumulator = 0;
+  n->cos_accumulator = (64 <<  16);
   n->sample_period = samp_period;
   n->sin_output = sinLUT[0];
   n->cos_output = sinLUT[64];
@@ -27,7 +28,7 @@ void DDSsetfreq(struct DDS *n){
 }
 
 void DDSinterpolate(struct DDS *n){
-  uint32_t index = 0;
+  uint32_t sin_index, cos_index = 0;
   uint32_t sin_out1, sin_out2 = 0;
   uint32_t cos_out1, cos_out2 = 0;
   uint32_t fraction = 0;
@@ -36,14 +37,14 @@ void DDSinterpolate(struct DDS *n){
   int32_t sin_diff, cos_diff = 0;
 
   /* Extract int part of accumulator */
-  index = n->accumulator >> 16;
-
+  sin_index = n->accumulator >> 16;
+  cos_index = n->accumulator >> 16;
   /* Find LUT output and next output */
-  sin_out1 = sinLUT[index];
-  sin_out2 = sinLUT[index+1];
+  sin_out1 = sinLUT[sin_index];
+  sin_out2 = sinLUT[sin_index + 1];
 
-  cos_out1 = sinLUT[index + 64];
-  cos_out2 = sinLUT[index + 65];
+  cos_out1 = sinLUT[cos_index];
+  cos_out2 = sinLUT[cos_index + 1];
 
   /* Ectract frac part of accumulator */
   fraction = 0xFFFF & n->accumulator;
@@ -84,8 +85,10 @@ void DDSinterpolate(struct DDS *n){
 
 void DDSstep(struct DDS *n){
   DDSinterpolate(n);
-  n->accumulator = n->accumulator + n->incrementor;
-  n->accumulator &= (P2_24) - 1;
+  n->sin_accumulator = n->sin_accumulator + n->incrementor;
+  n->cos_accumulator = n->cos_accumulator + n->incrementor;
+  n->sin_accumulator &= (P2_24) - 1;
+  n->cos_accumulator &= (P2_24) - 1;
 }
 
 #endif
