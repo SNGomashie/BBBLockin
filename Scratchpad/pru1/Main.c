@@ -26,16 +26,17 @@ volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
 void main (void) {
-
+  unsigned int test2;
+  unsigned int* test2Ptr = &test2;
 
   /* Inifinite loop */
   while(1){
     while(shared[0] == INT_ON){
       /* Read scratchpad */
-      __xin(10, 0, 0, dmemBuf);
+      __xin(10, 0, 0, test2Ptr);
 
 
-      pru1_mem[0] = dmemBuf[0];
+      pru1_mem[0] = test2;
 
       /* reset shared memory interrupt*/
       shared[0] = INT_OFF;
