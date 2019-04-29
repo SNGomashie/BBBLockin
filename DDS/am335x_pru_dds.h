@@ -11,7 +11,8 @@ struct DDS {
   volatile uint32_t *period;
   uint64_t incrementor;
   uint32_t accumulator;
-  uint32_t output;
+  uint32_t sin_output;
+  uint32_t cos_output;
 };
 
 

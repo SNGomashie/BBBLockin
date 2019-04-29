@@ -27,9 +27,10 @@ void DDSsetfreq(struct DDS *n){
 
 void DDSinterpolate(struct DDS *n){
   uint32_t index = 0;
-  uint32_t out1, out2 = 0;
+  uint32_t sin_out1, sin_out2 = 0;
+  uint32_t cos_out1, cos_out2 = 0;
   uint32_t fraction = 0;
-  uint64_t diff_x_frac = 0;
+  uint64_t sin_diff_x_frac, cos_diff_x_frac = 0;
   uint32_t temp_out = 0;
   int32_t diff = 0;
 
@@ -37,35 +38,47 @@ void DDSinterpolate(struct DDS *n){
   index = n->accumulator >> 16;
 
   /* Find LUT output and next output */
-  out1 = sinLUT[index];
-  out2 = sinLUT[index+1];
+  sin_out1 = sinLUT[index];
+  sin_out2 = sinLUT[index+1];
+
+  cos_out1 = sinLUT[index + 64];
+  cos_out2 = sinLUT[index + 65];
 
   /* Ectract frac part of accumulator */
   fraction = 0xFFFF & n->accumulator;
 
   /* Calculate the difference between the 2 samples */
-  diff = out2-out1;
-
+  sin_diff = sin_out2-sin_out1;
+  cos_diff = cos_out2-cos_out1;
   /* Multiply by frac part of accumulator */
-  diff_x_frac = (int32_t)diff * (uint32_t)fraction;
-
+  sin_diff_x_frac = (int32_t)sin_diff * (uint32_t)fraction;
+  cos_diff_x_frac = (int32_t)cos_diff * (uint32_t)fraction;
   /*      Mask least significant 32-bits      */
   /* because we multiply unsigned with signed */
-  temp_out = diff_x_frac & 0xFFFFFFFF;
-
+  sin_temp_out = sin_diff_x_frac & 0xFFFFFFFF;
+  cos_temp_out = cos_diff_x_frac & 0xFFFFFFFF;
 
     /*           division by 2^16             */
     /* if temp_out signed convert to unsigned */
     /* after division convert back to signed  */
     /*    if temp_out unsigned just divide    */
-    if(temp_out & (1 << 31)){
-      temp_out = ~temp_out + 1;
-      temp_out /= P2_16;
-      temp_out = ~temp_out + 1;
+    if(sin_temp_out & (1 << 31)){
+      sin_temp_out = ~sin_temp_out + 1;
+      sin_temp_out /= P2_16;
+      sin_temp_out = ~sin_temp_out + 1;
     } else {
-      temp_out /= P2_16;
+      sin_temp_out /= P2_16;
     }
-    n->output = (out1 + temp_out);
+
+    if(cos_temp_out & (1 << 31)){
+      cos_temp_out = ~cos_temp_out + 1;
+      cos_temp_out /= P2_16;
+      cos_temp_out = ~cos_temp_out + 1;
+    } else {
+      cos_temp_out /= P2_16;
+    }
+    n->sin_output = (sin_out1 + sin_temp_out);
+    n->cos_output = (cos_out1 + cos_temp_out);
 }
 
 void DDSstep(struct DDS *n){

@@ -59,20 +59,17 @@ void main(void){
   while(1){
     /* Timer interrupt polling */
     while(__R31 & HOST_INT){
-
       IEPclear_int();
       INTCclear(7);
-      
-      __R30 ^= (1 << PIN);
 
       /* Capture period and calculate phase incrementor */
       DDSsetfreq(&osc);
 
+      /* Step to the next value */
       DDSstep(&osc);
 
-      blkdata[x] = osc.output;
-
-      __R30 ^= (1 << PIN);
+      /* Save in data block */
+      blkdata[x] = sin_osc.output;
 
       x++;
       if(!(x < 248)){
