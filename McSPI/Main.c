@@ -39,7 +39,9 @@ void main(void){
   LTC1859initialize();
 
   while(1){
+    CYCLEstart();
     adc_out = LTC1859readout(0, 0);
+    pru0_mem[0] = CYCLEstop();
     sprintf(data, "%d\n", adc_out);
     UARTtransmit(data);
     __delay_cycles(0x1312D00);
