@@ -21,7 +21,7 @@ void main (void) {
   while(1){
     while(shared[0] == INT_ON){
       /* Read scratchpad */
-      __xin(14, 0, 0, dataPtr);
+      __xin(10, 0, 0, dataPtr);
 
       pru1_mem[1] = data;
       /* reset shared memory interrupt*/

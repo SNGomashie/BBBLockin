@@ -32,7 +32,7 @@ void main(void) {
 			shared[0] = INT_ON;
 
 			/* Send data object through the scratchpad */
-			__xout(14, 0, 0, dataPtr);
+			__xout(10, 0, 0, dataPtr);
 
 			/* Delay for a second */
 			__delay_cycles(200000000);
