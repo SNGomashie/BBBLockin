@@ -62,13 +62,18 @@ void main(void){
 
       IEPclear_int();
       INTCclear(7);
+      
+      __R30 ^= (1 << PIN);
+
       /* Capture period and calculate phase incrementor */
       DDSsetfreq(&osc);
 
       DDSstep(&osc);
 
       blkdata[x] = osc.output;
-      pru1_mem[0] = *osc.period;
+
+      __R30 ^= (1 << PIN);
+
       x++;
       if(!(x < 248)){
         RPMSGtransmit_block(blkdata);
