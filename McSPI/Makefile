@@ -24,7 +24,7 @@ LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 
 # Paths to libraries
 LIBS=--library=$(PRU_SUPPORT)/lib/rpmsg_lib.lib
-INCLUDE=--include_path=$(PRU_BBB)/include --include_path=$(PRU_CGT)/include --include_path=$(PRU_SUPPORT)/include/ --include_path=$(PRU_SUPPORT)/include/am335x/
+INCLUDE=--include_path=$(PRU_CGT)/include --include_path=$(PRU_SUPPORT)/include/ --include_path=$(PRU_SUPPORT)/include/am335x/
 
 # Stack & Heap size
 STACK_SIZE=0x100
@@ -58,12 +58,12 @@ endif
 
 # PRU sysfs interface directory
 PRU_DIR=$(wildcard /sys/class/remoteproc/$(PRU_ADDR))
+
 all: stop clean git install start
 
 stop:
 	@echo "-	Stopping PRU $(PRUN)"
 	@echo 'stop' | sudo tee -a $(PRU_DIR)/state > /dev/null || echo '-	Cannot stop $(PRUN)'
-
 
 git:
 	@echo '-	Updating repository'
@@ -85,7 +85,7 @@ $(TARGET): $(OBJECTS) $(LINKER_COMMAND_FILE)
 $(GEN_DIR)/%.object: %.c
 	@mkdir -p $(GEN_DIR)
 	@echo '-	Invoking: PRU Compiler: $<'
-	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRUN=PRU$(PRUN)
+	@$(PRU_CGT)/bin/clpru $(INCLUDE) $(CFLAGS) -fe $@ $< -D=PRU$(PRUN)
 
 .PHONY: all clean
 
