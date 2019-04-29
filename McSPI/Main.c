@@ -27,6 +27,10 @@ uint16_t blkdata[248];
 void main(void){
   uint16_t adc_out = 0;
   char* RPMsg_in;
+  uint16_t samp_freq =0;
+  uint16_t amount_samp = 0;
+  uint16_t x = 0;
+  uint8_t i = 0;
 
   /* Clear output register */
   __R30 = 0x00000000;
@@ -42,6 +46,10 @@ void main(void){
   McSPIinitialze(0x5, 0xF, 0x0);
   /* Initialize the LTC1859 adc */
   LTC1859initialize();
+
+  RPMsg_in = RPMSGreceive();
+  amount_samp = atoi(RPMsg_in);
+
   IEPinitialize(20000, 1, cmp);
   IEPstart();
 
