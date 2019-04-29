@@ -30,8 +30,8 @@ void DDSinterpolate(struct DDS *n){
   uint32_t out1, out2 = 0;
   uint32_t fraction = 0;
   uint64_t diff_x_frac = 0;
-  int32_t diff = 0;
   uint32_t temp_out = 0;
+  int32_t diff = 0;
 
   /* Extract int part of accumulator */
   index = n->accumulator >> 16;
@@ -70,7 +70,7 @@ void DDSinterpolate(struct DDS *n){
 
 void DDSstep(struct DDS *n){
   DDSinterpolate(n);
-  n->accumulator += n->incrementor;
+  n->accumulator = n->accumulator + n->incrementor;
   n->accumulator &= (P2_24) - 1;
 }
 
