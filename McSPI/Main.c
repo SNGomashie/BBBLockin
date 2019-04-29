@@ -40,7 +40,7 @@ void main(void){
   /* Initialize the LTC1859 adc */
   LTC1859initialize();
   INTCinitialize(7, 1, 1);
-  IEPinitialize(200000, 1, cmp);
+  IEPinitialize(20000, 1, cmp);
   IEPstart();
 
   while(1){
