@@ -31,8 +31,8 @@ void DDSinterpolate(struct DDS *n){
   uint32_t cos_out1, cos_out2 = 0;
   uint32_t fraction = 0;
   uint64_t sin_diff_x_frac, cos_diff_x_frac = 0;
-  uint32_t temp_out = 0;
-  int32_t diff = 0;
+  uint32_t cos_temp_out, sin_temp_out = 0;
+  int32_t sin_diff, cos_diff = 0;
 
   /* Extract int part of accumulator */
   index = n->accumulator >> 16;
