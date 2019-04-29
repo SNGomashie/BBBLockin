@@ -74,7 +74,7 @@ class BeagleBoneDDS(rpyc.Service):
     def exposed_pru_transmit(self, message):
         try:
             self.PRUdev = open(self.CHAR_DEV, "rb+", 0)
-            self.PRUdev.write(bytes(message, 'ASCII'))
+            self.PRUdev.write(bytes(str(message), 'ASCII'))
             print('-    "%s" transmitted to PRU%d' % (message, self.pru))
         except IOError:
             print("-  ERROR  Could not open device: 'rpmsg_pru30'")
