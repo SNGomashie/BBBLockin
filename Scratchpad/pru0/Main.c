@@ -21,7 +21,7 @@ volatile register unsigned int __R31;
 #define SHARE_MEM  0x00010000
 volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
-uint32_t data = 0xF0F0F0FF;
+uint32_t data;
 uint32_t* dataPtr = &data;
 
 void main(void) {
@@ -29,6 +29,7 @@ void main(void) {
 
 /* Infinite loop */
 	while(1) {
+		data = 0xF0F00F0F;
 		while(shared[0] == INT_OFF){
 			__R30 ^= (1 << DEBUG_PIN);
 			/* Send interrupt over shared memory */
