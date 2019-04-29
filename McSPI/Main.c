@@ -17,6 +17,8 @@
 #include "LTC1859.h"
 #include "resource_table.h"
 
+#define HOST_INT (1 << 31)
+
 #define PRU0_MEM 0x00000000
 volatile uint32_t *pru0_mem =  (unsigned int *) PRU0_MEM;
 
