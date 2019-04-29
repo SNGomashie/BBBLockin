@@ -21,10 +21,12 @@ volatile register unsigned int __R31;
 #define SHARE_MEM  0x00010000
 volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
-uint32_t data;
-uint32_t* dataPtr = &data;
 
 void main(void) {
+	static unsigned int data = 0;
+	data++
+	unsigned int* dataPtr = &data;
+
 	shared[0] = INT_OFF;
 
 /* Infinite loop */
