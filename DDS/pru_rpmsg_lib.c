@@ -36,7 +36,6 @@ char* input;
 volatile uint8_t *status;
 uint8_t state;
 
-
 /* Initialization for rpmsg. */
 uint8_t RPMSGinitialize(void){
   *GPIO1_CLEAR = USR0;
@@ -120,4 +119,19 @@ void RPMSGtransmit_block(uint16_t output[248]){
 
 }
 
+uint16_t blkdata[248];
+uint8_t var = 0;
+uint8_t pack = 0;
+
+/* Will send a block of 248 16-bit numbers over RPMsg */
+uint16_t RPMSGcollect_send(uint16_t value){
+  blkdata[x] = value;
+  var++
+  if(!(var < 248)){
+    RPMSGtransmit_block(blkdata);
+    var = 0;
+    pack++;
+  }
+  return pack;
+}
 #endif

@@ -68,19 +68,13 @@ void main(void){
 
       /* Step to the next value */
       DDSstep(&osc);
-      
+
       __R30 ^= (1 << PIN);
       /* Save in data block */
       blkdata[x] = osc.cos_output;
 
-      x++;
-      if(!(x < 248)){
-        RPMSGtransmit_block(blkdata);
-        x = 0;
-        i++;
-        if(!(i < amount_samp)){
-          IEPstop();
-        }
+      if(RPMSGcollect_send(osc.cos_output) == amount_samp){
+        IEPstop();
       }
 
     }

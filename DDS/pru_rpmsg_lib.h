@@ -28,5 +28,6 @@ char* RPMSGreceive(void);
 void RPMSGtransmit(char* output);
 void RPMSGtransmit_block(uint16_t output[248]);
 void RPMSGclear_int(void);
+uint16_t RPMSGcollect_send(uint16_t value);
 
 #endif /* RPMSG_LIB_H */
