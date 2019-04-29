@@ -2,13 +2,6 @@
 #include <pru_cfg.h>
 #include "resource_table.h"
 
-/* Data object to be send through the scratchpad */
-typedef struct buffer{
-  uint32_t reg0;
-} bufferData;
-
-bufferData dmemBuf;
-
 /* Interrupt definitions */
 #define INT_OFF 0x00000000
 #define INT_ON 0xFFFFFFFF
@@ -29,14 +22,11 @@ unsigned int test2;
 unsigned int* test2Ptr = &test2;
 
 void main (void) {
-
-
   /* Inifinite loop */
   while(1){
     while(shared[0] == INT_ON){
       /* Read scratchpad */
       __xin(14, 0, 0, test2Ptr);
-
 
       pru1_mem[0] = test2;
       pru1_mem[1] = 0xFFFFFFFF;

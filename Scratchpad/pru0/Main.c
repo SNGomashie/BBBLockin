@@ -8,7 +8,7 @@
 
 /* PRU definiton */
 #define PRU0
-
+#define DEBUG_PIN 3
 /* Interrupt definitions */
 #define INT_OFF 0x00000000
 #define INT_ON 0xFFFFFFFF
@@ -30,14 +30,15 @@ void main(void) {
 /* Infinite loop */
 	while(1) {
 		while(shared[0] == INT_OFF){
+			__R30 ^= (1 << DEBUG_PIN);
 			/* Send interrupt over shared memory */
 			shared[0] = INT_ON;
 
 			/* Send data object through the scratchpad */
 			__xout(14, 0, 0, dataPtr);
-
+			__R30 ^= (1 << DEBUG_PIN);
 			/* Delay for a second */
-			__delay_cycles(200000000);
+			__delay_cycles(2000000);
 		}
 	}
 }
