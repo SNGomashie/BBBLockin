@@ -31,7 +31,7 @@ void DDSinterpolate(struct DDS *n){
   uint32_t sin_index, cos_index = 0;
   uint32_t sin_out1, sin_out2 = 0;
   uint32_t cos_out1, cos_out2 = 0;
-  uint32_t sin_fraction, cos_fracton = 0;
+  uint32_t sin_fraction, cos_fraction = 0;
   uint64_t sin_diff_x_frac, cos_diff_x_frac = 0;
   uint32_t sin_temp_out, cos_temp_out = 0;
   int32_t sin_diff, cos_diff = 0;
