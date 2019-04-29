@@ -17,15 +17,9 @@ void DDSsetfreq(struct DDS *n){
   uint32_t norm_period = 0;
   uint32_t temp_period = 0;
 
-  temp_period = *period / 100;
-  norm_period = P2_24 / period;
+  temp_period = n->*period / 100;
+  norm_period = P2_24 / temp_period;
   n->incrementor = (uint64_t)norm_period * (uint64_t)n->sample_period;
-}
-
-void DDSstep(struct DDS *n){
-  DDSinerpolate(n);
-  n->accumulator += n->incrementor;
-  accumulator &= (P2_24) - 1;
 }
 
 void DDSinterpolate(struct DDS *n){
@@ -69,6 +63,12 @@ void DDSinterpolate(struct DDS *n){
       temp_out /= P2_16;
     }
     n->output = (out1 + temp_out);
+}
+
+void DDSstep(struct DDS *n){
+  DDSinerpolate(n);
+  n->accumulator += n->incrementor;
+  n->accumulator &= (P2_24) - 1;
 }
 
 #endif
