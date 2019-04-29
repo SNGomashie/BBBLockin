@@ -69,7 +69,7 @@ void main(void){
       DDSstep(&osc);
 
       /* Save in data block */
-      blkdata[x] = osc.sin_output;
+      blkdata[x] = osc.cos_output;
 
       x++;
       if(!(x < 248)){
