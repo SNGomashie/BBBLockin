@@ -6,7 +6,7 @@
 #include "am335x_pru_dds.h"
 
 void DDSinitialize(struct DDS *n, uint32_t sample_period){
-  n->period* = &CT_ECAP.CAP1;
+  n->*period = &CT_ECAP.CAP1;
   n->accumulator = 0;
   n->sample_period = sample_period;
   n->output = sinLUT[0];
@@ -19,7 +19,7 @@ void DDSsetfreq(struct DDS *n){
 
   temp_period = *period / 100;
   norm_period = P2_24 / period;
-  n->incrementor = (uint64_t)norm_period * (uint64_t)n->samp_period;
+  n->incrementor = (uint64_t)norm_period * (uint64_t)n->sample_period;
 }
 
 void DDSstep(struct DDS *n){
