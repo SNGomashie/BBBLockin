@@ -37,8 +37,8 @@ void DDSinterpolate(struct DDS *n){
   int32_t sin_diff, cos_diff = 0;
 
   /* Extract int part of accumulator */
-  sin_index = n->accumulator >> 16;
-  cos_index = n->accumulator >> 16;
+  sin_index = n->sin_accumulator >> 16;
+  cos_index = n->cos_accumulator >> 16;
   /* Find LUT output and next output */
   sin_out1 = sinLUT[sin_index];
   sin_out2 = sinLUT[sin_index + 1];
@@ -47,14 +47,14 @@ void DDSinterpolate(struct DDS *n){
   cos_out2 = sinLUT[cos_index + 1];
 
   /* Ectract frac part of accumulator */
-  fraction = 0xFFFF & n->accumulator;
-
+  sin_fraction = 0xFFFF & n->sin_accumulator;
+  cos_fraction = 0xFFFF & n->cos_accumulator;
   /* Calculate the difference between the 2 samples */
   sin_diff = sin_out2-sin_out1;
   cos_diff = cos_out2-cos_out1;
   /* Multiply by frac part of accumulator */
-  sin_diff_x_frac = (int32_t)sin_diff * (uint32_t)fraction;
-  cos_diff_x_frac = (int32_t)cos_diff * (uint32_t)fraction;
+  sin_diff_x_frac = (int32_t)sin_diff * (uint32_t)sin_fraction;
+  cos_diff_x_frac = (int32_t)cos_diff * (uint32_t)cos_fraction;
   /*      Mask least significant 32-bits      */
   /* because we multiply unsigned with signed */
   sin_temp_out = sin_diff_x_frac & 0xFFFFFFFF;
