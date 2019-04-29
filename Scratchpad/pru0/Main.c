@@ -21,7 +21,7 @@ volatile register unsigned int __R31;
 volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
 void main(void) {
-	uint16_t data = 0xFFFFFFFF;
+	uint32_t data = 0xFFFFFFFF;
 	uint32_t* dataPtr = &data;
 	shared[0] = INT_OFF;
 
@@ -32,7 +32,7 @@ void main(void) {
 			shared[0] = INT_ON;
 
 			/* Send data object through the scratchpad */
-			__xout(14, 0, 0, data);
+			__xout(14, 0, 0, dataPtr);
 
 			/* Delay for a second */
 			__delay_cycles(200000000);
