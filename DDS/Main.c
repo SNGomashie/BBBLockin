@@ -78,7 +78,7 @@ void main(void){
       /* Calculate optimal phase increment for the corresponding period */
       norm_period = P2_24 / period;
       incrementor = (uint64_t)norm_period * (uint64_t)samp_period;
-      pru1_mem[0] = incremetor;
+      pru1_mem[0] = incrementor;
       /* Toggle pin (debugging)*/
       // __R30 ^= 1 << PIN;
 
