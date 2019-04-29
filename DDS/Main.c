@@ -72,7 +72,7 @@ void main(void){
       __R30 ^= (1 << PIN);
 
 
-      if(RPMSGcollect_send(osc.sin_output) == amount_samp){
+      if(RPMSGcollect_send(osc.cos_output) == amount_samp){
         IEPstop();
       }
 
