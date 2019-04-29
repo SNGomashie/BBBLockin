@@ -125,8 +125,8 @@ uint8_t pack = 0;
 
 /* Will send a block of 248 16-bit numbers over RPMsg */
 uint16_t RPMSGcollect_send(uint16_t value){
-  blkdata[x] = value;
-  var++
+  blkdata[var] = value;
+  var++;
   if(!(var < 248)){
     RPMSGtransmit_block(blkdata);
     var = 0;
