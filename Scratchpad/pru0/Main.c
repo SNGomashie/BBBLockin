@@ -1,6 +1,7 @@
 /* includes */
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <pru_intc.h>
 #include <pru_cfg.h>
 #include "resource_table.h"
