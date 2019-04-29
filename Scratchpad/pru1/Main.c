@@ -11,7 +11,7 @@
 volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
 /* data RAM definition for debugging */
-#define PRU1_MEM 0x00002000
+#define PRU1_MEM 0x00000000
 volatile uint32_t *pru1_mem =  (unsigned int *) PRU1_MEM;
 
 /* Global variable definitions */
