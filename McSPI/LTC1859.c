@@ -55,20 +55,22 @@ uint16_t LTC1859readout(uint8_t chan, uint8_t mode){
   uint16_t SPIsend = 0;
   uint16_t result = 0;
 
-  switch(mode){
-    case 0:
-      SPIsend = (ADCch[chan] << 12) | 0b0000000000000000; // single-ended, input +/-5V
-      break;
-    case 1:
-      SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
-      break;
-    case 2:
-      SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
-      break;
-    case 3:
-      SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
-      break;
-  }
+  SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
+
+  // switch(mode){
+  //   case 0:
+  //     SPIsend = (ADCch[chan] << 12) | 0b0000000000000000; // single-ended, input +/-5V
+  //     break;
+  //   case 1:
+  //     SPIsend = (ADCch[chan] << 12) | 0b1000100000000000; // single-ended, input 0V to 5V
+  //     break;
+  //   case 2:
+  //     SPIsend = (ADCch[chan] << 12) | 0b1000010000000000; // single-ended, input +/-10V
+  //     break;
+  //   case 3:
+  //     SPIsend = (ADCch[chan] << 12) | 0b1000110000000000; // single-ended, input 0V to 10V
+  //     break;
+  // }
 
   while(!(__R31 & (1 << _BUSY)));
 
