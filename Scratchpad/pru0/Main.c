@@ -24,7 +24,7 @@ volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
 void main(void) {
 	static unsigned int data = 0;
-	data++
+	data++;
 	unsigned int* dataPtr = &data;
 
 	shared[0] = INT_OFF;
