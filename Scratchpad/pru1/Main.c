@@ -1,14 +1,19 @@
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <pru_cfg.h>
 #include "resource_table.h"
+
+/* Data object to be send through the scratchpad */
+typedef struct buffer{
+  uint32_t reg0;
+} bufferData;
+
+bufferData dmemBuf;
 
 /* Interrupt definitions */
 #define INT_OFF 0x00000000
 #define INT_ON 0xFFFFFFFF
 
-/* Shared memory location & definiton*/
+/* Shared memory location & defintions */
 #define SHARE_MEM  0x00010000
 volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 
@@ -16,16 +21,22 @@ volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 #define PRU1_MEM 0x00002000
 volatile uint32_t *pru1_mem =  (unsigned int *) PRU1_MEM;
 
+/* Global variable definitions */
+volatile register uint32_t __R30;
+volatile register uint32_t __R31;
+
 void main (void) {
-  uint32_t data;
-  uint32_t* dataPtr = &data;
+
+
   /* Inifinite loop */
   while(1){
     while(shared[0] == INT_ON){
       /* Read scratchpad */
-      __xin(11, 0, 0, dataPtr);
+      __xin(10, 0, 0, dmemBuf);
 
-      pru1_mem[1] = data;
+
+      pru1_mem[0] = dmemBuf;
+
       /* reset shared memory interrupt*/
       shared[0] = INT_OFF;
 
