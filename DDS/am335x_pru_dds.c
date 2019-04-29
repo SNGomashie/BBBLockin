@@ -12,7 +12,8 @@ void DDSinitialize(struct DDS *n, uint32_t samp_period){
   n->period = &CT_ECAP.CAP1;
   n->accumulator = 0;
   n->sample_period = samp_period;
-  n->output = sinLUT[0];
+  n->sin_output = sinLUT[0];
+  n->cos_output = sinLUT[64];
   DDSsetfreq(n);
 }
 
