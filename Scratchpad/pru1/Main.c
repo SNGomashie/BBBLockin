@@ -15,7 +15,7 @@ volatile uint32_t *shared =  (unsigned int *) SHARE_MEM;
 volatile uint32_t *pru1_mem =  (unsigned int *) PRU1_MEM;
 
 void main (void) {
-  uint32_t data = 0;
+  uint32_t data;
   uint32_t* dataPtr = &data;
   /* Inifinite loop */
   while(1){
