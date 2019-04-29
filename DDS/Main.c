@@ -70,10 +70,9 @@ void main(void){
       DDSstep(&osc);
 
       __R30 ^= (1 << PIN);
-      /* Save in data block */
-      blkdata[x] = osc.cos_output;
 
-      if(RPMSGcollect_send(osc.cos_output) == amount_samp){
+
+      if(RPMSGcollect_send(osc.sin_output) == amount_samp){
         IEPstop();
       }
 
