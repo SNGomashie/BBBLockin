@@ -38,13 +38,20 @@ void main(void){
   /* Initialize the LTC1859 adc */
   LTC1859initialize();
 
+  IEPinitialize(20000, 1, cmp);
+  IEPstart();
+
   while(1){
-    CYCLEstart();
+    while(__R31 & HOST_INT){
+      IEPclear_int();
+      INTCclear(7);
+    // CYCLEstart();
     adc_out = LTC1859readout(0, 1);
-    pru0_mem[0] = CYCLEstop();
+    // pru0_mem[0] = CYCLEstop();
     // sprintf(data, "%d\n", adc_out);
     // UARTtransmit(data);
     // __delay_cycles(0x1312D00);
+    }
   }
 
 
