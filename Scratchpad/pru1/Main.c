@@ -25,9 +25,11 @@ volatile uint32_t *pru1_mem =  (unsigned int *) PRU1_MEM;
 volatile register uint32_t __R30;
 volatile register uint32_t __R31;
 
+unsigned int test2;
+unsigned int* test2Ptr = &test2;
+
 void main (void) {
-  unsigned int test2;
-  unsigned int* test2Ptr = &test2;
+
 
   /* Inifinite loop */
   while(1){
