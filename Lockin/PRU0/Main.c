@@ -176,7 +176,7 @@ void main(void) {
  		fa = ta;
  		sa = x/fa;
  		ta = (fa+sa)>>1;
- 		error=iabs(x - ta*ta);
+ 		error=abs(x - ta*ta);
  	} while (error_last!=error);
 
  	// Return the integer result: square root of the input argument x.
