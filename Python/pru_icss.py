@@ -67,7 +67,6 @@ class PRU_ICSS:
         div = data_size / 8
         num = 496 / div
         tot = np.ceil(samples / num)
-        self.PRU_dev.write(bytes(str(tot), 'ASCII'))
         print("-    %d samples will be transfered in %d packets" % (samples, tot))
         for i in range(np.uint16(tot)):
             charBuf = self.PRU_dev.read(self.RPMSG_BUF_SIZE)
