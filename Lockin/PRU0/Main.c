@@ -21,6 +21,15 @@
 
 
 /*****************************/
+/*    Function Prototypes    */
+/*****************************/
+uint16_t sqrt(uint32_t x);
+/*****************************/
+/*****************************/
+
+
+
+/*****************************/
 /* PRU-ICSS Memory locations */
 /*****************************/
 #define SHARE_MEM  0x00010000  // 12kB of shared memory
@@ -56,8 +65,8 @@ void main(void) {
   uint16_t uint16Sin = 0;  // Sin output DDS
 
   uint32_t uint32Q, uint32I, uint32R = 0;  // Quadrature, In-phase and Magnitude
-  // uint64_t uint64Qpow, uint64Ipow = 0;
-  // uint16_t uint16Navr = 1000;  // Integration time
+  uint64_t uint64Qpow, uint64Ipow = 0;
+  uint16_t uint16Navr = 1000;  // Integration time
   /*************************/
   /*************************/
 
