@@ -40,7 +40,7 @@ void main(void) {
   uint16_t uint16Navr = 1000;  // Integration time
   /*************************/
   /*************************/
-
+  __R30 ^= (1 << DEBUG_PIN);
 
 
   /*************************/
@@ -66,6 +66,7 @@ void main(void) {
   IEPinitialize(uint32Period, 1, cmp);  // Initialize IEP timer | received period, increment by 1, compare mode
   /*************************/
   /*************************/
+  __R30 ^= (1 << DEBUG_PIN);
 
 
 
@@ -76,12 +77,14 @@ void main(void) {
   sRAM[3] = uint8packets;
   INTERNCOMpoke(PRU0_PRU1_START_INT);  // Wake up PRU1
   IEPstart();  // Start IEP timer
+  __R30 ^= (1 << DEBUG_PIN);
 
 
   /*       Main loop       */
   while(1){
     while(__R31 & (1 << 31)){  // IEP interrupt polling
       IEPclear();  // Clear IEP cmp register and system event
+      __R30 ^= (1 << DEBUG_PIN);
 
       uint16ADC = LTC1859readout(0, 1);  // Read a sample form the LTC1859
 

@@ -20,16 +20,6 @@
 
 
 void main(void) {
-  /************************/
-  /*        SETUP         */
-  /************************/
-  __R30 = 0x00000000;  // Clear al output pins
-  CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;  // Allow OCP master port access by the PRU so the PRU can read external memories.
-  /************************/
-  /************************/
-
-
-
   /*************************/
   /* Variable declarations */
   /*************************/
@@ -39,12 +29,15 @@ void main(void) {
   struct NCO oscReference;
   /*************************/
   /*************************/
-
+  __R30 ^= (1 << DEBUG_PIN);
 
 
   /*************************/
   /*    Initializations    */
   /*************************/
+  __R30 = 0x00000000;  // Clear al output pins
+  CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;  // Allow OCP master port access by the PRU so the PRU can read external memories.
+
   INTCinitialize(PRU1_PRU0_SEND_INT, 1, 1);  // Initialize interrupt controller | sys_evt 30, channel 1, host_int 1
   eCAPinitialize();  // Initialize enchanced capture module
 
@@ -53,7 +46,7 @@ void main(void) {
   NCOinitialize(&oscReference, *uint32Sample_period);  // Initialize Numerical Oscillator
   /*************************/
   /*************************/
-
+  __R30 ^= (1 << DEBUG_PIN);
 
 
   /*************************/
@@ -65,7 +58,7 @@ void main(void) {
   while(1){
     while(__R31 & (1 << 31)){   // IEP interrupt polling
       while(!(CT_IEP.TMR_CMP_STS == 0));  // Wait until PRU0 has cleared the interrupt
-
+      __R30 ^= (1 << DEBUG_PIN);
         NCOsetfreq(&oscReference);  // Change the tuning word to stay in-phase
         NCOstep(&oscReference);  // Go to the next value of the sin wave
 
