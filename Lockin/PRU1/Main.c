@@ -40,8 +40,8 @@ void main(void) {
   /*************************/
   /* Variable declarations */
   /*************************/
-  uint32_t *uint32Sample_period = &sRAM[2];
-  uint32_t *uint32Sample_amount = &sRAM[3];
+  uint32_t *uint32Sample_period = &sMEM[2];
+  uint32_t *uint32Sample_amount = &sMEM[3];
 
   struct NCO oscReference;
   /*************************/
@@ -79,11 +79,10 @@ void main(void) {
         NCOsetfreq(&oscReference);  // Change the tuning word to stay in-phase
         NCOstep(&oscReference);  // Go to the next value of the sin wave
 
-        sRAM[0] = osc.cos_output;  // Save the cos output of the NCO in shared memory reg 0
-        sRAM[1] = osc.sin_output;  // Save the sin output of the NCo in shared memory reg 1
+        sMEM[0] = oscReference.cos_output;  // Save the cos output of the NCO in shared memory reg 0
+        sMEM[1] = oscReference.sin_output;  // Save the sin output of the NCo in shared memory reg 1
 
         INTERNCOMpoke(PRU1_PRU0_SEND_INT);  // Tell PRU0 that data is ready
-        INTERNCOMlisten();
     }
   }
   __halt();

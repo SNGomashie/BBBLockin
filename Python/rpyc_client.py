@@ -19,6 +19,11 @@ freq = 100  # Hz
 sample = len(sin_array)
 x = np.arange(samples)
 
+freq = 10000
+
+command = freq | (samples << 16)
+
+print("%d, %d" % ((command >> 16), (command & 0xFFFF)))
 
 Aosin = 32767 * np.sin(2 * np.pi * freq * x / samp_freq)
 Aosinturn = np.int16(32767 * np.sin(2 * np.pi * freq * x / samp_freq))
