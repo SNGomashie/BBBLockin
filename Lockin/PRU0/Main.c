@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "pru_peripheral.h"
+#include "LTC1859.h"
 #include "pru_rpmsg_lib.h"
 
 
