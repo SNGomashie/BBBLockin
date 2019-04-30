@@ -2,7 +2,7 @@ import rpyc
 import numpy as np
 import matplotlib.pyplot as plt
 
-samples = np.pow(2, 14)
+samples = pow(2, 14)
 bits = 16
 
 result_bit = bits / 8
@@ -17,11 +17,15 @@ c = rpyc.connect("192.168.7.2", 18861)
 
 c.root.pru_initialize(2)
 
+c.root.pru_stop(2)
+
 c.root.pru_start(2)
 
 c.root.pru_transmit(command, 0)
 
 data = c.root.pru_blk_receive(samples, bits, 0)
+
+c.root.pru_stop(2)
 
 sin_array = np.asarray(data)
 
@@ -31,7 +35,6 @@ x = np.arange(sample)
 np.savetxt('sampled_data.out', sin_array)
 
 plt.plot(x[:samples], sin_array[:samples])
-plt.ylim(0, 65536)
 plt.show()
 
 plt.title("FFT of SIN sampled by BeagleBone Black 16 bit")
