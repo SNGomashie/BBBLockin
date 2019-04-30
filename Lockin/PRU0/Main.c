@@ -37,6 +37,9 @@ volatile uint32_t *dMEM1 =  (unsigned int *) PRU1_MEM;
 
 
 void main(void) {
+
+    __R30 = 0x00000000;  // Clear all the output pins
+
   /*************************/
   /* Variable declarations */
   /*************************/
@@ -63,7 +66,6 @@ void main(void) {
   /*************************/
   /*    Initializations    */
   /*************************/
-  __R30 = 0x00000000;  // Clear all the output pins
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;  // Allow OCP master port access by the PRU so the PRU can read external memories.
 
   RPMSGinitialize();  // Initialize remoteproc messaging framework

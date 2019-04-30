@@ -37,6 +37,9 @@ volatile uint32_t *dMEM1 =  (unsigned int *) PRU1_MEM;
 
 
 void main(void) {
+
+  __R30 = 0x00000000;  // Clear al output pins
+
   /*************************/
   /* Variable declarations */
   /*************************/
@@ -52,7 +55,6 @@ void main(void) {
   /*************************/
   /*    Initializations    */
   /*************************/
-  __R30 = 0x00000000;  // Clear al output pins
   CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;  // Allow OCP master port access by the PRU so the PRU can read external memories.
 
   INTCinitialize(PRU1_PRU0_SEND_INT, 1, 1);  // Initialize interrupt controller | sys_evt 30, channel 1, host_int 1
