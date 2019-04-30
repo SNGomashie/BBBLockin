@@ -60,7 +60,6 @@ class PRU_ICSS:
             print('-    "%s" transmitted to PRU%d' % (message, self.pru))
         except IOError:
             print("-  ERROR  Could not open device: 'rpmsg_pru30'")
-            t.close()
         pass
 
     def blkreceive(self, samples, data_size):
@@ -72,7 +71,10 @@ class PRU_ICSS:
         print("-    %d samples will be transfered in %d packets" % (samples, tot))
         for i in range(np.uint16(tot)):
             charBuf = self.PRU_dev.read(self.RPMSG_BUF_SIZE)
-            intBuf = np.asarray(struct.unpack('<248H', charBuf))
+            if data_size == 16:
+                intBuf = np.asarray(struct.unpack('<248H', charBuf))
+            elif data_size == 32:
+                intBuf = np.asarray(struct.unpack('<124H', charBuf))
             fullBuf = np.append(fullBuf, intBuf)
             print("\r-    RPMsg packet received ( %d / %d )" % ((i + 1), tot), end='')
         return fullBuf

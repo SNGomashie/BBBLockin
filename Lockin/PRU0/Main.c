@@ -55,7 +55,7 @@ void main(void) {
   uint16_t uint16Cos = 0;  // Cos output DDS
   uint16_t uint16Sin = 0;  // Sin output DDS
 
-  // uint32_t uint32Q, uint32I, uint32R = 0;  // Quadrature, In-phase and Magnitude
+  uint32_t uint32Q, uint32I, uint32R = 0;  // Quadrature, In-phase and Magnitude
   // uint64_t uint64Qpow, uint64Ipow = 0;
   // uint16_t uint16Navr = 1000;  // Integration time
   /*************************/
@@ -111,6 +111,8 @@ void main(void) {
       uint16Sin = sMEM[0];  // SIN is located in reg 0 of the shared memory
       uint16Cos = sMEM[1];  // COS is located in reg 1 of the shared memory
 
+      uint32Q = uint16Sin * uint16ADC;
+
       // /* Quadrature calculation and moving average filtering */
       // uint32Q -= uint32Q / uint16Navr;
       // uint32Q += (uint16Sin * uint16ADC) / uint16Navr;
@@ -127,7 +129,7 @@ void main(void) {
       //
       // uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
 
-      if(RPMSGcollect_send(uint16Sin) == uint8packets){
+      if(RPMSGcollect32_send(uint32Q) == uint8packets){
         IEPstop();
       }
     }

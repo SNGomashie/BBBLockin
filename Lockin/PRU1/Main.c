@@ -81,8 +81,8 @@ void main(void) {
         NCOsetfreq(&oscReference);  // Change the tuning word to stay in-phase
         NCOstep(&oscReference);  // Go to the next value of the sin wave
 
-        sMEM[0] = oscReference.cos_output;  // Save the cos output of the NCO in shared memory reg 0
-        sMEM[1] = oscReference.sin_output;  // Save the sin output of the NCo in shared memory reg 1
+        sMEM[0] = oscReference.sin_output;  // Save the cos output of the NCO in shared memory reg 0
+        sMEM[1] = oscReference.cos_output;  // Save the sin output of the NCo in shared memory reg 1
 
         INTERNCOMpoke(PRU1_PRU0_SEND_INT);  // Tell PRU0 that data is ready
     }

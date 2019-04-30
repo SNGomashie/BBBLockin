@@ -104,7 +104,7 @@ void RPMSGtransmit(char* output){
   }
 }
 
-void RPMSGtransmit_block(uint16_t output[248]){
+void RPMSGtransmit_16block(uint16_t output[248]){
   uint8_t blk_transmit_status;
   uint16_t *ptrBLK = output;
 
@@ -113,25 +113,56 @@ void RPMSGtransmit_block(uint16_t output[248]){
   /* See if transmission went correct */
   while(blk_transmit_status != PRU_RPMSG_SUCCESS){
     //    Debugging
-    *GPIO1_SET = USR1;
-    *GPIO1_SET = USR3;
+    // *GPIO1_SET = USR1;
+    // *GPIO1_SET = USR3;
   }
 
 }
 
-uint16_t blkdata[248];
-uint8_t var = 0;
-uint8_t pack = 0;
+void RPMSGtransmit_32block(uint16_t output[124]){
+  uint8_t blk_transmit_status;
+  uint16_t *ptrBLK = output;
+
+  blk_transmit_status = pru_rpmsg_send(&transport, dst, src, ptrBLK, 496);
+
+  /* See if transmission went correct */
+  while(blk_transmit_status != PRU_RPMSG_SUCCESS){
+    //    Debugging
+    // *GPIO1_SET = USR1;
+    // *GPIO1_SET = USR3;
+  }
+
+}
+
+uint16_t blk16data[248];
+uint8_t var16 = 0;
+uint8_t pack16 = 0;
 
 /* Will send a block of 248 16-bit numbers over RPMsg */
-uint16_t RPMSGcollect_send(uint16_t value){
-  blkdata[var] = value;
-  var++;
-  if(!(var < 248)){
-    RPMSGtransmit_block(blkdata);
-    var = 0;
-    pack++;
+uint16_t RPMSGcollect16_send(uint16_t value){
+  blk16data[var] = value;
+  var16++;
+  if(!(var16 < 248)){
+    RPMSGtransmit_16block(blk16data);
+    var16 = 0;
+    pack16++;
   }
-  return pack;
+  return pack16;
+}
+
+uint32_t blk32data[124];
+uint8_t var32 = 0;
+uint8_t pack32 = 0;
+
+/* Will send a block of 124 32-bit numbers over RPMsg */
+uint16_t RPMSGcollect32_send(uint16_t value){
+  blk32data[var] = value;
+  var32++;
+  if(!(var32 < 124)){
+    RPMSGtransmit_32block(blk32data);
+    var32 = 0;
+    pack32++;
+  }
+  return pack32;
 }
 #endif
