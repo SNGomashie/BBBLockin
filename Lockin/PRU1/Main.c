@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "pru_peripheral.h"
 #include "am335x_pru_nco.h"
+#include "resource_table.h"
 
 
 
