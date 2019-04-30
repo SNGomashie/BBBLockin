@@ -44,7 +44,6 @@ void main(void) {
   /* Variable declarations */
   /*************************/
   volatile uint32_t *uint32Sample_period = &sMEM[2];
-  volatile uint32_t *uint32Sample_amount = &sMEM[3];
 
   struct NCO oscReference;
   /*************************/

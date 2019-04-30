@@ -119,7 +119,7 @@ void RPMSGtransmit_16block(uint16_t output[248]){
 
 }
 
-void RPMSGtransmit_32block(uint16_t output[124]){
+void RPMSGtransmit_32block(uint32_t output[124]){
   uint8_t blk_transmit_status;
   uint16_t *ptrBLK = output;
 

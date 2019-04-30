@@ -58,7 +58,7 @@ void main(void) {
   uint16_t uint16Freq = 0;  // Desired sample frequency
   uint32_t uint32Period = 0;  // sample frequency Hz converted to S
 
-  uint8_t uint8packets = 0;  // Number of samples wanted
+  uint16_t uint16packets = 0;  // Number of samples wanted
 
   uint16_t uint16ADC = 0;  // ADC output
   uint16_t uint16Cos = 0;  // Cos output DDS
@@ -87,7 +87,7 @@ void main(void) {
 
   charReceived = RPMSGreceive();  // Receive message from RPMsg
   uint32command = atoi(charReceived);  // Convert command string to int
-  uint8packets = (uint32command >> 16);  // Extract encoded number of packets
+  uint16packets = (uint32command >> 16);  // Extract encoded number of packets
   uint16Freq = (uint32command & 0xFFFF);  // Extract encoded frequency
   uint32Period = (1000000000 / uint16Freq) / 5;  // Convert freq int to period int
 
@@ -101,7 +101,6 @@ void main(void) {
   /*      Main program     */
   /*************************/
   sMEM[2] = uint32Period / 100;
-  sMEM[3] = uint8packets;
   INTERNCOMpoke(PRU0_PRU1_START_INT);  // Wake up PRU1
   IEPstart();  // Start IEP timer
 
@@ -116,7 +115,6 @@ void main(void) {
 
       uint16Sin = sMEM[0];  // SIN is located in reg 0 of the shared memory
       uint16Cos = sMEM[1];  // COS is located in reg 1 of the shared memory
-
 
       /* Quadrature calculation and moving average filtering */
       uint32Q -= uint32Q / uint16Navr;
@@ -134,7 +132,7 @@ void main(void) {
 
       uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
 
-      if(RPMSGcollect32_send(uint32R) == uint8packets){
+      if(RPMSGcollect32_send(uint32R) == uint16packets){
         IEPstop();
       }
     }
