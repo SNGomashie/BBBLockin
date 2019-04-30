@@ -30,5 +30,5 @@ void RPMSGtransmit_16block(uint16_t output[248]);
 void RPMSGclear_int(void);
 uint16_t RPMSGcollect16_send(uint16_t value);
 void RPMSGtransmit_32block(uint32_t output[124]);
-uint16_t RPMSGcollect32_send(uint32_t value);
+uint32_t RPMSGcollect32_send(uint32_t value);
 #endif /* RPMSG_LIB_H */
