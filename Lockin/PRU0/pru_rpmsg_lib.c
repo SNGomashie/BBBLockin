@@ -140,7 +140,7 @@ uint8_t pack16 = 0;
 
 /* Will send a block of 248 16-bit numbers over RPMsg */
 uint16_t RPMSGcollect16_send(uint16_t value){
-  blk16data[var] = value;
+  blk16data[var16] = value;
   var16++;
   if(!(var16 < 248)){
     RPMSGtransmit_16block(blk16data);
@@ -156,7 +156,7 @@ uint8_t pack32 = 0;
 
 /* Will send a block of 124 32-bit numbers over RPMsg */
 uint16_t RPMSGcollect32_send(uint16_t value){
-  blk32data[var] = value;
+  blk32data[var32] = value;
   var32++;
   if(!(var32 < 124)){
     RPMSGtransmit_32block(blk32data);
