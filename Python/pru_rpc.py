@@ -45,14 +45,11 @@ class BeagleBoneDDS(rpyc.Service):
     def exposed_pru_stop(self, pru):
         if pru == 0:
             self.PRU0.stop()
-            t.close()
         if pru == 1:
             self.PRU1.stop()
-            t.close()
         if pru == 2:
             self.PRU0.stop()
             self.PRU1.stop()
-            t.close()
         pass
 
     def exposed_pru_transmit(self, message, pru):
