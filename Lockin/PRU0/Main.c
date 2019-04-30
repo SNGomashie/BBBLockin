@@ -129,8 +129,8 @@ void main(void) {
       /* Magnitude calculation and moving avergae filtering */
       uint32R -= uint32R / uint16Navr;
 
-      uint64Qpow = (uint64)uint32Q * (uint64)uint32Q;  // Calculate Q sqaured using MAC
-      uint64Ipow = (uint64)uint32I * (uint64)uint32I;  // Calculate I squared using MAC
+      uint64Qpow = (uint64_t)uint32Q * (uint64_t)uint32Q;  // Calculate Q sqaured using MAC
+      uint64Ipow = (uint64_t)uint32I * (uint64_t)uint32I;  // Calculate I squared using MAC
 
       uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
 
