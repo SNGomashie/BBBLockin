@@ -19,6 +19,18 @@
 volatile register unsigned int __R30;
 volatile register unsigned int __R31;
 
+/*****************************/
+/* PRU-ICSS Memory locations */
+/*****************************/
+#define SHARE_MEM  0x00010000  // 12kB of shared memory
+volatile uint32_t *sMEM =  (unsigned int *) SHARE_MEM;
+
+#define PRU0_MEM  0x00000000  // 8kB of Data RAM
+volatile uint32_t *dMEM0 =  (unsigned int *) PRU0_MEM;
+
+#define PRU1_MEM  0x00002000  // 8kB of Data RAM of the secondary PRU
+volatile uint32_t *dMEM1 =  (unsigned int *) PRU1_MEM;
+
 /* Power Reset Clock Module */
 #define CM_PER_BASE	((volatile uint8_t *)(0x44E00000))
 #define SPI0_CLKCTRL  (0x4C)
