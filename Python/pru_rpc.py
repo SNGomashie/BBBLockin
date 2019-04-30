@@ -1,5 +1,6 @@
 import rpyc
 from pru_icss import PRU_ICSS
+import sys
 
 rpyc.core.protocol.DEFAULT_CONFIG['allow_pickle'] = True
 
@@ -18,6 +19,7 @@ class BeagleBoneDDS(rpyc.Service):
         self.PRU0.stop()
         self.PRU1.stop()
         t.close()
+        sys.exit()
         pass
 
     def exposed_pru_initialize(self, pru):
