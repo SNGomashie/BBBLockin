@@ -38,7 +38,7 @@ class PRU_ICSS:
             except IOError:
                 print("-  ERROR  PRU%d failed to start" % (self.pru))
 
-    def stop(self):
+    def stop_ext(self):
         PRU_status = open(self.STATE, "r+")
         state = self.status()
         if 'offline' in state:
@@ -54,6 +54,21 @@ class PRU_ICSS:
                 print("-    PRU%d has stopped" % (self.pru))
                 PRU_status.close()
                 time.sleep(2)
+            except IOError:
+                print("-  ERROR  PRU%d failed to stop" % (self.pru))
+                PRU_status.close()
+
+    def stop(self):
+        PRU_status = open(self.STATE, "r+")
+        state = self.status()
+        if 'offline' in state:
+            print("-    PRU%d is offline" % (self.pru))
+        elif 'running' in state:
+            print("-    PRU%d is running, stopping now" % (self.pru))
+            try:
+                PRU_status.write('stop')
+                print("-    PRU%d has stopped" % (self.pru))
+                PRU_status.close()
             except IOError:
                 print("-  ERROR  PRU%d failed to stop" % (self.pru))
                 PRU_status.close()
