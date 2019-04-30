@@ -4,24 +4,27 @@
 #include "pru_peripheral.h"
 #include "pru_rpmsg_lib.h"
 
-/* PIN number used for debugging */
-#define DEBUG_PIN 3
+
+
+/**************************/
+/*       Definitions      */
+/**************************/
+#define DEBUG_PIN 3  // Pin used for debugging | P9_28
+#define PRU0_PRU1_START_INT (13+16)  // Interrupt for starting PRU1 | sys_evt 29, channel 0, host_int 0
+#define PRU1_PRU0_SEND_INT (14+16)  // Interrupt for transmitting to PRU0 | sys_evt 30, channel 1, host_int 1
+#define PRU0_PRU1_DONE_INT (15+16)  // Interrupt for stopping PRU1 | sys_evt 31, channel 0, host_int 0
+#define PRU_ICSS_IEP_INT (7)  // Interrupt from IEP timer | sys_evt 7, channel 1, host_int 1
+/**************************/
+/**************************/
+
+
 
 void main(void) {
-  /************************/
-  /*        SETUP         */
-  /************************/
-  __R30 = 0x00000000;  // Clear al output pins
-  CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;  // Allow OCP master port access by the PRU so the PRU can read external memories.
-  /************************/
-  /************************/
-
-
-
   /*************************/
   /* Variable declarations */
   /*************************/
   char* charReceived;  //RPMsg received message
+  uint32_t uint32command;  // ARM command
 
   uint16_t uint16Freq = 0;  // Desired sample frequency
   uint32_t uint32Period = 0;  // sample frequency Hz converted to S
@@ -43,15 +46,21 @@ void main(void) {
   /*************************/
   /*    Initializations    */
   /*************************/
+  __R30 = 0x00000000;  // Clear all the output pins
+  CT_CFG.SYSCFG_bit.STANDBY_INIT = 0;  // Allow OCP master port access by the PRU so the PRU can read external memories.
+
   RPMSGinitialize();  // Initialize remoteproc messaging framework
-  INTCinitialize(7, 1, 1);  // Initialize interrupt controller | sys_evt 7, channel 1, host_int 1
-  INTERNCOMinitialize(25);  // Initialize internal communcation | sys_evt 25
+  INTCinitialize(PRU_ICSS_IEP_INT, 1, 1);  // Initialize interrupt controller | sys_evt 7, channel 1, host_int 1
+  INTCinitialize(PRU0_PRU1_START_INT, 0, 0);  // Initialize interrupt controller | sys_evt 29, channel 0, host_int 0
+  INTCinitialize(PRU0_PRU1_DONE_INT, 0, 0);  // Initialize interrupt controller | sys_evt 31, channel 0, host_int 0
   PRCMinitialize();  // Initialize clock for McSPI
   McSPIinitialze(0x5, 0xF, 0x0);  // Initialize McSPI module | 1,5MHz clk, 16bit word, no intterrupts
   LTC1859initialize();  // Initialize LTC1859 adc
 
   charReceived = RPMSGreceive();  // Receive message from RPMsg
-  uint16Freq = atoi(RPMsg_in);  // Convert freq string to freq int
+  uint32command = atoi(charReceived);  // Convert command string to int
+  uint16Freq = (command >> 16);  // Extract encoded frequency
+  uint8packets = (command & 0xFFFF);  // Extract encoded number of packets
   uint32Period = (1000000000 / uint16Freq) / 5;  // Convert freq int to period int
 
   IEPinitialize(uint32Period, 1, cmp);  // Initialize IEP timer | received period, increment by 1, compare mode
@@ -63,8 +72,9 @@ void main(void) {
   /*************************/
   /*      Main program     */
   /*************************/
-  INTERNCOMpoke();  // Wake up PRU1
-  sRAM[3] = uint32Period / 100;
+  sRAM[2] = uint32Period / 100;
+  sRAM[3] = uint8packets;
+  INTERNCOMpoke(PRU0_PRU1_START_INT);  // Wake up PRU1
   IEPstart();  // Start IEP timer
 
 
@@ -75,31 +85,28 @@ void main(void) {
 
       uint16ADC = LTC1859readout(0, 1);  // Read a sample form the LTC1859
 
-      INTERNCOMlisten();  // Wait for DDS to be done on PRU1
-      INTERCOMpoke();  // Respond to PRU1
+      INTERNCOMlisten(1, PRU1_PRU0_SEND_INT);  // Wait for DDS to be done on PRU1
 
+      uint16Sin = sRAM[0];  // SIN is located in reg 0 of the shared memory
+      uint16Cos = sRAM[1];  // COS is located in reg 1 of the shared memory
 
-      /* TODO: is this gonna be shared memory or scratchpad? */
-      uint16Sin = sRAM[0] & 0xFFFF0000;  // SIN is 16 MSB of sRAM reg 0
-      uint16Cos = sRAM[0] & 0x0000FFFF;  // COS is 16 LSB of sRAM reg 0
+      // /* Quadrature calculation and moving average filtering */
+      // uint32Q -= uint32Q / uint16Navr;
+      // uint32Q += (uint16Sin * uint16ADC) / uint16Navr;
+      //
+      // /* In-phase calculation and moving average filtering */
+      // uint32I -= uint32I / uint16Navr;
+      // uint32I += (uint16Cos * uint16ADC) / uint16Navr;
+      //
+      // /* Magnitude calculation and moving avergae filtering */
+      // uint32R -= uint32R / uint16Navr;
+      //
+      // uint64Qpow = (uint64)uint32Q * (uint64)uint32Q;  // Calculate Q sqaured using MAC
+      // uint64Ipow = (uint64)uint32I * (uint64)uint32I;  // Calculate I squared using MAC
+      //
+      // uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
 
-      /* Quadrature calculation and moving average filtering */
-      uint32Q -= uint32Q / uint16Navr;
-      uint32Q += (uint16Sin * uint16ADC) / uint16Navr;
-
-      /* In-phase calculation and moving average filtering */
-      uint32I -= uint32I / uint16Navr;
-      uint32I += (uint16Cos * uint16ADC) / uint16Navr;
-
-      /* Magnitude calculation and moving avergae filtering */
-      uint32R -= uint32R / uint16Navr;
-
-      uint64Qpow = (uint64)uint32Q * (uint64)uint32Q;  // Calculate Q sqaured using MAC
-      uint64Ipow = (uint64)uint32I * (uint64)uint32I;  // Calculate I squared using MAC
-
-      uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
-
-      if(RPMSGcollect_send(uint32R) == uint8packets){
+      if(RPMSGcollect_send(uint16Sin) == uint8packets){
         IEPstop();
       }
     }
