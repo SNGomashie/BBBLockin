@@ -78,8 +78,8 @@ void main(void) {
 
   charReceived = RPMSGreceive();  // Receive message from RPMsg
   uint32command = atoi(charReceived);  // Convert command string to int
-  uint8packets = (uint32command >> 16);  // Extract encoded frequency
-  uint16Freq = (uint32command & 0xFFFF);  // Extract encoded number of packets
+  uint8packets = (uint32command >> 16);  // Extract encoded number of packets
+  uint16Freq = (uint32command & 0xFFFF);  // Extract encoded frequency
   uint32Period = (1000000000 / uint16Freq) / 5;  // Convert freq int to period int
 
   IEPinitialize(uint32Period, 1, cmp);  // Initialize IEP timer | received period, increment by 1, compare mode
@@ -108,25 +108,24 @@ void main(void) {
       uint16Sin = sMEM[0];  // SIN is located in reg 0 of the shared memory
       uint16Cos = sMEM[1];  // COS is located in reg 1 of the shared memory
 
-      uint32Q = uint16Sin * uint16ADC;
 
-      // /* Quadrature calculation and moving average filtering */
-      // uint32Q -= uint32Q / uint16Navr;
-      // uint32Q += (uint16Sin * uint16ADC) / uint16Navr;
-      //
-      // /* In-phase calculation and moving average filtering */
-      // uint32I -= uint32I / uint16Navr;
-      // uint32I += (uint16Cos * uint16ADC) / uint16Navr;
-      //
-      // /* Magnitude calculation and moving avergae filtering */
-      // uint32R -= uint32R / uint16Navr;
-      //
-      // uint64Qpow = (uint64)uint32Q * (uint64)uint32Q;  // Calculate Q sqaured using MAC
-      // uint64Ipow = (uint64)uint32I * (uint64)uint32I;  // Calculate I squared using MAC
-      //
-      // uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
+      /* Quadrature calculation and moving average filtering */
+      uint32Q -= uint32Q / uint16Navr;
+      uint32Q += (uint16Sin * uint16ADC) / uint16Navr;
 
-      if(RPMSGcollect32_send(uint32Q) == uint8packets){
+      /* In-phase calculation and moving average filtering */
+      uint32I -= uint32I / uint16Navr;
+      uint32I += (uint16Cos * uint16ADC) / uint16Navr;
+
+      /* Magnitude calculation and moving avergae filtering */
+      uint32R -= uint32R / uint16Navr;
+
+      uint64Qpow = (uint64)uint32Q * (uint64)uint32Q;  // Calculate Q sqaured using MAC
+      uint64Ipow = (uint64)uint32I * (uint64)uint32I;  // Calculate I squared using MAC
+
+      uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
+
+      if(RPMSGcollect32_send(uint32R) == uint8packets){
         IEPstop();
       }
     }
