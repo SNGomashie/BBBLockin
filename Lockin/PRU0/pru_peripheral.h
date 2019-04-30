@@ -7,6 +7,8 @@
 #ifndef __PERIPHERAL_LIB_H_
 #define __PERIPHERAL_LIB_H_
 
+#include <pru_cfg.h>
+#include <pru_ctrl.h>
 #include <pru_intc.h>
 #include <pru_iep.h>
 #include <pru_ecap.h>
@@ -58,13 +60,9 @@ char UARTreceive(void);
 /* Internal PRU-ICSS communication */
 uint8_t INTERNCOM_status;
 
-void INTERNCOMinitialize(uint8_t sys_evt);
+void INTERNCOMinitialize(uint8_t sys_evt, uint8_t channel, uint8_t host_int);
 
-void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint16_t object);
+void INTERNCOMpoke(uint8_t int);
 
-void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint16_t object);
-
-void INTERNCOMpoke(void);
-
-void INTERNCOMlisten(void);
+void INTERNCOMlisten(uint8_t pru, uint8_t int);
 #endif /* __PERIPHERAL_LIB_H_ */

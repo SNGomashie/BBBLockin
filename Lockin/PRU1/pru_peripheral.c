@@ -12,6 +12,18 @@
 #include "pru_peripheral.h"
 
 
+/*****************************/
+/* PRU-ICSS Memory locations */
+/*****************************/
+#define SHARE_MEM  0x00010000  // 12kB of shared memory
+volatile uint32_t *sMEM =  (unsigned int *) SHARE_MEM;
+
+#define PRU0_MEM  0x00000000  // 8kB of Data RAM
+volatile uint32_t *dMEM0 =  (unsigned int *) PRU0_MEM;
+
+#define PRU1_MEM  0x00002000  // 8kB of Data RAM of the secondary PRU
+volatile uint32_t *dMEM1 =  (unsigned int *) PRU1_MEM;
+
 /****************************/
 /* Power Reset Clock Module */
 /****************************/
@@ -266,35 +278,31 @@ char UARTreceive(void){
 /***********************************/
 /* Internal PRU-ICSS communication */
 /***********************************/
-void INTERNCOMinitialize(uint8_t sys_evt){
-  INTCinitialize(sys_evt, 0, 0);
+void INTERNCOMinitialize(uint8_t sys_evt, uint8_t channel, uint8_t host_int){
+  INTCinitialize(sys_evt, channel, host_int);
   INTERNCOM_status = 1;
 }
 
-void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint16_t object){
+void INTERNCOMpoke(uint8_t int){
   if(INTERNCOM_status == 1){
-    __R31 |= (1 << 30);
-    __xout(14, 0, 0, object);
+    __R31 |= int;
   }
 }
 
-void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint16_t object){
+void INTERNCOMlisten(uint8_t pru, uint8_t int){
   if(INTERNCOM_status == 1){
-    while(!(__R31 & (1 << 30)));
-      __xin(14, 0, 0, object);
-      INTCclear(20);
-  }
-}
-
-void INTERNCOMpoke(void){
-  if(INTERNCOM_status == 1){
-    __R31 |= (1 << 30);
-  }
-}
-
-void INTERNCOMlisten(void){
-  if(INTERNCOM_status == 1){
-    while(!(__R31 & (1 << 30)));
+    switch(pru){
+      case 0:
+        while(!(__R31 & (1 << 30)));
+        INTCclear(int);
+        __delay_cycles(5);
+        break;
+      case 1:
+        while(!(__R31 & (1 << 31)));
+        INTCclear(int);
+        __delay_cycles(5);
+        break;
+    }
   }
 }
 
