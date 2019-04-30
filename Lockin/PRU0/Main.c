@@ -129,7 +129,7 @@ void main(void) {
       //
       // uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
 
-      if(RPMSGcollect16_send(uint16Sin) == uint8packets){
+      if(RPMSGcollect16_send(uint16ADC) == uint8packets){
         IEPstop();
       }
     }
