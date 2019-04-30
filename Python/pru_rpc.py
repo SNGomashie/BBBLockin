@@ -17,6 +17,7 @@ class BeagleBoneDDS(rpyc.Service):
         print("\n-    Connection has been terminated")
         self.PRU0.stop()
         self.PRU1.stop()
+        t.close()
         pass
 
     def exposed_pru_initialize(self, pru):
