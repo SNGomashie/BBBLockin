@@ -2,8 +2,13 @@ import rpyc
 import numpy as np
 import matplotlib.pyplot as plt
 
-samples = 4096
-tot = np.ceil(samples / 248)
+samples = np.pow(2, 14)
+bits = 16
+
+result_bit = bits / 8
+bytes = 496 / result_bit
+
+tot = np.ceil(samples / bytes)
 sample_frequency = 10000
 num = int(tot) << 16
 command = num | sample_frequency
@@ -16,7 +21,7 @@ c.root.pru_start(2)
 
 c.root.pru_transmit(command, 0)
 
-data = c.root.pru_blk_receive(samples)
+data = c.root.pru_blk_receive(samples, bits, 0)
 
 sin_array = np.asarray(data)
 
@@ -32,7 +37,7 @@ plt.show()
 plt.title("FFT of SIN sampled by BeagleBone Black 16 bit")
 plt.magnitude_spectrum(sin_array[:samples], Fs=10000, scale='dB', color='C2')
 plt.xscale("log")
-plt.xlim(0, 5000)
+plt.xlim(0, 200)
 plt.ylim(-100, 100)
 plt.grid()
 plt.show()
