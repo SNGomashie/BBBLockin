@@ -43,7 +43,7 @@ class PRU_ICSS:
         state = self.status()
         if 'offline' in state:
             print("-    PRU%d is offline" % (self.pru))
-        elif 'offline' in state:
+        elif 'running' in state:
             print("-    PRU%d is running, stopping now" % (self.pru))
             try:
                 self.PRU_dev.close()
