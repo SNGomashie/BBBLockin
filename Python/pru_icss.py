@@ -44,12 +44,12 @@ class PRU_ICSS:
         if 'offline' in state:
             print("-    PRU%d is offline" % (self.pru))
         elif 'running' in state:
-            print("-    PRU%d is running, stopping now" % (self.pru))
             try:
                 self.PRU_dev.close()
                 print("-    Closing character device")
                 # Delay for a few seconds so the kernel can flush the remoteproc FIFO
                 time.sleep(2)
+                print("-    PRU%d is running, stopping now" % (self.pru))
                 PRU_status.write('stop')
                 print("-    PRU%d has stopped" % (self.pru))
                 PRU_status.close()
