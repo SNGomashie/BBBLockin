@@ -20,7 +20,7 @@ class PRU_ICSS:
     def status(self):
         PRU_status = open(self.STATE, "r+")
         state = PRU_status.read(7)
-        PRU_status = self.STATE.close()
+        PRU_status.close()
         return state
 
     def start(self):
@@ -33,7 +33,7 @@ class PRU_ICSS:
             try:
                 PRU_status.write('start')
                 print("-    PRU%d has started" % (self.pru))
-                PRU_status = self.STATE.close()
+                PRU_status.close()
                 time.sleep(2)
             except IOError:
                 print("-  ERROR  PRU%d failed to start" % (self.pru))
