@@ -371,21 +371,21 @@ void INTERNCOMinitialize(uint8_t sys_evt, uint8_t channel, uint8_t host_int){
 
 void INTERNCOMpoke(uint8_t inter){
   if(INTERNCOM_status == 1){
-    __R31 |= int;
+    __R31 |= inter;
   }
 }
 
 void INTERNCOMlisten(uint8_t prus, uint8_t inter){
   if(INTERNCOM_status == 1){
-    switch(pru){
+    switch(prus){
       case 0:
         while(!(__R31 & (1 << 30)));
-        INTCclear(int);
+        INTCclear(inter);
         __delay_cycles(5);
         break;
       case 1:
         while(!(__R31 & (1 << 31)));
-        INTCclear(int);
+        INTCclear(inter);
         __delay_cycles(5);
         break;
     }
