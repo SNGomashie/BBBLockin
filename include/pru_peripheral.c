@@ -132,12 +132,13 @@ void IEPstop(void){
   CT_IEP.TMR_GLB_CFG_bit.CNT_EN = 0x0000;
 }
 
-void IEPclear_int(void){
+void IEPclear(void){
   /* Clear Compare status */
   CT_IEP.TMR_CMP_STS = (1 << 0);
-
   /* delay for 5 cycles, clearing takes time */
   __delay_cycles(5);
+  /* Clear system event 7 */
+  INTCclear(7);
 }
 
 
@@ -363,35 +364,31 @@ char UARTreceive(void){
 /***********************************/
 /* Internal PRU-ICSS communication */
 /***********************************/
-void INTERNCOMinitialize(uint8_t sys_evt){
-  INTCinitialize(sys_evt, 0, 0);
+void INTERNCOMinitialize(uint8_t sys_evt, uint8_t channel, uint8_t host_int){
+  INTCinitialize(sys_evt, channel, host_int);
   INTERNCOM_status = 1;
 }
 
-void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint16_t object){
+void INTERNCOMpoke(uint8_t int){
   if(INTERNCOM_status == 1){
-    __R31 |= (1 << 30);
-    __xout(14, 0, 0, object);
+    __R31 |= int;
   }
 }
 
-void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint16_t object){
+void INTERNCOMlisten(uint8_t pru, uint8_t int){
   if(INTERNCOM_status == 1){
-    while(!(__R31 & (1 << 30)));
-      __xin(14, 0, 0, object);
-      INTCclear(20);
-  }
-}
-
-void INTERNCOMpoke(void){
-  if(INTERNCOM_status == 1){
-    __R31 |= (1 << 30);
-  }
-}
-
-void INTERNCOMlisten(void){
-  if(INTERNCOM_status == 1){
-    while(!(__R31 & (1 << 30)));
+    switch(pru){
+      case 0:
+        while(!(__R31 & (1 << 30)));
+        INTCclear(int);
+        __delay_cycles(5);
+        break;
+      case 1:
+        while(!(__R31 & (1 << 31)));
+        INTCclear(int);
+        __delay_cycles(5);
+        break;
+    }
   }
 }
 

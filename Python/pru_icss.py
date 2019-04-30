@@ -30,7 +30,7 @@ class PRU_ICSS:
             try:
                 self.PRU_status.write('start')
                 print("-    PRU%d has started" % (self.pru))
-                time.sleep(2)
+                time.sleep(5)
             except IOError:
                 print("-  ERROR  PRU%d failed to start" % (self.pru))
 

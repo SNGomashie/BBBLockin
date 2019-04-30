@@ -3,15 +3,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 samples = 4096
+tot = np.ceil(samples / 248)
+sample_frequency = 10000
+num = int(tot) << 16
+command = num | sample_frequency
 
 c = rpyc.connect("192.168.7.2", 18861)
 
-c.root.pru_initialize(0)
+c.root.pru_initialize(2)
 
-c.root.pru_start()
+c.root.pru_start(2)
 
-tot = np.ceil(samples / 248)
-c.root.pru_transmit(tot)
+c.root.pru_transmit(command, 0)
 
 data = c.root.pru_blk_receive(samples)
 

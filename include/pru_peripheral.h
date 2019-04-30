@@ -129,7 +129,7 @@ void IEPstop(void);
  *
  * @return void         No return value
  */
-void IEPclear_int(void);
+void IEPclear(void);
 
 
 
@@ -255,15 +255,11 @@ char UARTreceive(void);
 /***********************************/
 uint8_t INTERNCOM_status;
 
-void INTERNCOMinitialize(uint8_t sys_evt);
+void INTERNCOMinitialize(uint8_t sys_evt, uint8_t channel, uint8_t host_int);
 
-void INTERNCOMtransmit(uint8_t device_id, uint32_t base_register, uint16_t object);
+void INTERNCOMpoke(uint8_t int);
 
-void INTERNCOMreceive(uint8_t device_id, uint32_t base_register, uint16_t object);
-
-void INTERNCOMpoke(void);
-
-void INTERNCOMlisten(void);
+void INTERNCOMlisten(uint8_t pru, uint8_t int);
 
 
 

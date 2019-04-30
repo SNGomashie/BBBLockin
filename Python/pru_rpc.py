@@ -20,7 +20,10 @@ class BeagleBoneDDS(rpyc.Service):
 
     def exposed_pru_initialize(self, pru):
         if pru == 0:
-            self.PRU0 = PRU_ICSS(0)
+            try:
+                self.PRU0 = PRU_ICSS(0)
+            except IOError:
+                print("error")
         if pru == 1:
             self.PRU1 = PRU_ICSS(1)
         if pru == 2:
