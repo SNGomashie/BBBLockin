@@ -118,11 +118,11 @@ void main(void) {
 
       /* Quadrature calculation and moving average filtering */
       uint32Q -= uint32Q / uint16Navr;
-      uint32Q += ((uint32_t)(uint16_t)uint16Sin * (uint32_t)(uint16_t)int16ADC) / uint16Navr;
+      uint32Q += ((uint32_t)(uint16_t)uint16Sin * (int32_t)(int16_t)int16ADC) / uint16Navr;
 
       /* In-phase calculation and moving average filtering */
       uint32I -= uint32I / uint16Navr;
-      uint32I += ((uint32_t)(uint16_t)uint16Cos * (uint32_t)(uint16_t)int16ADC) / uint16Navr;
+      uint32I += ((uint32_t)(uint16_t)uint16Cos * (int32_t)(int16_t)int16ADC) / uint16Navr;
 
       /* Magnitude calculation and moving avergae filtering */
       uint32R -= uint32R / uint16Navr;
@@ -132,7 +132,7 @@ void main(void) {
 
       uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
 
-      if(RPMSGcollect16_send(uint16ADC) == uint16packets){
+      if(RPMSGcollect16_send(int16ADC) == uint16packets){
         IEPstop();
       }
     }
