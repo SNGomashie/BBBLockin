@@ -26,9 +26,9 @@
 uint8_t RPMSGinitialize(void);
 char* RPMSGreceive(void);
 void RPMSGtransmit(char* output);
-void RPMSGtransmit_16block(uint16_t output[248]);
 void RPMSGclear_int(void);
-uint16_t RPMSGcollect16_send(uint16_t value);
+void RPMSGtransmit_16block(uint16_t output[248]);
+uint8_t RPMSGcollect16_send(uint16_t value);
 void RPMSGtransmit_32block(uint32_t output[124]);
-uint32_t RPMSGcollect32_send(uint32_t value);
+uint8_t RPMSGcollect32_send(uint32_t value);
 #endif /* RPMSG_LIB_H */

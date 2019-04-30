@@ -155,7 +155,7 @@ uint8_t var32 = 0;
 uint8_t pack32 = 0;
 
 /* Will send a block of 124 32-bit numbers over RPMsg */
-uint8_t RPMSGcollect32_send(uint16_t value){
+uint8_t RPMSGcollect32_send(uint32_t value){
   blk32data[var32] = value;
   var32++;
   if(!(var32 < 124)){
