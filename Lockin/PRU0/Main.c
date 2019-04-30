@@ -19,20 +19,6 @@
 /**************************/
 
 
-/*****************************/
-/* PRU-ICSS Memory locations */
-/*****************************/
-#define SHARE_MEM  0x00010000  // 12kB of shared memory
-volatile uint32_t *sMEM =  (unsigned int *) SHARE_MEM;
-
-#define PRU0_MEM  0x00000000  // 8kB of Data RAM
-volatile uint32_t *dMEM0 =  (unsigned int *) PRU0_MEM;
-
-#define PRU1_MEM  0x00002000  // 8kB of Data RAM of the secondary PRU
-volatile uint32_t *dMEM1 =  (unsigned int *) PRU1_MEM;
-/*****************************/
-/*****************************/
-
 void main(void) {
   /*************************/
   /* Variable declarations */
@@ -49,9 +35,9 @@ void main(void) {
   uint16_t uint16Cos = 0;  // Cos output DDS
   uint16_t uint16Sin = 0;  // Sin output DDS
 
-  uint32_t uint32Q, uint32I, uint32R = 0;  // Quadrature, In-phase and Magnitude
-  uint64_t uint64Qpow, uint64Ipow = 0;
-  uint16_t uint16Navr = 1000;  // Integration time
+  // uint32_t uint32Q, uint32I, uint32R = 0;  // Quadrature, In-phase and Magnitude
+  // uint64_t uint64Qpow, uint64Ipow = 0;
+  // uint16_t uint16Navr = 1000;  // Integration time
   /*************************/
   /*************************/
   __R30 ^= (1 << DEBUG_PIN);
@@ -87,8 +73,8 @@ void main(void) {
   /*************************/
   /*      Main program     */
   /*************************/
-  sRAM[2] = uint32Period / 100;
-  sRAM[3] = uint8packets;
+  sMEM[2] = uint32Period / 100;
+  sMEM[3] = uint8packets;
   INTERNCOMpoke(PRU0_PRU1_START_INT);  // Wake up PRU1
   IEPstart();  // Start IEP timer
   __R30 ^= (1 << DEBUG_PIN);
@@ -103,8 +89,8 @@ void main(void) {
 
       INTERNCOMlisten(1, PRU1_PRU0_SEND_INT);  // Wait for DDS to be done on PRU1
 
-      uint16Sin = sRAM[0];  // SIN is located in reg 0 of the shared memory
-      uint16Cos = sRAM[1];  // COS is located in reg 1 of the shared memory
+      uint16Sin = sMEM[0];  // SIN is located in reg 0 of the shared memory
+      uint16Cos = sMEM[1];  // COS is located in reg 1 of the shared memory
 
       // /* Quadrature calculation and moving average filtering */
       // uint32Q -= uint32Q / uint16Navr;
