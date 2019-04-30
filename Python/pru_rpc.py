@@ -15,7 +15,8 @@ class BeagleBoneDDS(rpyc.Service):
 
     def on_disconnect(self, conn):
         print("\n-    Connection has been terminated")
-        t.close()
+        self.PRU0.stop()
+        self.PRU1.stop()
         pass
 
     def exposed_pru_initialize(self, pru):
