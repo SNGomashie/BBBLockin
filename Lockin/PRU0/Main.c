@@ -60,7 +60,7 @@ void main(void) {
 
   uint16_t uint16packets = 0;  // Number of samples wanted
 
-  uint16_t uint16ADC = 0;  // ADC output
+  int16_t int16ADC = 0;  // ADC output
   uint16_t uint16Cos = 0;  // Cos output DDS
   uint16_t uint16Sin = 0;  // Sin output DDS
 
@@ -109,7 +109,7 @@ void main(void) {
   while(1){
     while(__R31 & (1 << 31)){  // IEP interrupt polling
       IEPclear();  // Clear IEP cmp register and system event
-      uint16ADC = LTC1859readout(0, 0);  // Read a sample form the LTC1859
+      int16ADC = LTC1859readout(0, 0);  // Read a sample form the LTC1859
 
       INTERNCOMlisten(1, PRU1_PRU0_SEND_INT);  // Wait for DDS to be done on PRU1
 
@@ -118,11 +118,11 @@ void main(void) {
 
       /* Quadrature calculation and moving average filtering */
       uint32Q -= uint32Q / uint16Navr;
-      uint32Q += ((uint32_t)(uint16_t)uint16Sin * (uint32_t)(uint16_t)uint16ADC) / uint16Navr;
+      uint32Q += ((uint32_t)(uint16_t)uint16Sin * (uint32_t)(uint16_t)int16ADC) / uint16Navr;
 
       /* In-phase calculation and moving average filtering */
       uint32I -= uint32I / uint16Navr;
-      uint32I += ((uint32_t)(uint16_t)uint16Cos * (uint32_t)(uint16_t)uint16ADC) / uint16Navr;
+      uint32I += ((uint32_t)(uint16_t)uint16Cos * (uint32_t)(uint16_t)int16ADC) / uint16Navr;
 
       /* Magnitude calculation and moving avergae filtering */
       uint32R -= uint32R / uint16Navr;
