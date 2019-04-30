@@ -7,6 +7,7 @@
 #ifndef __PERIPHERAL_LIB_H_
 #define __PERIPHERAL_LIB_H_
 
+#include <stdint.h>
 #include <pru_cfg.h>
 #include <pru_ctrl.h>
 #include <pru_intc.h>
