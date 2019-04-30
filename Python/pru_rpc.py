@@ -18,6 +18,7 @@ class BeagleBoneDDS(rpyc.Service):
         print("\n-    Connection has been terminated")
         self.PRU0.stop_ext()
         self.PRU1.stop()
+        t.close()
         sys.exit()
         pass
 
