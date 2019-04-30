@@ -23,14 +23,15 @@ class PRU_ICSS:
         return state
 
     def start(self):
-        if 'running' in self.status():
+        state = self.status()
+        if 'running' in state:
             print("-    PRU%d is running" % (self.pru))
-        elif 'offline' in self.status():
+        elif 'offline' in state:
             print("-    PRU%d is offline, starting now" % (self.pru))
             try:
                 self.PRU_status.write('start')
                 print("-    PRU%d has started" % (self.pru))
-                time.sleep(5)
+                time.sleep(2)
             except IOError:
                 print("-  ERROR  PRU%d failed to start" % (self.pru))
 
@@ -59,6 +60,7 @@ class PRU_ICSS:
             print('-    "%s" transmitted to PRU%d' % (message, self.pru))
         except IOError:
             print("-  ERROR  Could not open device: 'rpmsg_pru30'")
+            t.close()
         pass
 
     def blkreceive(self, samples, data_size):
