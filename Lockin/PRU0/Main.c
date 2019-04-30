@@ -85,7 +85,6 @@ void main(void) {
     while(__R31 & (1 << 31)){  // IEP interrupt polling
       IEPclear();  // Clear IEP cmp register and system event
       __R30 ^= (1 << DEBUG_PIN);
-
       uint16ADC = LTC1859readout(0, 1);  // Read a sample form the LTC1859
 
       INTERNCOMlisten(1, PRU1_PRU0_SEND_INT);  // Wait for DDS to be done on PRU1
