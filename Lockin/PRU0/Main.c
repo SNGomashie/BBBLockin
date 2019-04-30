@@ -111,7 +111,7 @@ void main(void) {
       IEPclear();  // Clear IEP cmp register and system event
       int16ADC = LTC1859readout(0, 0);  // Read a sample form the LTC1859
 
-      INTERNCOMlisten(1, PRU1_PRU0_SEND_INT);  // Wait for DDS to be done on PRU1
+      INTERNCOMlisten(1, PRU1_PRU0_SEND_INT);  // Wait for NCO to be done on PRU1
 
       uint16Sin = sMEM[0];  // SIN is located in reg 0 of the shared memory
       uint16Cos = sMEM[1];  // COS is located in reg 1 of the shared memory

@@ -23,8 +23,6 @@ c.root.pru_transmit(command, 0)
 
 data = c.root.pru_blk_receive(samples, bits, 0)
 
-c.root.pru_stop(2)
-
 print(data[:1])
 
 sin_array = np.asarray(data)
@@ -34,12 +32,12 @@ x = np.arange(sample)
 
 np.savetxt('sampled_data.out', sin_array)
 
-plt.plot(x[:100], sin_array[:100])
+plt.plot(x[:samples], sin_array[:samples])
 plt.show()
 
 plt.title("FFT of SIN sampled by BeagleBone Black 16 bit")
 plt.magnitude_spectrum(sin_array[:samples], Fs=10000, scale='dB', color='C2')
-plt.xscale("log")
+# plt.xscale("log")
 plt.xlim(0, 200)
 plt.ylim(-100, 100)
 plt.grid()
