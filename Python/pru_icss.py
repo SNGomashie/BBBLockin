@@ -74,7 +74,7 @@ class PRU_ICSS:
             if data_size == 16:
                 intBuf = np.asarray(struct.unpack('<248H', charBuf))
             elif data_size == 32:
-                intBuf = np.asarray(struct.unpack('<124H', charBuf))
+                intBuf = np.asarray(struct.unpack('<124I', charBuf))
             fullBuf = np.append(fullBuf, intBuf)
             print("\r-    RPMsg packet received ( %d / %d )" % ((i + 1), tot), end='')
         return fullBuf
