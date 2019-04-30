@@ -16,26 +16,30 @@ class PRU_ICSS:
         elif self.pru == 1:
             self.CHAR_DEV = "/dev/rpmsg_pru31"
             self.STATE = "/sys/class/remoteproc/remoteproc2/state"
-        self.PRU_status = open(self.STATE, "r+")
 
     def status(self):
-        state = self.PRU_status.read(7)
+        PRU_status = open(self.STATE, "r+")
+        state = PRU_status.read(7)
+        PRU_status = self.STATE.close()
         return state
 
     def start(self):
+        PRU_status = open(self.STATE, "r+")
         state = self.status()
         if 'running' in state:
             print("-    PRU%d is running" % (self.pru))
         elif 'offline' in state:
             print("-    PRU%d is offline, starting now" % (self.pru))
             try:
-                self.PRU_status.write('start')
+                PRU_status.write('start')
                 print("-    PRU%d has started" % (self.pru))
+                PRU_status = self.STATE.close()
                 time.sleep(2)
             except IOError:
                 print("-  ERROR  PRU%d failed to start" % (self.pru))
 
     def stop(self):
+        PRU_status = open(self.STATE, "r+")
         if 'offline' in self.status():
             print("-    PRU%d is offline" % (self.pru))
         elif 'offline' in self.status():
@@ -45,13 +49,13 @@ class PRU_ICSS:
                 print("-    Closing character device")
                 # Delay for a few seconds so the kernel can flush the remoteproc FIFO
                 time.sleep(2)
-                self.PRU_status.write('stop')
+                PRU_status.write('stop')
                 print("-    PRU%d has stopped" % (self.pru))
-                self.PRU_status.close()
+                PRU_status.close()
                 time.sleep(2)
             except IOError:
                 print("-  ERROR  PRU%d failed to stop" % (self.pru))
-                self.PRU_status.close()
+                PRU_status.close()
 
     def transmit(self, message):
         try:
