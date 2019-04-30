@@ -369,13 +369,13 @@ void INTERNCOMinitialize(uint8_t sys_evt, uint8_t channel, uint8_t host_int){
   INTERNCOM_status = 1;
 }
 
-void INTERNCOMpoke(uint8_t int){
+void INTERNCOMpoke(uint8_t inter){
   if(INTERNCOM_status == 1){
     __R31 |= int;
   }
 }
 
-void INTERNCOMlisten(uint8_t pru, uint8_t int){
+void INTERNCOMlisten(uint8_t prus, uint8_t inter){
   if(INTERNCOM_status == 1){
     switch(pru){
       case 0:
