@@ -59,7 +59,6 @@ class PRU_ICSS:
             print('-    "%s" transmitted to PRU%d' % (message, self.pru))
         except IOError:
             print("-  ERROR  Could not open device: 'rpmsg_pru30'")
-            t.close()
         pass
 
     def blkreceive(self, samples, data_size):

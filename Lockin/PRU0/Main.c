@@ -78,8 +78,8 @@ void main(void) {
 
   charReceived = RPMSGreceive();  // Receive message from RPMsg
   uint32command = atoi(charReceived);  // Convert command string to int
-  uint16Freq = (uint32command >> 16);  // Extract encoded frequency
-  uint8packets = (uint32command & 0xFFFF);  // Extract encoded number of packets
+  uint8packets = (uint32command >> 16);  // Extract encoded frequency
+  uint16Freq = (uint32command & 0xFFFF);  // Extract encoded number of packets
   uint32Period = (1000000000 / uint16Freq) / 5;  // Convert freq int to period int
 
   IEPinitialize(uint32Period, 1, cmp);  // Initialize IEP timer | received period, increment by 1, compare mode
