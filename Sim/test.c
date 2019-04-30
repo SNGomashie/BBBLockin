@@ -2,22 +2,12 @@
 #include <stdint.h>
 #include <string.h>
 
-uint16_t output[248];
-
-void testfunc(uint16_t array);
-
 void main(void){
+uint16_t freq = 10000;
+uint16_t num = 4096;
 
-for(uint16_t i = 0; i < 248; i++){
-  output[i] = i+1;
-}
+uint32_t command = freq | (num << 16);
 
-uint16_t *ptrBLK = output;
+printf("%d, %d, %d\n", command, (command >> 16), (command & 0x0000FFFF));
 
-testfunc(ptrBLK);
-}
-
-void testfunc(uint16_t* array){
-  printf("%d\n", (sizeof(array)/sizeof(uint8_t)));
-  printf("%d\n", (sizeof(output)/sizeof(uint8_t)));
 }
