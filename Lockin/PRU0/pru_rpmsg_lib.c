@@ -121,7 +121,7 @@ void RPMSGtransmit_16block(uint16_t output[248]){
 
 void RPMSGtransmit_32block(uint32_t output[124]){
   uint8_t blk_transmit_status;
-  uint16_t *ptrBLK = output;
+  uint32_t *ptrBLK = output;
 
   blk_transmit_status = pru_rpmsg_send(&transport, dst, src, ptrBLK, 496);
 
@@ -139,7 +139,7 @@ uint8_t var16 = 0;
 uint8_t pack16 = 0;
 
 /* Will send a block of 248 16-bit numbers over RPMsg */
-uint16_t RPMSGcollect16_send(uint16_t value){
+uint8_t RPMSGcollect16_send(uint16_t value){
   blk16data[var16] = value;
   var16++;
   if(!(var16 < 248)){
@@ -155,7 +155,7 @@ uint8_t var32 = 0;
 uint8_t pack32 = 0;
 
 /* Will send a block of 124 32-bit numbers over RPMsg */
-uint16_t RPMSGcollect32_send(uint16_t value){
+uint8_t RPMSGcollect32_send(uint16_t value){
   blk32data[var32] = value;
   var32++;
   if(!(var32 < 124)){
