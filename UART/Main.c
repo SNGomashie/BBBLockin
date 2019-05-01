@@ -7,13 +7,8 @@ void main(void){
   char data[16] = "";
 
   UARTinitialize();
+  sprintf(data, "%d\n", 0x0000);
+  UARTtransmit("hallo");
 
-  while(1){
-  __R30 |= (1 << 7);
-    sprintf(data, "%d\n", 0x0000);
-    UARTtransmit("hallo");
-  __R30 &= ~(1 << 7);
-    __delay_cycles(200000);
-  }
   __halt();
 }
