@@ -5,10 +5,13 @@
 
 void main(void){
   char data[16] = "";
-
+  uint32_t c = 0;
+  int16_t a = -10;
+  uint16_t b = 10;
+  c = a * b;
   UARTinitialize();
-  sprintf(data, "%d\n", 0x0000);
-  UARTtransmit("hallo");
+  sprintf(data, "%d\n", c);
+  UARTtransmit(data);
 
   __halt();
 }
