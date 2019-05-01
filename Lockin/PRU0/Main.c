@@ -110,8 +110,6 @@ void main(void) {
     while(__R31 & (1 << 31)){  // IEP interrupt polling
       IEPclear();  // Clear IEP cmp register and system event
 
-      __R30 ^= (1 << DEBUG_PIN);
-
       int16ADC = LTC1859readout(0, 0);  // Read a sample form the LTC1859
 
       INTERNCOMlisten(1, PRU1_PRU0_SEND_INT);  // Wait for NCO to be done on PRU1
@@ -135,10 +133,9 @@ void main(void) {
 
       uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
 
-      if(RPMSGcollect16_send(int16ADC) == uint16packets){
+      if(RPMSGcollect16_send(uint16Sin) == uint16packets){
         IEPstop();
       }
-      __R30 ^= (1 << DEBUG_PIN);
     }
   }
  /************************/
