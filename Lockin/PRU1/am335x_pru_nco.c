@@ -11,7 +11,7 @@ const uint16_t sinLUT[257] = {0x3333,0x3475,0x35b6,0x36f7,0x3838,0x3977,0x3ab6,0
 void NCOinitialize(struct NCO *n, uint32_t samp_period){
   n->period = &CT_ECAP.CAP1;
   n->sin_accumulator = 0;
-  n->cos_accumulator = (64 <<  16);
+  n->cos_accumulator = (64 << 16);
   n->sample_period = samp_period;
   n->sin_output = sinLUT[0];
   n->cos_output = sinLUT[64];

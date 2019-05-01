@@ -117,8 +117,8 @@ void main(void) {
       uint16Sin = sMEM[0];  // SIN is located in reg 0 of the shared memory
       uint16Cos = sMEM[1];  // COS is located in reg 1 of the shared memory
 
-      int32Q = (uint32_t)(uint16_t)uint16Sin * (int32_t)(int16_t)int16ADC;
-      int32I = (uint32_t)(uint16_t)uint16Cos * (int32_t)(int16_t)int16ADC;
+      int32Q = (uint32_t)(uint16_t)uint16Sin * (uint32_t)(int16_t)int16ADC;
+      int32I = (uint32_t)(uint16_t)uint16Cos * (uint32_t)(int16_t)int16ADC;
 
       // /* Quadrature calculation and moving average filtering */
       // uint32Q -= uint32Q / uint16Navr;
@@ -136,7 +136,7 @@ void main(void) {
       //
       // uint32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
 
-      if(RPMSGcollect16_send(uint16Sin) == uint16packets){
+      if(RPMSGcollect32_send(int32Q) == uint16packets){
         IEPstop();
       }
     }
