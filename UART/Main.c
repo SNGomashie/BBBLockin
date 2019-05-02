@@ -7,7 +7,7 @@
 void main(void){
   char data[16] = "";
   uint32_t c = 0;
-  uint64_t b = 2146483648‬;
+  uint64_t b = 2147483648;
   c = sqrt(b);
   UARTinitialize();
   sprintf(data, "%d\n", c);
