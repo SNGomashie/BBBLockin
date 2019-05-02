@@ -65,6 +65,7 @@ void main(void) {
   uint16_t uint16Sin = 0;  // Sin output DDS
 
   int32_t int32Q, int32I, int32R = 0;  // Quadrature, In-phase and Magnitude
+  int32_t intQI;
   uint64_t int64Qpow, int64Ipow = 0;
   uint16_t uint16Navr = 1000;  // Integration time
   /*************************/
@@ -131,10 +132,11 @@ void main(void) {
       // /* Magnitude calculation and moving avergae filtering */
       int32R -= int32R / uint16Navr;
       //
-      int64Qpow = (uint64_t)abs(int32Q) * (uint64_t)abs(int32Q);  // Calculate Q sqaured using MAC
-      int64Ipow = (uint64_t)abs(int32I) * (uint64_t)abs(int32I);  // Calculate I squared using MAC
+      int64Qpow = (uint64_t)int32Q * (uint64_t)int32Q;  // Calculate Q sqaured using MAC
+      int64Ipow = (uint64_t)int32I * (uint64_t)int32I;  // Calculate I squared using MAC
       //
-      int32R += sqrt(int64Qpow + int64Ipow) / uint16Navr;  // Magnitude calculation
+      intQI = (int64Ipow + int64Qpow) >> 32;
+      int32R += sqrt(intQI) / uint16Navr;  // Magnitude calculation
 
       if(RPMSGcollect32_send(int32R) == uint16packets){
         IEPstop();
