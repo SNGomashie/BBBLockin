@@ -131,10 +131,10 @@ void main(void) {
       // /* Magnitude calculation and moving avergae filtering */
       int32R -= int32R / uint16Navr;
       //
-      int64Qpow = (uint64_t)uint32Q * (uint64_t)int32Q;  // Calculate Q sqaured using MAC
-      int64Ipow = (uint64_t)uint32I * (uint64_t)int32I;  // Calculate I squared using MAC
+      int64Qpow = (uint64_t)int32Q * (uint64_t)int32Q;  // Calculate Q sqaured using MAC
+      int64Ipow = (uint64_t)int32I * (uint64_t)int32I;  // Calculate I squared using MAC
       //
-      int32R += sqrt(uint64Qpow + uint64Ipow) / uint16Navr;  // Magnitude calculation
+      int32R += sqrt(int64Qpow + int64Ipow) / uint16Navr;  // Magnitude calculation
 
       if(RPMSGcollect32_send(int32R) == uint16packets){
         IEPstop();
