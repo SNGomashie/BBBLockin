@@ -117,12 +117,12 @@ void main(void) {
       uint16Sin = sMEM[0];  // SIN is located in reg 0 of the shared memory
       uint16Cos = sMEM[1];  // COS is located in reg 1 of the shared memory
 
-      int32Q = (uint32_t)(uint16_t)uint16Sin * (uint32_t)(int16_t)int16ADC;
-      int32I = (uint32_t)(uint16_t)uint16Cos * (uint32_t)(int16_t)int16ADC;
+      // int32Q = (uint32_t)(uint16_t)uint16Sin * (uint32_t)(int16_t)int16ADC;
+      // int32I = (uint32_t)(uint16_t)uint16Cos * (uint32_t)(int16_t)int16ADC;
 
-      // /* Quadrature calculation and moving average filtering */
-      // uint32Q -= uint32Q / uint16Navr;
-      // uint32Q += ((uint32_t)(uint16_t)uint16Sin * (int32_t)(int16_t)int16ADC) / uint16Navr;
+      /* Quadrature calculation and moving average filtering */
+      int32Q -= int32Q / uint16Navr;
+      int32Q += ((uint32_t)(uint16_t)uint16Sin * (int32_t)(int16_t)int16ADC) / uint16Navr;
       //
       // /* In-phase calculation and moving average filtering */
       // uint32I -= uint32I / uint16Navr;
