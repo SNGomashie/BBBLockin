@@ -65,7 +65,7 @@ void main(void) {
   uint16_t uint16Sin = 0;  // Sin output DDS
 
   int32_t int32Q, int32I, int32R = 0;  // Quadrature, In-phase and Magnitude
-  uint64_t uint64Qpow, uint64Ipow = 0;
+  uint64_t int64Qpow, int64Ipow = 0;
   uint16_t uint16Navr = 1000;  // Integration time
   /*************************/
   /*************************/
