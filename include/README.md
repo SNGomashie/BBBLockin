@@ -1,2 +1,0 @@
-# Programmable real-time unit peripheral & RPMsg header files
-The PRUs have several peripherals which are accessible through either the constant table which is a table that includes commonly used memory addresses or by straight up writing to the memory address. TI has provided a few header files for the most commonly used peripherals. These make setting registers a little bit easier but do not include premade functions. This is what has been attempted in these header files. Especially
