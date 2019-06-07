@@ -1,0 +1,10 @@
+gen/INTC.object: INTC.c
+gen/INTC.object: INTC.h
+gen/INTC.object: /usr/share/ti/cgt-pru/include/stdio.h
+gen/INTC.object: /usr/share/ti/cgt-pru/include/linkage.h
+gen/INTC.object: /usr/share/ti/cgt-pru/include/stdarg.h
+gen/INTC.object: /usr/share/ti/cgt-pru/include/stdint.h
+gen/INTC.object: /usr/lib/ti/pru-software-support-package/include/am335x/pru_intc.h
+gen/INTC.object: GPIO.h
+gen/INTC.object: /usr/share/ti/cgt-pru/include/stdio.h
+gen/INTC.object: /usr/lib/ti/pru-software-support-package/include/am335x/pru_cfg.h

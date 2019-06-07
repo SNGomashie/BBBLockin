@@ -1,0 +1,414 @@
+******************************************************************************
+                     PRU Linker Unix v2.1.5                    
+******************************************************************************
+>> Linked Tue May 21 09:03:00 2019
+
+OUTPUT FILE NAME:   <gen/Example.out>
+ENTRY POINT SYMBOL: "_c_int00_noinit_noargs_noexit"  address: 00000000
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+PAGE 0:
+  PRU_IMEM              00000000   00002000  000010ac  00000f54  RWIX
+
+PAGE 1:
+  PRU_DMEM_0_1          00000000   00002000  00000930  000016d0  RWIX
+  PRU_DMEM_1_0          00002000   00002000  00000000  00002000  RWIX
+
+PAGE 2:
+  PRU_SHAREDMEM         00010000   00003000  00000000  00003000  RWIX
+  PRU_INTC              00020000   00001504  00001504  00000000  RWIX
+  PRU_CFG               00026000   00000044  00000044  00000000  RWIX
+  PRU_UART              00028000   00000038  00000038  00000000  RWIX
+  PRU_IEP               0002e000   0000031c  0000031c  00000000  RWIX
+  PRU_ECAP              00030000   00000060  00000060  00000000  RWIX
+  RSVD27                00032000   00000100  00000000  00000100  RWIX
+  RSVD21                00032400   00000100  00000000  00000100  RWIX
+  L3OCMC                40000000   00010000  00000000  00010000  RWIX
+  MCASP0_DMA            46000000   00000100  00000000  00000100  RWIX
+  UART1                 48022000   00000088  00000000  00000088  RWIX
+  UART2                 48024000   00000088  00000000  00000088  RWIX
+  I2C1                  4802a000   000000d8  00000000  000000d8  RWIX
+  MCSPI0                48030000   000001a4  00000000  000001a4  RWIX
+  DMTIMER2              48040000   0000005c  00000000  0000005c  RWIX
+  MMCHS0                48060000   00000300  00000000  00000300  RWIX
+  MBX0                  480c8000   00000140  00000000  00000140  RWIX
+  SPINLOCK              480ca000   00000880  00000000  00000880  RWIX
+  I2C2                  4819c000   000000d8  00000000  000000d8  RWIX
+  MCSPI1                481a0000   000001a4  00000000  000001a4  RWIX
+  DCAN0                 481cc000   000001e8  00000000  000001e8  RWIX
+  DCAN1                 481d0000   000001e8  00000000  000001e8  RWIX
+  PWMSS0                48300000   000002c4  00000000  000002c4  RWIX
+  PWMSS1                48302000   000002c4  00000000  000002c4  RWIX
+  PWMSS2                48304000   000002c4  00000000  000002c4  RWIX
+  RSVD13                48310000   00000100  00000000  00000100  RWIX
+  RSVD10                48318000   00000100  00000000  00000100  RWIX
+  TPCC                  49000000   00001098  00000000  00001098  RWIX
+  GEMAC                 4a100000   0000128c  00000000  0000128c  RWIX
+  DDR                   80000000   00000100  00000000  00000100  RWIX
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.text:_c_int00* 
+*          0    00000000    00000014     
+                  00000000    00000014     rtspruv3_le.lib : boot_special.obj (.text:_c_int00_noinit_noargs_noexit)
+
+.text      0    00000014    00001098     
+                  00000014    00000340     INTC.object (.text:INTC_initialize)
+                  00000354    000001bc     rtspruv3_le.lib : _printfi_min.obj (.text:_setfield)
+                  00000510    00000114                     : divu_c.obj (.text:__pruabi_divu)
+                  00000624    00000114     main.object (.text:main)
+                  00000738    0000010c     rtspruv3_le.lib : _printfi_min.obj (.text:__TI_printfi_minimal)
+                  00000844    000000bc     NCO.object (.text:NCOinterpolate)
+                  00000900    0000009c     UART.object (.text:UART_set_protocol)
+                  0000099c    0000009c     rtspruv3_le.lib : _printfi_min.obj (.text:_pproc_str)
+                  00000a38    00000090                     : _printfi_min.obj (.text:_ltostr)
+                  00000ac8    00000084                     : _printfi_min.obj (.text:_pproc_diouxp)
+                  00000b4c    00000080     UART.object (.text:UART_set_FIFO)
+                  00000bcc    0000005c     NCO.object (.text:NCOinitialize)
+                  00000c28    00000050     NCO.object (.text:NCOstep)
+                  00000c78    00000050     UART.object (.text:UART_set_PEM)
+                  00000cc8    00000050     UART.object (.text:UART_transmit)
+                  00000d18    0000004c     NCO.object (.text:NCOsetfreq)
+                  00000d64    0000004c     UART.object (.text:UART_set_modem)
+                  00000db0    00000048     UART.object (.text:UART_set_baudrate)
+                  00000df8    00000048     rtspruv3_le.lib : memccpy.obj (.text:memccpy)
+                  00000e40    00000044                     : sprintf.obj (.text:sprintf)
+                  00000e84    00000038                     : _printfi_min.obj (.text:_getarg_diouxp)
+                  00000ebc    00000038                     : sprintf.obj (.text:_outs)
+                  00000ef4    00000034                     : _printfi_min.obj (.text:_div)
+                  00000f28    00000034                     : memcpy.obj (.text)
+                  00000f5c    0000002c     IEP.object (.text:IEP_frequency)
+                  00000f88    0000002c     IEP.object (.text:IEP_increment)
+                  00000fb4    0000002c     IEP.object (.text:IEP_reset)
+                  00000fe0    00000024     rtspruv3_le.lib : mpyi.obj (.text:__pruabi_mpyi)
+                  00001004    0000001c     IEP.object (.text:IEP_clear)
+                  00001020    0000001c     INTC.object (.text:INTC_clear)
+                  0000103c    0000001c     rtspruv3_le.lib : memset.obj (.text:memset)
+                  00001058    00000018     IEP.object (.text:IEP_start)
+                  00001070    00000018     rtspruv3_le.lib : sprintf.obj (.text:_outc)
+                  00001088    00000014     IEP.object (.text:IEP_mode)
+                  0000109c    00000008     rtspruv3_le.lib : exit.obj (.text:abort)
+                  000010a4    00000008                     : exit.obj (.text:loader_exit)
+
+.stack     1    0000081c    00000100     UNINITIALIZED
+                  0000081c    00000004     rtspruv3_le.lib : boot.obj (.stack)
+                  00000820    000000fc     --HOLE--
+
+.cinit     1    00000000    00000000     UNINITIALIZED
+
+.rodata    1    00000000    0000081c     
+                  00000000    00000800     NCO.object (.rodata:sinLUT)
+                  00000800    00000014     rtspruv3_le.lib : _printfi_min.obj (.rodata:.string)
+                  00000814    00000008     main.object (.rodata:.string)
+
+.resource_table 
+*          1    0000091c    00000014     
+                  0000091c    00000014     main.object (.resource_table:retain)
+
+.creg.PRU_INTC.noload.near 
+*          2    00020000    00000000     NOLOAD SECTION
+
+.creg.PRU_INTC.near 
+*          2    00020000    00000000     UNINITIALIZED
+
+.creg.PRU_INTC.noload.far 
+*          2    00020000    00001504     NOLOAD SECTION
+                  00020000    00001504     INTC.object (.creg.PRU_INTC.noload.far)
+
+.creg.PRU_INTC.far 
+*          2    00021504    00000000     UNINITIALIZED
+
+.creg.PRU_CFG.noload.near 
+*          2    00026000    00000044     NOLOAD SECTION
+                  00026000    00000044     INTC.object (.creg.PRU_CFG.noload.near)
+
+.creg.PRU_CFG.near 
+*          2    00026044    00000000     UNINITIALIZED
+
+.creg.PRU_CFG.noload.far 
+*          2    00026044    00000000     NOLOAD SECTION
+
+.creg.PRU_CFG.far 
+*          2    00026044    00000000     UNINITIALIZED
+
+.creg.PRU_UART.noload.near 
+*          2    00028000    00000038     NOLOAD SECTION
+                  00028000    00000038     main.object (.creg.PRU_UART.noload.near)
+
+.creg.PRU_UART.near 
+*          2    00028038    00000000     UNINITIALIZED
+
+.creg.PRU_UART.noload.far 
+*          2    00028038    00000000     NOLOAD SECTION
+
+.creg.PRU_UART.far 
+*          2    00028038    00000000     UNINITIALIZED
+
+.creg.PRU_IEP.noload.near 
+*          2    0002e000    00000000     NOLOAD SECTION
+
+.creg.PRU_IEP.near 
+*          2    0002e000    00000000     UNINITIALIZED
+
+.creg.PRU_IEP.noload.far 
+*          2    0002e000    0000031c     NOLOAD SECTION
+                  0002e000    0000031c     IEP.object (.creg.PRU_IEP.noload.far)
+
+.creg.PRU_IEP.far 
+*          2    0002e31c    00000000     UNINITIALIZED
+
+.creg.PRU_ECAP.noload.near 
+*          2    00030000    00000060     NOLOAD SECTION
+                  00030000    00000060     NCO.object (.creg.PRU_ECAP.noload.near)
+
+.creg.PRU_ECAP.near 
+*          2    00030060    00000000     UNINITIALIZED
+
+.creg.PRU_ECAP.noload.far 
+*          2    00030060    00000000     NOLOAD SECTION
+
+.creg.PRU_ECAP.far 
+*          2    00030060    00000000     UNINITIALIZED
+
+
+SEGMENT ATTRIBUTES
+
+    id tag      seg value
+    -- ---      --- -----
+     0 PHA_PAGE 1   1    
+     1 PHA_PAGE 2   1    
+     2 PHA_PAGE 3   1    
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+page  address   name                         
+----  -------   ----                         
+0     000010a4  C$$EXIT                      
+2     00026000  CT_CFG                       
+2     00030000  CT_ECAP                      
+2     0002e000  CT_IEP                       
+2     00020000  CT_INTC                      
+2     00028000  CT_UART                      
+0     00001004  IEP_clear                    
+0     00000f5c  IEP_frequency                
+0     00000f88  IEP_increment                
+0     00001088  IEP_mode                     
+0     00000fb4  IEP_reset                    
+0     00001058  IEP_start                    
+0     00001020  INTC_clear                   
+0     00000014  INTC_initialize              
+0     00000bcc  NCOinitialize                
+0     00000844  NCOinterpolate               
+0     00000d18  NCOsetfreq                   
+0     00000c28  NCOstep                      
+0     00000b4c  UART_set_FIFO                
+0     00000c78  UART_set_PEM                 
+0     00000db0  UART_set_baudrate            
+0     00000d64  UART_set_modem               
+0     00000900  UART_set_protocol            
+0     00000cc8  UART_transmit                
+abs   481cc000  __PRU_CREG_BASE_DCAN0        
+abs   481d0000  __PRU_CREG_BASE_DCAN1        
+abs   80000000  __PRU_CREG_BASE_DDR          
+abs   48040000  __PRU_CREG_BASE_DMTIMER2     
+abs   4a100000  __PRU_CREG_BASE_GEMAC        
+abs   4802a000  __PRU_CREG_BASE_I2C1         
+abs   4819c000  __PRU_CREG_BASE_I2C2         
+abs   40000000  __PRU_CREG_BASE_L3OCMC       
+abs   480c8000  __PRU_CREG_BASE_MBX0         
+abs   46000000  __PRU_CREG_BASE_MCASP0_DMA   
+abs   48030000  __PRU_CREG_BASE_MCSPI0       
+abs   481a0000  __PRU_CREG_BASE_MCSPI1       
+abs   48060000  __PRU_CREG_BASE_MMCHS0       
+abs   00026000  __PRU_CREG_BASE_PRU_CFG      
+abs   00000000  __PRU_CREG_BASE_PRU_DMEM_0_1 
+abs   00002000  __PRU_CREG_BASE_PRU_DMEM_1_0 
+abs   00030000  __PRU_CREG_BASE_PRU_ECAP     
+abs   0002e000  __PRU_CREG_BASE_PRU_IEP      
+abs   00020000  __PRU_CREG_BASE_PRU_INTC     
+abs   00010000  __PRU_CREG_BASE_PRU_SHAREDMEM
+abs   00028000  __PRU_CREG_BASE_PRU_UART     
+abs   48300000  __PRU_CREG_BASE_PWMSS0       
+abs   48302000  __PRU_CREG_BASE_PWMSS1       
+abs   48304000  __PRU_CREG_BASE_PWMSS2       
+abs   48318000  __PRU_CREG_BASE_RSVD10       
+abs   48310000  __PRU_CREG_BASE_RSVD13       
+abs   00032400  __PRU_CREG_BASE_RSVD21       
+abs   00032000  __PRU_CREG_BASE_RSVD27       
+abs   480ca000  __PRU_CREG_BASE_SPINLOCK     
+abs   49000000  __PRU_CREG_BASE_TPCC         
+abs   48022000  __PRU_CREG_BASE_UART1        
+abs   48024000  __PRU_CREG_BASE_UART2        
+abs   0000000e  __PRU_CREG_DCAN0             
+abs   0000000f  __PRU_CREG_DCAN1             
+abs   0000001f  __PRU_CREG_DDR               
+abs   00000001  __PRU_CREG_DMTIMER2          
+abs   00000009  __PRU_CREG_GEMAC             
+abs   00000002  __PRU_CREG_I2C1              
+abs   00000011  __PRU_CREG_I2C2              
+abs   0000001e  __PRU_CREG_L3OCMC            
+abs   00000016  __PRU_CREG_MBX0              
+abs   00000008  __PRU_CREG_MCASP0_DMA        
+abs   00000006  __PRU_CREG_MCSPI0            
+abs   00000010  __PRU_CREG_MCSPI1            
+abs   00000005  __PRU_CREG_MMCHS0            
+abs   00000004  __PRU_CREG_PRU_CFG           
+abs   00000018  __PRU_CREG_PRU_DMEM_0_1      
+abs   00000019  __PRU_CREG_PRU_DMEM_1_0      
+abs   00000003  __PRU_CREG_PRU_ECAP          
+abs   0000001a  __PRU_CREG_PRU_IEP           
+abs   00000000  __PRU_CREG_PRU_INTC          
+abs   0000001c  __PRU_CREG_PRU_SHAREDMEM     
+abs   00000007  __PRU_CREG_PRU_UART          
+abs   00000012  __PRU_CREG_PWMSS0            
+abs   00000013  __PRU_CREG_PWMSS1            
+abs   00000014  __PRU_CREG_PWMSS2            
+abs   0000000a  __PRU_CREG_RSVD10            
+abs   0000000d  __PRU_CREG_RSVD13            
+abs   00000015  __PRU_CREG_RSVD21            
+abs   0000001b  __PRU_CREG_RSVD27            
+abs   00000017  __PRU_CREG_SPINLOCK          
+abs   0000001d  __PRU_CREG_TPCC              
+abs   0000000b  __PRU_CREG_UART1             
+abs   0000000c  __PRU_CREG_UART2             
+1     0000091c  __TI_STACK_END               
+abs   00000100  __TI_STACK_SIZE              
+0     00000738  __TI_printfi_minimal         
+abs   ffffffff  __binit__                    
+abs   ffffffff  __c_args__                   
+0     00000510  __pruabi_divu                
+0     00000fe0  __pruabi_mpyi                
+0     00000000  _c_int00_noinit_noargs_noexit
+1     0000081c  _stack                       
+0     0000109c  abort                        
+abs   ffffffff  binit                        
+0     00000624  main                         
+0     00000df8  memccpy                      
+0     00000f28  memcpy                       
+0     0000103c  memset                       
+1     0000091c  pru_remoteproc_ResourceTable 
+1     00000000  sinLUT                       
+0     00000e40  sprintf                      
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+page  address   name                         
+----  -------   ----                         
+0     00000000  _c_int00_noinit_noargs_noexit
+0     00000014  INTC_initialize              
+0     00000510  __pruabi_divu                
+0     00000624  main                         
+0     00000738  __TI_printfi_minimal         
+0     00000844  NCOinterpolate               
+0     00000900  UART_set_protocol            
+0     00000b4c  UART_set_FIFO                
+0     00000bcc  NCOinitialize                
+0     00000c28  NCOstep                      
+0     00000c78  UART_set_PEM                 
+0     00000cc8  UART_transmit                
+0     00000d18  NCOsetfreq                   
+0     00000d64  UART_set_modem               
+0     00000db0  UART_set_baudrate            
+0     00000df8  memccpy                      
+0     00000e40  sprintf                      
+0     00000f28  memcpy                       
+0     00000f5c  IEP_frequency                
+0     00000f88  IEP_increment                
+0     00000fb4  IEP_reset                    
+0     00000fe0  __pruabi_mpyi                
+0     00001004  IEP_clear                    
+0     00001020  INTC_clear                   
+0     0000103c  memset                       
+0     00001058  IEP_start                    
+0     00001088  IEP_mode                     
+0     0000109c  abort                        
+0     000010a4  C$$EXIT                      
+1     00000000  sinLUT                       
+1     0000081c  _stack                       
+1     0000091c  __TI_STACK_END               
+1     0000091c  pru_remoteproc_ResourceTable 
+2     00020000  CT_INTC                      
+2     00026000  CT_CFG                       
+2     00028000  CT_UART                      
+2     0002e000  CT_IEP                       
+2     00030000  CT_ECAP                      
+abs   00000000  __PRU_CREG_BASE_PRU_DMEM_0_1 
+abs   00000000  __PRU_CREG_PRU_INTC          
+abs   00000001  __PRU_CREG_DMTIMER2          
+abs   00000002  __PRU_CREG_I2C1              
+abs   00000003  __PRU_CREG_PRU_ECAP          
+abs   00000004  __PRU_CREG_PRU_CFG           
+abs   00000005  __PRU_CREG_MMCHS0            
+abs   00000006  __PRU_CREG_MCSPI0            
+abs   00000007  __PRU_CREG_PRU_UART          
+abs   00000008  __PRU_CREG_MCASP0_DMA        
+abs   00000009  __PRU_CREG_GEMAC             
+abs   0000000a  __PRU_CREG_RSVD10            
+abs   0000000b  __PRU_CREG_UART1             
+abs   0000000c  __PRU_CREG_UART2             
+abs   0000000d  __PRU_CREG_RSVD13            
+abs   0000000e  __PRU_CREG_DCAN0             
+abs   0000000f  __PRU_CREG_DCAN1             
+abs   00000010  __PRU_CREG_MCSPI1            
+abs   00000011  __PRU_CREG_I2C2              
+abs   00000012  __PRU_CREG_PWMSS0            
+abs   00000013  __PRU_CREG_PWMSS1            
+abs   00000014  __PRU_CREG_PWMSS2            
+abs   00000015  __PRU_CREG_RSVD21            
+abs   00000016  __PRU_CREG_MBX0              
+abs   00000017  __PRU_CREG_SPINLOCK          
+abs   00000018  __PRU_CREG_PRU_DMEM_0_1      
+abs   00000019  __PRU_CREG_PRU_DMEM_1_0      
+abs   0000001a  __PRU_CREG_PRU_IEP           
+abs   0000001b  __PRU_CREG_RSVD27            
+abs   0000001c  __PRU_CREG_PRU_SHAREDMEM     
+abs   0000001d  __PRU_CREG_TPCC              
+abs   0000001e  __PRU_CREG_L3OCMC            
+abs   0000001f  __PRU_CREG_DDR               
+abs   00000100  __TI_STACK_SIZE              
+abs   00002000  __PRU_CREG_BASE_PRU_DMEM_1_0 
+abs   00010000  __PRU_CREG_BASE_PRU_SHAREDMEM
+abs   00020000  __PRU_CREG_BASE_PRU_INTC     
+abs   00026000  __PRU_CREG_BASE_PRU_CFG      
+abs   00028000  __PRU_CREG_BASE_PRU_UART     
+abs   0002e000  __PRU_CREG_BASE_PRU_IEP      
+abs   00030000  __PRU_CREG_BASE_PRU_ECAP     
+abs   00032000  __PRU_CREG_BASE_RSVD27       
+abs   00032400  __PRU_CREG_BASE_RSVD21       
+abs   40000000  __PRU_CREG_BASE_L3OCMC       
+abs   46000000  __PRU_CREG_BASE_MCASP0_DMA   
+abs   48022000  __PRU_CREG_BASE_UART1        
+abs   48024000  __PRU_CREG_BASE_UART2        
+abs   4802a000  __PRU_CREG_BASE_I2C1         
+abs   48030000  __PRU_CREG_BASE_MCSPI0       
+abs   48040000  __PRU_CREG_BASE_DMTIMER2     
+abs   48060000  __PRU_CREG_BASE_MMCHS0       
+abs   480c8000  __PRU_CREG_BASE_MBX0         
+abs   480ca000  __PRU_CREG_BASE_SPINLOCK     
+abs   4819c000  __PRU_CREG_BASE_I2C2         
+abs   481a0000  __PRU_CREG_BASE_MCSPI1       
+abs   481cc000  __PRU_CREG_BASE_DCAN0        
+abs   481d0000  __PRU_CREG_BASE_DCAN1        
+abs   48300000  __PRU_CREG_BASE_PWMSS0       
+abs   48302000  __PRU_CREG_BASE_PWMSS1       
+abs   48304000  __PRU_CREG_BASE_PWMSS2       
+abs   48310000  __PRU_CREG_BASE_RSVD13       
+abs   48318000  __PRU_CREG_BASE_RSVD10       
+abs   49000000  __PRU_CREG_BASE_TPCC         
+abs   4a100000  __PRU_CREG_BASE_GEMAC        
+abs   80000000  __PRU_CREG_BASE_DDR          
+abs   ffffffff  __binit__                    
+abs   ffffffff  __c_args__                   
+abs   ffffffff  binit                        
+
+[106 symbols]
