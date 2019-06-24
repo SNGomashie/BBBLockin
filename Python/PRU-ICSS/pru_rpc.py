@@ -1,77 +1,84 @@
 import rpyc
-from pru_icss import PRU_ICSS
+import pru_icss
+from Agilent33522A import FunctionGenerator
 import sys
 
 rpyc.core.protocol.DEFAULT_CONFIG['allow_pickle'] = True
+rpyc.core.protocol.DEFAULT_CONFIG['sync_request_timeout'] = 120
 
 
-class BeagleBoneDDS(rpyc.Service):
-
-    RPMSG_BUF_SIZE = 512
-    charBuf = "\0" * 512
+class BeagleBoneRpyC(rpyc.Service):
 
     def on_connect(self, conn):
         print("-    Connection has been established")
-        pass
 
     def on_disconnect(self, conn):
-        print("\n-    Connection has been terminated")
-        self.PRU0.stop_ext()
-        self.PRU1.stop()
-        t.close()
-        sys.exit()
+        try:
+            self.PRUSS.close_char(0)
+            self.PRUSS.close_char(1)
+            self.PRUSS.stop(0)
+            self.PRUSS.stop(1)
+            print("\n-      Connection has been terminated")
+            t.close()
+            sys.exit()
+        except IOError:
+            print("-    Unable to terminate connection")
         pass
 
-    def exposed_pru_initialize(self, pru):
-        if pru == 0:
-            self.PRU0 = PRU_ICSS(0)
-        if pru == 1:
-            self.PRU1 = PRU_ICSS(1)
-        if pru == 2:
-            self.PRU0 = PRU_ICSS(0)
-            self.PRU1 = PRU_ICSS(1)
+    def exposed_fgen_initialize(self, settings=""):
+        try:
+            self.FGEN = FunctionGenerator(1)
+            print("-    %s" % (self.FGEN.getIdn()))
+            print("-    Function generator is ready for usage")
+        except IOError:
+            print("-    Failed to find USB instrument")
+        if settings == "":
+            pass
+        else:
+            self.FGEN.loadSettings(settings)
+
+    def exposed_fgen_write(self, SCPI):
+        try:
+            self.FGEN.write(SCPI)
+            print("-    SCPI command send: %s" % SCPI)
+        except IOError:
+            print("-    Failed to write command")
+
+    def exposed_pru_initialize(self):
+        try:
+            self.PRUSS = pru_icss.PRU_ICSS()
+            print("-    PRU-ICSS object has been created")
+        except IOError:
+            print("-    Failed to initialize PRU-ICSS")
         pass
 
     def exposed_pru_start(self, pru):
-        if pru == 0:
-            self.PRU0.start()
-        if pru == 1:
-            self.PRU1.start()
-        if pru == 2:
-            self.PRU0.start()
-            self.PRU1.start()
+        self.PRUSS.start(pru)
         pass
 
     def exposed_pru_stop(self, pru):
-        if pru == 0:
-            self.PRU0.stop()
-        if pru == 1:
-            self.PRU1.stop()
-        if pru == 2:
-            self.PRU0.stop()
-            self.PRU1.stop()
+        self.PRUSS.stop(pru)
         pass
 
-    def exposed_pru_transmit(self, message, pru):
-        if pru == 0:
-            self.PRU0.transmit(message)
-        if pru == 1:
-            self.PRU1.transmit(message)
+    def exposed_pru_transmit(self, pru, message):
+        self.PRUSS.transmit(pru, message)
+        pass
 
-    def exposed_pru_blk_receive(self, samples, data_size, pru):
-        if pru == 0:
-            return self.PRU0.blkreceive(samples, data_size)
-        elif pru == 1:
-            return self.PRU1.blkreceive(samples, data_size)
+    def exposed_pru_receive(self, pru, type, samples=0):
+        return self.PRUSS.receive(pru, type, samples)
+        del self.FGEN
+        pass
 
-    def exposed_pru_receive(self, pru):
-        if pru == 0:
-            return self.PRU0.receive()
-        elif pru == 1:
-            return self.PRU0.receive()
+    def exposed_pru_open(self, pru):
+        self.PRUSS.open_char(pru)
+        pass
+
+    def exposed_pru_close(self, pru):
+        self.PRUSs.close_char(pru)
+        pass
 
 
 if __name__ == '__main__':
     from rpyc.utils.server import ThreadedServer
-    t = ThreadedServer(BeagleBoneDDS, port=18861)
+    t = ThreadedServer(BeagleBoneRpyC, port=18861)
     t.start()
