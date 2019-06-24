@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy import signal, fftpack
+from scipy import signal
 
 
 class NCO():
@@ -23,7 +23,8 @@ class NCO():
 
         self.set()
 
-    def set(self):
+    def set(self, period):
+        self.period = period
         norm = np.uint32(2 ** (self.int_bits + self.frac_bits) / self.period)
         self.increment = np.uint64(norm * self.sample_period)
 
@@ -47,9 +48,6 @@ class NCO():
         self.output = self.sine_LUT[self.accumulator >> 16]
         self.accumulator += np.uint32(self.increment)
         self.accumulator = int((2 ** (self.int_bits + self.frac_bits)) - 1) & self.accumulator
-
-
-
 
 
 if __name__ == "__main__":
