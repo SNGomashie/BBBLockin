@@ -24,7 +24,6 @@
 /* Definition for unused interrupts */
 #define HOST_UNUSED		255
 
-
 #define TO_ARM_HOST			16
 #define FROM_ARM_HOST			17
 #define PRU0_TO_ARM_CHANNEL  2
