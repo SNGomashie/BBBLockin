@@ -1,0 +1,13 @@
+gen/pru_peripheral.object: pru_peripheral.c
+gen/pru_peripheral.object: /usr/share/ti/cgt-pru/include/stdint.h
+gen/pru_peripheral.object: /usr/share/ti/cgt-pru/include/stdio.h
+gen/pru_peripheral.object: /usr/share/ti/cgt-pru/include/linkage.h
+gen/pru_peripheral.object: /usr/share/ti/cgt-pru/include/stdarg.h
+gen/pru_peripheral.object: pru_peripheral.h
+gen/pru_peripheral.object: /usr/lib/ti/pru-software-support-package/include/am335x/pru_cfg.h
+gen/pru_peripheral.object: /usr/lib/ti/pru-software-support-package/include/am335x/pru_ctrl.h
+gen/pru_peripheral.object: /usr/lib/ti/pru-software-support-package/include/am335x/pru_intc.h
+gen/pru_peripheral.object: /usr/lib/ti/pru-software-support-package/include/am335x/pru_iep.h
+gen/pru_peripheral.object: /usr/lib/ti/pru-software-support-package/include/am335x/pru_ecap.h
+gen/pru_peripheral.object: /usr/lib/ti/pru-software-support-package/include/am335x/sys_mcspi.h
+gen/pru_peripheral.object: /usr/lib/ti/pru-software-support-package/include/am335x/pru_uart.h

@@ -1,0 +1,11 @@
+gen/pru_rpmsg_lib.object: pru_rpmsg_lib.c
+gen/pru_rpmsg_lib.object: pru_rpmsg_lib.h
+gen/pru_rpmsg_lib.object: /usr/lib/ti/pru-software-support-package/include/pru_rpmsg.h
+gen/pru_rpmsg_lib.object: /usr/lib/ti/pru-software-support-package/include/pru_virtqueue.h
+gen/pru_rpmsg_lib.object: /usr/lib/ti/pru-software-support-package/include/rsc_types.h
+gen/pru_rpmsg_lib.object: /usr/share/ti/cgt-pru/include/stdint.h
+gen/pru_rpmsg_lib.object: /usr/lib/ti/pru-software-support-package/include/pru_types.h
+gen/pru_rpmsg_lib.object: /usr/lib/ti/pru-software-support-package/include/pru_virtio_ring.h
+gen/pru_rpmsg_lib.object: /usr/lib/ti/pru-software-support-package/include/pru_virtio_ids.h
+gen/pru_rpmsg_lib.object: resource_table.h
+gen/pru_rpmsg_lib.object: /usr/share/ti/cgt-pru/include/stddef.h
