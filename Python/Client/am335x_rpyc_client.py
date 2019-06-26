@@ -40,19 +40,21 @@ def main():
     Fs = 10000  # Sample frequency in Hz / Nch
     Nch = 4  # Number of channels to sample
     Fs_n = int(Fs * Nch)
-    M = 10  # Decimation factor
-    Fs_d = int(Fs / M)
+    M = 1  # Decimation factor
+    Fs_d = int(Fs / M)  # Decimated sample frequency
     Nyq = 0.5 * Fs_d
 
-    N = 10000  # Filter length
+    N = 50000  # Filter length
     C = 0.1  # Cut-off frequency in Hz
 
     taps = signal.firwin(N, C/Nyq, window=('hamming'))  # Generate taps for FIR
                                                         # filter
-    I = 20000  # Number of samples
+    I = 200000  # Number of samples
 
-    CH1 = 0.150
-    CH2 = 0.250
+    t = np.linspace(0, I/(Fs/Nch), I)
+
+    CH1 = 4.75
+    CH2 = 4.75
 
     Qa_d = []
     In_d = []
@@ -83,79 +85,93 @@ def main():
 
     Qa, In = format(data, Nch)  # Split 1D array into 2, 2D arrays
 
-    for i in range(Nch):  # Decimate
-        Qa_d.append(signal.decimate(Qa[:, i], 10))
-        In_d.append(signal.decimate(In[:, i], 10))
+    # for i in range(Nch):  # Decimate
+        # Qa_d.append(signal.decimate(Qa[:, i], M, ftype='fir'))
+        # In_d.append(signal.decimate(In[:, i], M, ftype='fir'))
 
     for i in range(Nch):  # Filter Q & A
-        FIRQa.append(signal.lfilter(taps, 1, Qa_d[i]))
-        FIRIn.append(signal.lfilter(taps, 1, In_d[i]))
+        FIRQa.append(signal.lfilter(taps, 1, Qa[:, i]))
+        FIRIn.append(signal.lfilter(taps, 1, In[:, i]))
 
     for i in range(Nch):  # Calculate magnitude
-        Ao.append(magnitude(FIRQa[i], FIRIn[i]))  # Calculate magnitude
+        Ao.append(magnitude(FIRQa[i][:], FIRIn[i][:]))  # Calculate magnitude
 
     for i in range(Nch):  # Filter Magnitude
-        FIRAo.append(signal.lfilter(taps, 1, Ao[i]))  # Filter magnitude
+        FIRAo.append(signal.lfilter(taps, 1, Ao[i][:]))  # Filter magnitude
 
     FIRAo = scale(FIRAo)  # ADC Scalar
 
-    plt.figure()
+    snr = 20 * np.log10(150/(CH1 * 1000))
+    print('\nSNR: %f    ' % (snr), end=" ")
+
+    for i in range(Nch):
+        print("Channel %d: %f," % (i, np.mean(FIRAo[i][-1000:])), end=" ")
+
+    plt.figure(figsize=(7, 7))
     plt.subplot(313)
     plt.title("Magnitude")
-    plt.plot(FIRAo[0], 'orange')
-    plt.plot(FIRAo[1], 'red')
+    plt.xlabel("Time [S]")
+    plt.ylabel("Amplitude [V]")
+    for i in range(Nch):
+        plt.plot(t, FIRAo[i][:I])
     plt.subplot(321)
     plt.title("Quadrature signal")
-    plt.plot(Qa[:, 0], 'b')
-    plt.ylim(-32767, 32767)
+    plt.xlabel("Time [S]")
+    plt.ylabel("Amplitude [bits]")
+    plt.plot(t, Qa[:I, 0], 'b')
+    plt.ylim(-10000, 10000)
     plt.subplot(322)
     plt.title("Inphase signal")
-    plt.plot(In[:, 0], 'r')
-    plt.ylim(-32767, 32767)
+    plt.xlabel("Time [S]")
+    plt.ylabel("Amplitude [bits]")
+    plt.plot(t, In[:I, 0], 'r')
+    plt.ylim(-10000, 10000)
     plt.subplot(323)
     plt.title("Filtered Inphase signal")
-    plt.plot(FIRQa[0], 'b')
-    plt.ylim(-32767, 32767)
+    plt.xlabel("Time [S]")
+    plt.ylabel("Amplitude [bits]")
+    plt.plot(t, FIRQa[0][:I], 'b')
+    plt.ylim(-10000, 10000)
     plt.subplot(324)
     plt.title("Filtered Quadrature signal")
-    plt.plot(FIRIn[0], 'r')
-    plt.ylim(-32767, 32767)
+    plt.xlabel("Time [S]")
+    plt.ylabel("Amplitude [bits]")
+    plt.plot(t, FIRIn[0][:I], 'r')
+    plt.ylim(-10000, 10000)
     plt.tight_layout()
 
     plt.figure()
     plt.subplot(313)
     plt.title("magnitude FFT")
-    plt.magnitude_spectrum(FIRAo[0], Fs=(Fs/Nch), scale='dB')
+    plt.xlim(0, 500)
+    plt.magnitude_spectrum(FIRAo[0][:], Fs=(Fs/Nch), scale='dB')
     plt.ylim(-150, 150)
     plt.grid()
     plt.subplot(321)
     plt.title("Quadrature signal FFT")
+    plt.xlim(0, 500)
     plt.magnitude_spectrum(Qa[:, 0], Fs=(Fs/Nch), scale='dB')
     plt.ylim(-150, 150)
     plt.grid()
     plt.subplot(322)
     plt.title("Inphase signal FFT")
+    plt.xlim(0, 500)
     plt.magnitude_spectrum(In[:, 0], Fs=(Fs/Nch), scale='dB')
     plt.ylim(-150, 150)
     plt.grid()
     plt.subplot(323)
     plt.title("Filtered Inphase signal")
-    plt.magnitude_spectrum(FIRQa[0], Fs=(Fs/Nch), scale='dB')
+    plt.xlim(0, 500)
+    plt.magnitude_spectrum(FIRQa[0][:], Fs=(Fs/Nch), scale='dB')
     plt.ylim(-150, 150)
     plt.grid()
     plt.subplot(324)
     plt.title("Filtered Quadrature signal")
-    plt.magnitude_spectrum(FIRIn[0], Fs=(Fs/Nch), scale='dB')
+    plt.xlim(0, 500)
+    plt.magnitude_spectrum(FIRIn[0][:], Fs=(Fs/Nch), scale='dB')
     plt.ylim(-150, 150)
     plt.grid()
     plt.tight_layout()
-
-    snr = 20 * np.log10(150/(CH1 * 1000))
-    print('\nSNR: %f    ' % (snr), end=" ")
-    print(np.shape(FIRAo))
-    print(type(FIRAo))
-    for i in range(Nch):
-        print("Channel %d: %f," % (i, np.mean(FIRAo[i][-100:])), end=" ")
 
 
 if __name__ == '__main__':
