@@ -259,7 +259,8 @@ Configuring a pin on the BeagleBone Black is very simple. You can use the 'confi
 To load our custom pin configuration at startup we first create a file with our pin configs. (In this example we use pin 17 on the P9 header and configure it as SPI chip select)
 ```
 ~$ sudo nano /usr/bin/enable-spi-pins.sh
-
+```
+```
 #!/bin/bash
 
 config-pin P9_17 spi_cs
@@ -271,7 +272,8 @@ We have to give this file the right permission by running:
 Now we create another file which will call the previous file on startup.
 ```
 ~$ sudo nano /lib/systemd/system/enable-spi-pins.service
-
+```
+```
 [Unit]
 Description=Enable SPI pins
 After=generic-board-startup.service
