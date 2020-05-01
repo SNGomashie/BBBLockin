@@ -301,7 +301,7 @@ time.
 Clone this repository to your beaglebone home directory
 ```
 cd
-git clone git@github.com:SNGomashie/BBB-Lockin.git
+git clone https://github.com/SNGomashie/BBBLockin.git
 ```
 
 ### Example programs
