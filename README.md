@@ -249,6 +249,10 @@ This command shows where the TI PRU Code Generation Tool is located:
 ```
 whereis clpru
 ```
+To prepare the TI PRU Code Generation tool for usage we have to link 2 folders:
+```
+ln -s /usr/bin/ /usr/share/ti/cgt-pru/bin
+```
 
 ## Configure GPIO
 
